@@ -1,0 +1,221 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Registration</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid fixed>
+    <form [formGroup]="rf">
+
+      <ion-row>
+        <ion-col size-md="6">
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Username</ion-label>
+              <ion-input type="text" formControlName="username"></ion-input>
+            </ion-item>
+
+            <ion-item *ngIf="rfc.username.pending">
+              <p>Checking Username...</p>
+            </ion-item>
+            <ion-item *ngIf="submitted && rfc.username.hasError('required')">
+              <p>Please provide valid username.</p>
+            </ion-item>
+            <ion-item *ngIf="rfc.username.touched && !rfc.username.pending && !rfc.username.hasError('required') && !rfc.username.valid">
+              <p>Username is already taken.</p>
+            </ion-item>
+
+          </ion-list>
+        </ion-col>
+        <ion-col size-md="6">
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Type</ion-label>
+              <ion-select interface="popover" formControlName="userType">
+                <ion-select-option value="2">Doctor</ion-select-option>
+                <ion-select-option value="3">Secretary</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6">
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Password</ion-label>
+              <ion-input type="password" formControlName="password"></ion-input>
+            </ion-item>
+
+            <ion-item *ngIf="submitted && !rfc.password.valid">
+              <p>Required, minimum of 8 characters.</p>
+            </ion-item>
+
+          </ion-list>
+        </ion-col>
+        <ion-col size-md="6">
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Repeat Password</ion-label>
+              <ion-input type="password" formControlName="repassword"></ion-input>
+            </ion-item>
+
+            <ion-item *ngIf="submitted && rf.hasError('mismatchedPassword')">
+              <p>Password do not match.</p>
+            </ion-item>
+
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6">
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">First Name</ion-label>
+              <ion-input type="text" formControlName="firstname"></ion-input>
+            </ion-item>
+
+            <ion-item *ngIf="submitted && !rfc.firstname.valid">
+              <p>Please enter a valid first name.</p>
+            </ion-item>
+
+          </ion-list>
+        </ion-col>
+        <ion-col size-md="6">
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Last Name</ion-label>
+              <ion-input type="text" formControlName="lastname"></ion-input>
+            </ion-item>
+
+            <ion-item *ngIf="submitted && !rfc.lastname.valid">
+              <p>Please enter a valid last name.</p>
+            </ion-item>
+
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6">
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Middle Name</ion-label>
+              <ion-input type="text" formControlName="middlename"></ion-input>
+            </ion-item>
+
+            <ion-item *ngIf="submitted && !rfc.middlename.valid">
+              <p>Please enter a valid middle name.</p>
+            </ion-item>
+
+          </ion-list>
+        </ion-col>
+        <ion-col size-md="6">
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Suffix Name</ion-label>
+              <ion-input type="text" formControlName="suffixname"></ion-input>
+            </ion-item>
+
+            <ion-item *ngIf="submitted && !rfc.suffixname.valid">
+              <p>Please enter a valid suffix name.</p>
+            </ion-item>
+
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+
+      <ion-row>
+        <ion-col size-md="6">
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Contact Number</ion-label>
+              <ion-input type="text" formControlName="contactNumber"></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+        <ion-col size-md="6">
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Address</ion-label>
+              <ion-input type="text" formControlName="address"></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Question #1</ion-label>
+              <ion-input type="text" formControlName="question1"></ion-input>
+            </ion-item>
+
+            <ion-item *ngIf="submitted && !rfc.question1.valid">
+              <p>Required.</p>
+            </ion-item>
+
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Answer #1</ion-label>
+              <ion-input type="text" formControlName="answer1"></ion-input>
+            </ion-item>
+
+            <ion-item *ngIf="submitted && !rfc.answer1.valid">
+              <p>Required.</p>
+            </ion-item>
+
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Question #2</ion-label>
+              <ion-input type="text" formControlName="question2"></ion-input>
+            </ion-item>
+
+            <ion-item *ngIf="submitted && !rfc.question2.valid">
+              <p>Required.</p>
+            </ion-item>
+
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Answer #2</ion-label>
+              <ion-input type="text" formControlName="answer2"></ion-input>
+            </ion-item>
+
+            <ion-item *ngIf="submitted && !rfc.answer2.valid">
+              <p>Required.</p>
+            </ion-item>
+
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-button expand="full" (click)="register()">Register</ion-button>
+    </form>
+  </ion-grid>
+</ion-content>

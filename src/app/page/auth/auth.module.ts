@@ -1,0 +1,29 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Routes, RouterModule } from '@angular/router';
+
+import { IonicModule } from '@ionic/angular';
+
+import { AuthPage } from './auth.page';
+import { ServerListPage } from '../server-list/server-list.page';
+
+const routes: Routes = [
+    {
+        path: '',
+        component: AuthPage
+    }
+];
+
+@NgModule({
+    entryComponents: [ServerListPage],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        IonicModule,
+        RouterModule.forChild(routes)
+    ],
+    declarations: [AuthPage, ServerListPage]
+})
+export class AuthPageModule { }

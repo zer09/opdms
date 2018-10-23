@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Server List</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label position="floating">Server Name</ion-label>
+      <ion-input type="text" [(ngModel)]="serverName"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Server</ion-label>
+      <ion-input type="text" [(ngModel)]="serverAddress"></ion-input>
+    </ion-item>
+    <ion-button expand="full" (click)="addServer()">
+      Add
+    </ion-button>
+  </ion-list>
+
+  <ion-list>
+    <ion-radio-group [(ngModel)]="serverRadioGroup" (ionChange)="defaultServerChange($event)">
+      List of available servers.
+      <ion-item *ngFor="let adr of _saSvc.addressMaps() | keyvalue">
+        <ion-label>{{adr.key}} ({{adr.value}})</ion-label>
+        <ion-radio slot="start" value="{{adr.key}}"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,30 @@
+<ion-content padding center text-center>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col>
+        <ion-title>O-Medisys</ion-title>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <form [formGroup]="lf">
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Username</ion-label>
+              <ion-input type="text" formControlName="username"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Password</ion-label>
+              <ion-input type="password" formControlName="password"></ion-input>
+            </ion-item>
+            <ion-button expand="full" (click)="login()">Login</ion-button>
+            <ion-button expand="full" color="light" href="/registration" routeDirection="forward">Register</ion-button>
+            <ion-button float-right fill="clear" shape="round" size="small" (click)="serverSetting()">
+              <ion-icon slot="icon-only" name="settings"></ion-icon>
+            </ion-button>
+          </ion-list>
+        </ion-col>
+      </form>
+    </ion-row>
+  </ion-grid>
+</ion-content>
