@@ -24,6 +24,6 @@ const routes: Routes = [
         IonicModule,
         RouterModule.forChild(routes)
     ],
-    declarations: [AuthPage, ServerListPage]
+    declarations: [AuthPage]
 })
 export class AuthPageModule { }
