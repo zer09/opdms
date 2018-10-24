@@ -37,7 +37,7 @@ export class StoreService {
         PouchDB.plugin(upsert);
     }
 
-    public initMonitor() {
+    public monitorStore() {
         this._monitorAddress();
 
         this._registerStore('18YZR9UJZ2nOYVQQzRR9wjWt9ii');

@@ -22,7 +22,7 @@ export class AppComponent {
         private _splashScreen: SplashScreen,
         private _statusBar: StatusBar
     ) {
-        this._sSvc.initMonitor();
+        this._sSvc.monitorStore();
         this.initializeApp();
     }
 
