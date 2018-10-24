@@ -57,7 +57,9 @@ export class UserService {
                     post.subscribe((res: IPostResponse) => {
                         if (res.successful) {
                             const msg = res.msg;
-                            this.user = new User(msg.act as UserType);
+                            this.user = new User(
+                                parseInt(msg.act, 10) as UserType
+                            );
 
                             this.user.userDetails = {
                                 name: {
