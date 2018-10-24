@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ServerAddressService } from '../../service/server-address.service';
+import { ModalController } from '@ionic/angular';
 
 @Component({
     selector: 'app-server-list',
@@ -14,6 +15,7 @@ export class ServerListPage implements OnInit {
 
     constructor(
         private _saSvc: ServerAddressService,
+        private _mdlCtrl: ModalController,
     ) { }
 
     ngOnInit() {
@@ -22,6 +24,10 @@ export class ServerListPage implements OnInit {
         this._saSvc.getDefaultServer().then(server => {
             this.serverRadioGroup = server.key;
         });
+    }
+
+    public close() {
+        this._mdlCtrl.dismiss();
     }
 
     public get addressMaps() {

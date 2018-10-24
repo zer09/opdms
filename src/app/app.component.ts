@@ -86,8 +86,9 @@ export class AppComponent {
     public logout() {
         this.appPages = [];
         this._menuCtrl.enable(false, this.mainMenuId);
-        this._route.navigate(['']);
-        this._localStorage.set('session', undefined);
+        this._localStorage.set('session', undefined).then(() => {
+            window.location.reload();
+        });
     }
 
 }
