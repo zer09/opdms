@@ -16,7 +16,6 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    entryComponents: [ServerListPage],
     imports: [
         CommonModule,
         FormsModule,

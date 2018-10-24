@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { ServerListPageModule } from './page/server-list/server-list.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -28,6 +29,7 @@ import { environment } from '../environments/environment';
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
+        ServerListPageModule,
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     ],
     providers: [
