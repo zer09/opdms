@@ -49,7 +49,7 @@ export class ServerAddressService {
     }
 
     public addServer(name: string, address: string): void {
-        name = name.trim().toLowerCase();
+        name = (name || '').trim().toLowerCase();
         if (name === this.remote[0]) {
             return;
         }
@@ -73,7 +73,7 @@ export class ServerAddressService {
     }
 
     public setDefaultServer(name: string) {
-        name = name.trim();
+        name = (name || '').trim().toLowerCase();
         if (name === this.remoteName) {
             return;
         }
