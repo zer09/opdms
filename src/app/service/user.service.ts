@@ -94,7 +94,10 @@ export class UserService {
                                 this._route.navigate(['']);
                             }
 
-                            this._localStorage.set('session', this.user);
+                            this._localStorage.set('session', this.user)
+                                .then(() => {
+                                    this._events.publish('usr:ses:chg', this.user);
+                                });
                         }
 
                         resolve(res.successful);

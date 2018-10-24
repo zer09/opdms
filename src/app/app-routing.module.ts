@@ -12,12 +12,12 @@ const routes: Routes = [
     },
     {
         path: 'auth',
-        loadChildren: './page/auth/auth.module#AuthPageModule',
+        loadChildren: './page/auth/auth.module#AuthPageModule'
     },
     {
         path: 'admin',
         loadChildren: './page/admin/admin.module#AdminPageModule',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard]
     },
     {
         path: 'doctor',
@@ -31,10 +31,6 @@ const routes: Routes = [
             {
                 path: 'medicines',
                 loadChildren: './page/medicines/medicines.module#MedicinesPageModule',
-            },
-            {
-                path: 'settings',
-                loadChildren: './page/settings/settings.module#SettingsPageModule',
             }
         ]
     },
@@ -46,12 +42,13 @@ const routes: Routes = [
                 path: '',
                 pathMatch: 'full',
                 loadChildren: './page/secretary/secretary.module#SecretaryPageModule',
-            },
-            {
-                path: 'settings',
-                loadChildren: './page/settings/settings.module#SettingsPageModule',
             }
         ]
+    },
+    {
+        path: 'settings',
+        loadChildren: './page/settings/settings.module#SettingsPageModule',
+        canActivate: [AuthGuard]
     },
     {
         path: 'registration',

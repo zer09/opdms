@@ -19,7 +19,6 @@ export class UserTypeGuard implements CanActivate {
         state: RouterStateSnapshot
     ): Observable<boolean> | Promise<boolean> | boolean {
         return this._usrSvc.sessionCheck().then(() => {
-            console.log(this._usrSvc.user)
             if (this._usrSvc.user.userType === UserType.ADMIN) {
                 this._route.navigate(['/admin']);
             } else if (this._usrSvc.user.userType === UserType.DOCTOR) {
