@@ -22,7 +22,7 @@
   <ion-list>
     <ion-radio-group [(ngModel)]="serverRadioGroup" (ionChange)="defaultServerChange($event)">
       List of available servers.
-      <ion-item *ngFor="let adr of _saSvc.addressMaps() | keyvalue">
+      <ion-item *ngFor="let adr of addressMaps | keyvalue">
         <ion-label>{{adr.key}} ({{adr.value}})</ion-label>
         <ion-radio slot="start" value="{{adr.key}}"></ion-radio>
       </ion-item>

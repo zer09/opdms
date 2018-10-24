@@ -24,6 +24,10 @@ export class ServerListPage implements OnInit {
         });
     }
 
+    public get addressMaps() {
+        return this._saSvc.addressMaps();
+    }
+
     public addServer() {
         if (this.serverName.length < 1 || this.serverAddress.length < 1) {
             return;

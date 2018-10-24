@@ -79,7 +79,7 @@ export class RegistrationPage implements OnInit {
 
 
 
-    private async register() {
+    public async register() {
         this.submitted = true;
         if (!this.rf.valid) {
             await this._alertCtrl.create({
