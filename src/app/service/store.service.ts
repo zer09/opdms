@@ -40,7 +40,7 @@ export class StoreService {
     public monitorStore() {
         this._monitorAddress();
 
-        this._registerStore('18YZR9UJZ2nOYVQQzRR9wjWt9ii');
+        this._registerStore(Helper.defStore);
 
         const adrs = this._saSvc.listServers();
         for (let i = 0; i < adrs.length; i++) {
