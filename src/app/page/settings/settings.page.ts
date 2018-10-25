@@ -1,15 +1,23 @@
 import { Component, OnInit } from '@angular/core';
+import { TitlesService } from '../../service/common/titles.service';
 
 @Component({
-  selector: 'app-settings',
-  templateUrl: './settings.page.html',
-  styleUrls: ['./settings.page.scss'],
+    selector: 'app-settings',
+    templateUrl: './settings.page.html',
+    styleUrls: ['./settings.page.scss'],
 })
 export class SettingsPage implements OnInit {
 
-  constructor() { }
+    constructor(
+        public titles: TitlesService,
+    ) { }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+        this.titles.fetchTitles();
+    }
+
+    public titlePopover(event) {
+        this.titles.popOver(event);
+    }
 
 }

@@ -1,0 +1,11 @@
+<ion-list>
+  <ng-container *ngIf="showAdd">
+    <ion-item button (click)="add()">{{addText}}</ion-item>
+  </ng-container>
+  <ng-container *ngIf="showRemove">
+    <ion-item button (click)="rm()">{{removeText}}</ion-item>
+  </ng-container>
+  <ng-container *ngIf="showUpdate">
+    <ion-item button (click)="update()">{{updateText}}</ion-item>
+  </ng-container>
+</ion-list>

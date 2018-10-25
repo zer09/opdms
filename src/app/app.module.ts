@@ -14,6 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { ServerListPageModule } from './page/server-list/server-list.module';
+import { AddRemovePopoverPageModule } from './page/common/add-remove-popover/add-remove-popover.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -30,6 +31,7 @@ import { ServerListPageModule } from './page/server-list/server-list.module';
         ReactiveFormsModule,
         HttpClientModule,
         ServerListPageModule,
+        AddRemovePopoverPageModule,
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     ],
     providers: [

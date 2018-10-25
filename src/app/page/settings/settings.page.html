@@ -7,6 +7,57 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
+  <ion-grid>
+    <ion-row>
 
+      <ion-col size="12" size-xl="4" size-lg="4" size-md="6">
+        <ion-card>
+          <ion-card-header>
+            <ion-item lines="none">
+              <ion-card-title>Titles</ion-card-title>
+              <ion-button slot="end" fill="clear" button-type="bar-button" (click)="titlePopover($event)">
+                <ion-icon name="more"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list>
+              <ion-item *ngFor="let t of titles.titleList">
+                <ion-label>{{t.title}}</ion-label>
+                <ion-checkbox color="danger" [(ngModel)]="t._deleted"></ion-checkbox>
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-xl="4" size-lg="4" size-md="6">
+        <ion-card>
+          <ion-card-header>
+            <ion-item lines="none">
+              <ion-card-title>Religion</ion-card-title>
+              <ion-button slot="end" fill="clear" button-type="bar-button">
+                <ion-icon name="more"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-xl="4" size-lg="4" size-md="6">
+        <ion-card>
+          <ion-card-header>
+            <ion-item lines="none">
+              <ion-card-title>Language</ion-card-title>
+              <ion-button slot="end" fill="clear" button-type="bar-button">
+                <ion-icon name="more"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
 </ion-content>
