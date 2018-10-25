@@ -4,15 +4,15 @@ import { AddRemovePopoverPage } from '../../page/common/add-remove-popover/add-r
 
 import { StoreService } from '../store.service';
 import { LoggerService } from '../logger.service';
-import { ITitle } from '../../interface/common/ititle';
+import { ILanguage } from '../../interface/common/ilanguage';
 import { Helper } from '../../helper';
 
 @Injectable({
     providedIn: 'root'
 })
-export class TitlesService {
+export class LanguageService {
 
-    public titleList: ITitle[];
+    public languageList: ILanguage[];
 
     constructor(
         private _sSvc: StoreService,
@@ -21,67 +21,67 @@ export class TitlesService {
         private _alertCtrl: AlertController,
     ) { }
 
-    public fetchTitles() {
-        this.titleList = [];
+    public fetchLanguages() {
+        this.languageList = [];
         this._sSvc.get(Helper.defStore)
             .allDocs({
                 include_docs: true,
-                startkey: 'settings:title:',
-                endkey: 'settings:title:\ufff0'
+                startkey: `settings:lang:`,
+                endkey: `settings:lang:\ufff0`
             }).then(res => {
                 const rows = res.rows;
 
                 for (let i = 0; i < rows.length; i++) {
                     const doc = rows[i].doc;
-                    this.titleList.push({
+                    this.languageList.push({
                         _id: doc._id,
                         _rev: doc._rev,
-                        title: doc.title
+                        language: doc.language
                     });
                 }
             }).catch(e => this._logSvc.log(e));
     }
 
-    public add(title: string) {
-        if (!title || title.trim().length < 1) {
+    public add(language: string) {
+        if (!language || language.trim().length < 1) {
             return;
         }
 
-        title = title.trim();
+        language = language.trim();
 
         this._sSvc.get(Helper.defStore)
             .put({
-                _id: `settings:title:${title}`,
-                title: title
+                _id: `settings:lang:${language}`,
+                language: language
             }).then(res => {
                 if (!res.ok) {
                     return;
                 }
 
-                this.titleList.push({
+                this.languageList.push({
                     _id: res.id,
                     _rev: res.rev,
-                    title: title
+                    language: language
                 });
             }).catch(e => this._logSvc.log(e));
     }
 
-    public remove(titles: ITitle[]) {
-        for (let i = 0; i < titles.length; i++) {
-            (titles[i] as any)._deleted = true;
+    public remove(languages: ILanguage[]) {
+        for (let i = 0; i < languages.length; i++) {
+            (languages[i] as any)._deleted = true;
         }
 
         this._sSvc.get(Helper.defStore)
-            .bulkDocs(titles).then(() => this.fetchTitles())
-            .catch(e => this._logSvc.log(e));
+            .bulkDocs(languages).then(() => this.fetchLanguages())
+            .cath(e => this._logSvc.log(e));
     }
 
     private _alertAdd(): void {
         this._alertCtrl.create({
-            header: 'Add New Title',
+            header: 'Add New Language',
             inputs: [{
-                name: 'title',
-                placeholder: 'Title',
+                name: 'language',
+                placeholder: 'Language',
                 type: 'text',
             }],
             buttons: [{
@@ -89,30 +89,30 @@ export class TitlesService {
                 role: 'cancel',
             }, {
                 text: 'Add',
-                handler: data => this.add(data.title),
-            }]
+                handler: data => this.add(data.language),
+            }],
         }).then(a => a.present());
     }
 
     private _alertRM(): void {
-        const del = this.titleList.filter(t => t['_deleted']);
-        const titles: string[] = [];
+        const del = this.languageList.filter(f => f['_deleted']);
+        const languages: string[] = [];
 
         for (let i = 0; i < del.length; i++) {
-            titles.push(del[i].title);
+            languages.push(del[i].language);
         }
 
         this._alertCtrl.create({
             header: 'Confirm Deletion',
-            message: 'Are you sure to remove selected titles?<br>' +
-                titles.join('<br>'),
+            message: 'Are you sure to remove selected languages?<br>' +
+                languages.join('<br>'),
             buttons: [{
                 text: 'Cancel',
                 role: 'cancel',
             }, {
                 text: 'Confirm',
                 handler: () => this.remove(del),
-            }]
+            }],
         }).then(a => a.present());
     }
 

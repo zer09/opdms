@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
-import { PopoverController, AlertController } from '@ionic/angular';
-import { AddRemovePopoverPage } from '../../page/common/add-remove-popover/add-remove-popover.page';
-
+import { IReligion } from '../../interface/common/ireligion';
 import { StoreService } from '../store.service';
 import { LoggerService } from '../logger.service';
-import { ITitle } from '../../interface/common/ititle';
+import { PopoverController, AlertController } from '@ionic/angular';
 import { Helper } from '../../helper';
+import { AddRemovePopoverPage } from '../../page/common/add-remove-popover/add-remove-popover.page';
 
 @Injectable({
     providedIn: 'root'
 })
-export class TitlesService {
+export class ReligionService {
 
-    public titleList: ITitle[];
+    public religionList: IReligion[];
 
     constructor(
         private _sSvc: StoreService,
@@ -21,67 +20,67 @@ export class TitlesService {
         private _alertCtrl: AlertController,
     ) { }
 
-    public fetchTitles() {
-        this.titleList = [];
+    public fetchReligion() {
+        this.religionList = [];
         this._sSvc.get(Helper.defStore)
             .allDocs({
                 include_docs: true,
-                startkey: 'settings:title:',
-                endkey: 'settings:title:\ufff0'
+                startkey: `settings:religion:`,
+                endkey: `settings:religion:\ufff0`
             }).then(res => {
                 const rows = res.rows;
 
                 for (let i = 0; i < rows.length; i++) {
                     const doc = rows[i].doc;
-                    this.titleList.push({
+                    this.religionList.push({
                         _id: doc._id,
                         _rev: doc._rev,
-                        title: doc.title
+                        religion: doc.religion
                     });
                 }
             }).catch(e => this._logSvc.log(e));
     }
 
-    public add(title: string) {
-        if (!title || title.trim().length < 1) {
+    public add(religion: string) {
+        if (!religion || religion.trim().length < 1) {
             return;
         }
 
-        title = title.trim();
+        religion = religion.trim();
 
         this._sSvc.get(Helper.defStore)
             .put({
-                _id: `settings:title:${title}`,
-                title: title
+                _id: `settings:religion:${religion}`,
+                religion: religion
             }).then(res => {
                 if (!res.ok) {
                     return;
                 }
 
-                this.titleList.push({
+                this.religionList.push({
                     _id: res.id,
                     _rev: res.rev,
-                    title: title
+                    religion: religion
                 });
             }).catch(e => this._logSvc.log(e));
     }
 
-    public remove(titles: ITitle[]) {
-        for (let i = 0; i < titles.length; i++) {
-            (titles[i] as any)._deleted = true;
+    public remove(religions: IReligion[]) {
+        for (let i = 0; i < religions.length; i++) {
+            (religions[i] as any)._deleted = true;
         }
 
         this._sSvc.get(Helper.defStore)
-            .bulkDocs(titles).then(() => this.fetchTitles())
+            .bulkDocs(religions).then(() => this.fetchReligion())
             .catch(e => this._logSvc.log(e));
     }
 
     private _alertAdd(): void {
         this._alertCtrl.create({
-            header: 'Add New Title',
+            header: 'Add New Religion',
             inputs: [{
-                name: 'title',
-                placeholder: 'Title',
+                name: 'religion',
+                placeholder: 'Religion',
                 type: 'text',
             }],
             buttons: [{
@@ -89,26 +88,26 @@ export class TitlesService {
                 role: 'cancel',
             }, {
                 text: 'Add',
-                handler: data => this.add(data.title),
+                handler: data => this.add(data.religion),
             }]
         }).then(a => a.present());
     }
 
     private _alertRM(): void {
-        const del = this.titleList.filter(t => t['_deleted']);
-        const titles: string[] = [];
+        const del = this.religionList.filter(t => t['_deleted']);
+        const religions: string[] = [];
 
         for (let i = 0; i < del.length; i++) {
-            titles.push(del[i].title);
+            religions.push(del[i].religion);
         }
 
         this._alertCtrl.create({
             header: 'Confirm Deletion',
-            message: 'Are you sure to remove selected titles?<br>' +
-                titles.join('<br>'),
+            message: 'Are you sure to remove selected religions?<br>' +
+                religions.join('<br>'),
             buttons: [{
                 text: 'Cancel',
-                role: 'cancel',
+                role: 'cancel'
             }, {
                 text: 'Confirm',
                 handler: () => this.remove(del),

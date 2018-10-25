@@ -37,11 +37,19 @@
           <ion-card-header>
             <ion-item lines="none">
               <ion-card-title>Religion</ion-card-title>
-              <ion-button slot="end" fill="clear" button-type="bar-button">
+              <ion-button slot="end" fill="clear" button-type="bar-button" (click)="religionPopover($event)">
                 <ion-icon name="more"></ion-icon>
               </ion-button>
             </ion-item>
           </ion-card-header>
+          <ion-card-content>
+            <ion-list>
+              <ion-item *ngFor="let r of religions.religionList">
+                <ion-label>{{r.religion}}</ion-label>
+                <ion-checkbox color="danger" [(ngModel)]="r._deleted"></ion-checkbox>
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
         </ion-card>
       </ion-col>
 
@@ -50,11 +58,19 @@
           <ion-card-header>
             <ion-item lines="none">
               <ion-card-title>Language</ion-card-title>
-              <ion-button slot="end" fill="clear" button-type="bar-button">
+              <ion-button slot="end" fill="clear" button-type="bar-button" (click)="languagePopover($event)">
                 <ion-icon name="more"></ion-icon>
               </ion-button>
             </ion-item>
           </ion-card-header>
+          <ion-card-content>
+            <ion-list>
+              <ion-item *ngFor="let l of languages.languageList">
+                <ion-label>{{l.language}}</ion-label>
+                <ion-checkbox color="danger" [(ngModel)]="l._deleted"></ion-checkbox>
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
         </ion-card>
       </ion-col>
 
