@@ -1,5 +1,5 @@
 import { UserType } from '../enum/user/user-type.enum';
-import { UserDetails } from '../interface/user-details';
+import { IUserDetails } from '../interface/iuser-details';
 
 export class User {
 
@@ -13,7 +13,7 @@ export class User {
     public PTI: string;
     public signature: string;
 
-    public userDetails: UserDetails;
+    public userDetails: IUserDetails;
 
     constructor(
         public userType: UserType

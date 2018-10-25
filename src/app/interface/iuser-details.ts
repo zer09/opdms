@@ -1,4 +1,4 @@
-export interface UserDetails {
+export interface IUserDetails {
     name: {
         first: string;
         middle?: string;
