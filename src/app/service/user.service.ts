@@ -69,8 +69,8 @@ export class UserService {
 
                             this.user.UUID = msg.uuid;
                             this.user.UUID2 = msg.uuid2;
-                            this.user.privKey = msg.privKey;
-                            this.user.pubKey = msg.pubKey;
+                            // this.user.privKey = msg.privKey;
+                            // this.user.pubKey = msg.pubKey;
                             this.user.signature = msg.signature;
 
 

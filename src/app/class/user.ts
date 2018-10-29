@@ -5,8 +5,8 @@ export class User {
 
     public UUID: string;
     public UUID2: string;
-    public privKey: string;
-    public pubKey: string;
+    // public privKey: string;
+    // public pubKey: string;
     public PS: string;
     public PES: string;
     public APS: string;
