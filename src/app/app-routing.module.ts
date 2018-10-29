@@ -15,18 +15,18 @@ const routes: Routes = [
         loadChildren: './page/auth/auth.module#AuthPageModule'
     },
     {
-        path: 'admin',
-        loadChildren: './page/admin/admin.module#AdminPageModule',
+        path: 'AdminHome',
+        loadChildren: './page/admin-home/admin-home.module#AdminHomePageModule',
         canActivate: [AuthGuard]
     },
     {
-        path: 'doctor',
+        path: 'DoctorHome',
         canActivate: [AuthGuard],
         children: [
             {
                 path: '',
                 pathMatch: 'full',
-                loadChildren: './page/doctor/doctor.module#DoctorPageModule',
+                loadChildren: './page/doctor-home/doctor-home.module#DoctorHomePageModule',
             },
             {
                 path: 'medicines',
@@ -35,13 +35,13 @@ const routes: Routes = [
         ]
     },
     {
-        path: 'secretary',
+        path: 'SecHome',
         canActivate: [AuthGuard],
         children: [
             {
                 path: '',
                 pathMatch: 'full',
-                loadChildren: './page/secretary/secretary.module#SecretaryPageModule',
+                loadChildren: './page/sec-home/sec-home.module#SecHomePageModule',
             }
         ]
     },

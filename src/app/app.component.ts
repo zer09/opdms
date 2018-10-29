@@ -6,7 +6,6 @@ import { Platform, MenuController, Events } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
-import { Helper } from './helper';
 import { StoreService } from './service/store.service';
 import { ServerAddressService } from './service/server-address.service';
 import { IPage } from './interface/ipage';
@@ -24,7 +23,6 @@ export class AppComponent {
 
     constructor(
         private _sSvc: StoreService,
-        private _saSvc: ServerAddressService,
         private _localStorage: Storage,
         private _events: Events,
         private _route: Router,
@@ -71,7 +69,7 @@ export class AppComponent {
     private _initDoctorPage() {
         this.appPages = [
             { title: 'Home', url: '', icon: 'home' },
-            { title: 'Medicines', url: '/doctor/medicines', icon: 'medkit' },
+            { title: 'Medicines', url: '/DoctorHome/medicines', icon: 'medkit' },
             { title: 'Settings', url: '/settings', icon: 'settings' }
         ];
     }

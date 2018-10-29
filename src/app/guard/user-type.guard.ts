@@ -20,11 +20,11 @@ export class UserTypeGuard implements CanActivate {
     ): Observable<boolean> | Promise<boolean> | boolean {
         return this._usrSvc.sessionCheck().then(() => {
             if (this._usrSvc.user.userType === UserType.ADMIN) {
-                this._route.navigate(['/admin']);
+                this._route.navigate(['/AdminHome']);
             } else if (this._usrSvc.user.userType === UserType.DOCTOR) {
-                this._route.navigate(['/doctor']);
+                this._route.navigate(['/DoctorHome']);
             } else {
-                this._route.navigate(['/secretary']);
+                this._route.navigate(['/SecHome']);
             }
 
             return false;
