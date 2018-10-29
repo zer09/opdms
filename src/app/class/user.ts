@@ -4,6 +4,7 @@ import { IUserDetails } from '../interface/iuser-details';
 export class User {
 
     public UUID: string;
+    public UUID2: string;
     public privKey: string;
     public pubKey: string;
     public PS: string;

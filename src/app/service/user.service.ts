@@ -5,9 +5,6 @@ import { Events } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 import { ServerAddressService } from './server-address.service';
-import { EncryptGCM } from '../class/encrypt-gcm';
-import { StoreService } from './store.service';
-import { LoggerService } from './logger.service';
 import { User } from '../class/user';
 import { IPostResponse } from '../interface/response/ipost-response';
 import { UserType } from '../enum/user/user-type.enum';
@@ -22,9 +19,6 @@ export class UserService {
 
     constructor(
         private _saSvc: ServerAddressService,
-        private _spSvc: StoreService,
-        private _logSvc: LoggerService,
-        private _enc: EncryptGCM,
         private _localStorage: Storage,
         private _http: HttpClient,
         private _events: Events,
@@ -74,6 +68,7 @@ export class UserService {
                             };
 
                             this.user.UUID = msg.uuid;
+                            this.user.UUID2 = msg.uuid2;
                             this.user.privKey = msg.privKey;
                             this.user.pubKey = msg.pubKey;
                             this.user.signature = msg.signature;
