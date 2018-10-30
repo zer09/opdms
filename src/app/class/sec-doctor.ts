@@ -1,3 +1,5 @@
+import { IUserDetails } from '../interface/iuser-details';
+
 export class SecDoctor {
     // doctor shared enc key.
     public UUID2: string;
@@ -6,7 +8,7 @@ export class SecDoctor {
     public APS: string;
     public PTI: string;
     public signature: string;
-
+    public userDetails: IUserDetails;
 
     constructor() { }
 
@@ -19,6 +21,7 @@ export class SecDoctor {
         secDr.PES = p.PES;
         secDr.APS = p.APS;
         secDr.PTI = p.PTI;
+        secDr.userDetails = p.userDetails;
 
         return secDr;
     }

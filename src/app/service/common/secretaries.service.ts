@@ -97,6 +97,7 @@ export class SecretaryService {
                                 secDr.PES = usr.PES;
                                 secDr.APS = usr.APS;
                                 secDr.PTI = usr.PTI;
+                                secDr.userDetails = usr.userDetails;
 
                                 doc.p = this._enc.encrypt(
                                     secDr.stringify(),

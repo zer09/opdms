@@ -5,6 +5,7 @@ import { AlertController, LoadingController, ModalController } from '@ionic/angu
 import { UserService } from '../../service/user.service';
 import { ServerListPage } from '../../page/server-list/server-list.page';
 import { Router } from '@angular/router';
+import { PeersService } from '../../service/peers.service';
 
 @Component({
     selector: 'app-auth',
@@ -17,6 +18,7 @@ export class AuthPage implements OnInit {
 
     constructor(
         private _usrSvc: UserService,
+        private _peerSvc: PeersService,
         private _fb: FormBuilder,
         private _alertCtrl: AlertController,
         private _loadingCtrl: LoadingController,
@@ -49,22 +51,24 @@ export class AuthPage implements OnInit {
             this.lf.controls['username'].value,
             this.lf.controls['password'].value
         )).then(successful => {
-            l.onDidDismiss().then(() => {
-                if (!successful) {
-                    this._alertCtrl.create({
-                        header: 'Authentication',
-                        message: 'Invaid username or password',
-                        buttons: ['OK']
-                    }).then(a => a.present());
-                } else {
-                    this._route.navigate(['']);
-                }
-            });
+            l.onDidDismiss()
+                .then(() => this._peerSvc.fetchSecDrs())
+                .then(() => {
+                    if (!successful) {
+                        this._alertCtrl.create({
+                            header: 'Authentication',
+                            message: 'Invaid username or password',
+                            buttons: ['OK']
+                        }).then(a => a.present());
+                    } else {
+                        this._route.navigate(['']);
+                    }
+                });
 
             this.lf.controls['username'].reset();
             this.lf.controls['password'].reset();
             l.dismiss();
-        }).catch(e => {
+        }).catch(() => {
             l.onDidDismiss().then(() => this._alertCtrl.create({
                 header: 'Authentication',
                 message: 'Unable to connect to the server.' +
@@ -85,6 +89,5 @@ export class AuthPage implements OnInit {
 
         return await m.present();
     }
-
 
 }
