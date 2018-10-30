@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Helper } from '../helper';
 import { Storage } from '@ionic/storage';
 import { Events } from '@ionic/angular';
-import { Promise } from 'q';
+import { HttpClient } from '@angular/common/http';
+import { IGetResponse } from '../interface/response/iget-response';
 
 export interface ServerKeyAddress {
     key: string;
@@ -23,12 +23,28 @@ export class ServerAddressService {
     constructor(
         private _localStorage: Storage,
         private _events: Events,
+        private _http: HttpClient,
     ) {
         this._addressMap.set(this.remote[0], this.remote[1]);
         this._localStorage.forEach((val, key) => {
             if (!key.startsWith(this._keyPrefix)) { return; }
 
             this._addressMap.set(key.substring(15), val);
+        });
+    }
+
+    public fetchDefaultServerUUID(): Promise<string> {
+        return new Promise<string>((resolve, reject) => {
+            this._http.get(this.getDefaultServer() + '/server/uuid')
+                .subscribe((res: IGetResponse) => {
+                    if (res.successful) {
+                        resolve(res.msg);
+                    } else {
+                        reject('unable to get server uuid');
+                    }
+                }, err => {
+                    reject(err);
+                });
         });
     }
 
@@ -82,7 +98,7 @@ export class ServerAddressService {
     }
 
     public getDefaultServer(): Promise<ServerKeyAddress> {
-        return Promise<ServerKeyAddress>(resolve => {
+        return new Promise<ServerKeyAddress>(resolve => {
             this._localStorage.get(this._defaultAddress)
                 .then(adrName => {
                     this._localStorage.get(this._keyPrefix + adrName)

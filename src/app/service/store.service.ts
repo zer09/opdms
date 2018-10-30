@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Events } from '@ionic/angular';
-import { HttpClient } from '@angular/common/http';
 
 import cordovaSqlitePlugin from 'pouchdb-adapter-cordova-sqlite';
 import upsert from 'pouchdb-upsert';
@@ -8,10 +7,7 @@ import PouchDB from 'pouchdb';
 
 import { ServerAddressService } from './server-address.service';
 
-
 import { Helper } from '../helper';
-import { IGetResponse } from '../interface/response/iget-response';
-import { LoggerService } from './logger.service';
 
 @Injectable({
     providedIn: 'root'
@@ -27,7 +23,6 @@ export class StoreService {
 
     constructor(
         private _saSvc: ServerAddressService,
-        private _http: HttpClient,
         private _events: Events,
     ) {
         if (Helper.isApp) {
@@ -47,21 +42,6 @@ export class StoreService {
             this._registerAddress(adrs[i]);
         }
     }
-
-    // public fetchServerUUID(): Promise<string> {
-    //     return new Promise((resolve, reject) => {
-    //         this._http.get(this._saSvc.getOriginAddress() + '/server/uuid')
-    //             .subscribe((res: IGetResponse) => {
-    //                 if (res.successful) {
-    //                     resolve(res.msg);
-    //                 } else {
-    //                     reject('unable to get server uuid');
-    //                 }
-    //             }, err => {
-    //                 reject(err);
-    //             });
-    //     });
-    // }
 
     public get(name: string) {
         const s = this._stores[name];
