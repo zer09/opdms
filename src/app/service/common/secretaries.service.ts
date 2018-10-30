@@ -12,6 +12,7 @@ import { ISecretary } from '../../interface/common/isecretary';
 import { Helper } from '../../helper';
 import { AddRemovePopoverPage } from '../../page/common/add-remove-popover/add-remove-popover.page';
 import { User } from '../../class/user';
+import { SecDoctor } from '../../class/sec-doctor';
 
 @Injectable({
     providedIn: 'root'
@@ -75,36 +76,36 @@ export class SecretaryService {
                         const st = this._sSvc.get(Helper.defStore);
 
                         // will save the sec information to dr.
-                        const sSec = st.get(Helper.defStore)
-                            .upsert(
-                                `ds${usr.signature}${res.msg.signature}`,
-                                doc => {
-                                    doc.p = this._enc.encrypt(
-                                        JSON.stringify(res.msg),
-                                        usr.UUID);
-                                    return doc;
-                                }
-                            );
+                        const sSec = st.upsert(
+                            `ds${usr.signature}${res.msg.signature}`,
+                            doc => {
+                                doc.p = this._enc.encrypt(
+                                    JSON.stringify(res.msg),
+                                    usr.UUID);
+                                return doc;
+                            }
+                        );
 
                         // will save the dr information to sec.
-                        const sDr = st.get(Helper.defStore)
-                            .upsert(
-                                `sd${res.msg.signature}${usr.signature}`,
-                                doc => {
-                                    doc.p = this._enc.encrypt(
-                                        JSON.stringify({
-                                            uuid2: usr.UUID2,
-                                            ps: usr.PS,
-                                            pes: usr.PES,
-                                            aps: usr.APS,
-                                            pti: usr.PTI,
-                                            signature: usr.signature,
-                                        }),
-                                        res.msg.uuid);
+                        const sDr = st.upsert(
+                            `sd${res.msg.signature}${usr.signature}`,
+                            doc => {
+                                const secDr = new SecDoctor();
+                                secDr.signature = usr.signature;
+                                secDr.UUID2 = usr.UUID2;
+                                secDr.PS = usr.PS;
+                                secDr.PES = usr.PES;
+                                secDr.APS = usr.APS;
+                                secDr.PTI = usr.PTI;
 
-                                    return doc;
-                                }
-                            );
+                                doc.p = this._enc.encrypt(
+                                    secDr.stringify(),
+                                    res.msg.uuid
+                                );
+
+                                return doc;
+                            }
+                        );
 
                         Promise.all([sSec, sDr]).then(() => {
                             this.fetchDoctorSecrtaries();
