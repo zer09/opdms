@@ -41,6 +41,10 @@ export class AppComponent {
             this._statusBar.styleDefault();
             this._splashScreen.hide();
 
+            this._events.subscribe('usr:ses:logout', () => {
+                this.logout();
+            });
+
             this._events.subscribe('usr:ses:chg', (usr: User) => {
                 if (!usr) {
                     this.appPages = [];
