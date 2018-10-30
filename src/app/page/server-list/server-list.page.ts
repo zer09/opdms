@@ -31,7 +31,20 @@ export class ServerListPage implements OnInit {
     }
 
     public get addressMaps() {
-        return this._saSvc.addressMaps();
+        const m = new Map<string, string>();
+        const orig = this._saSvc.addressMaps();
+        const iterator = orig.keys();
+
+        let k = iterator.next();
+
+        do {
+            if (k && k.value !== 'remote') {
+                m.set(k.value, orig.get(k.value));
+            }
+            k = iterator.next();
+        } while (!k.done);
+
+        return m;
     }
 
     public addServer() {
