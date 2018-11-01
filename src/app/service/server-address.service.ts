@@ -3,6 +3,7 @@ import { Storage } from '@ionic/storage';
 import { Events } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { IGetResponse } from '../interface/response/iget-response';
+import { Helper } from '../helper';
 
 export interface ServerKeyAddress {
     key: string;
@@ -30,21 +31,6 @@ export class ServerAddressService {
             if (!key.startsWith(this._keyPrefix)) { return; }
 
             this._addressMap.set(key.substring(15), val);
-        });
-    }
-
-    public fetchDefaultServerUUID(): Promise<string> {
-        return new Promise<string>((resolve, reject) => {
-            this._http.get(this.getDefaultServer() + '/server/uuid')
-                .subscribe((res: IGetResponse) => {
-                    if (res.successful) {
-                        resolve(res.msg);
-                    } else {
-                        reject('unable to get server uuid');
-                    }
-                }, err => {
-                    reject(err);
-                });
         });
     }
 
@@ -88,13 +74,37 @@ export class ServerAddressService {
         return this._addressMap.get(name) + '/store';
     }
 
-    public setDefaultServer(name: string) {
+    public setDefaultServer(name: string): Promise<void> {
         name = (name || '').trim().toLowerCase();
         if (name === this.remoteName) {
-            return;
+            return Promise.reject(
+                new Error('the "remote" server is not allowed to be default')
+            );
         }
 
-        this._localStorage.set(this._defaultAddress, name);
+        if (name === '') {
+            return Promise.resolve();
+        }
+
+        return new Promise<void>((resolve, reject) => {
+            this.getDefaultServer().then(ska => {
+                this._localStorage.set(this._defaultAddress, name)
+                    .then(() => this._localStorage.get(this._keyPrefix + name))
+                    .then((adr: ServerKeyAddress) => this._http.get(
+                        adr + '/server/uuid'
+                    )).then(g => g.subscribe((res: IGetResponse) => {
+                        this._localStorage.set('usr:clinic:node', res.msg)
+                            .then(() => {
+                                Helper.clinicNode = res.msg;
+                            })
+                            .catch(e => reject(e));
+                    }, err => {
+                        reject(err);
+                    })).catch(e => {
+                        reject(e);
+                    });
+            });
+        });
     }
 
     public getDefaultServer(): Promise<ServerKeyAddress> {

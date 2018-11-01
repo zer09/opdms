@@ -7,10 +7,10 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { StoreService } from './service/store.service';
-import { ServerAddressService } from './service/server-address.service';
 import { IPage } from './interface/ipage';
 import { User } from './class/user';
 import { UserType } from './enum/user/user-type.enum';
+import { Helper } from './helper';
 
 @Component({
     selector: 'app-root',
@@ -63,8 +63,16 @@ export class AppComponent {
                 }
             });
 
-            this._localStorage.get('session').then((usr: User) => {
-                this._events.publish('usr:ses:chg', usr);
+            this._localStorage.get('usr:clinic:node').then((node: string) => {
+                if (!node) {
+                    return this._localStorage.set('session', undefined);
+                }
+
+                Helper.clinicNode = node;
+
+                this._localStorage.get('session').then((usr: User) => {
+                    this._events.publish('usr:ses:chg', usr);
+                });
             });
 
         });

@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, LoadingController, ModalController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 
 import { UserService } from '../../service/user.service';
 import { ServerListPage } from '../../page/server-list/server-list.page';
 import { Router } from '@angular/router';
 import { PeersService } from '../../service/peers.service';
+import { Helper } from '../../helper';
 
 @Component({
     selector: 'app-auth',
@@ -20,6 +22,7 @@ export class AuthPage implements OnInit {
         private _usrSvc: UserService,
         private _peerSvc: PeersService,
         private _fb: FormBuilder,
+        private _localStorage: Storage,
         private _alertCtrl: AlertController,
         private _loadingCtrl: LoadingController,
         private _modalCtrl: ModalController,
@@ -41,6 +44,20 @@ export class AuthPage implements OnInit {
     public async  login() {
         if (!this.lf.valid) {
             return;
+        }
+
+        await this._localStorage.get('usr:clinic:node').then(node => {
+            Helper.clinicNode = node;
+        });
+
+        if (!Helper.clinicNode || Helper.clinicNode.length < 1) {
+            const a = await this._alertCtrl.create({
+                header: 'Error Login',
+                message: 'No default server',
+                buttons: ['OK']
+            });
+
+            return await a.present();
         }
 
         const l = await this._loadingCtrl.create({
@@ -87,7 +104,7 @@ export class AuthPage implements OnInit {
             component: ServerListPage
         });
 
-        return await m.present();
+        return m.present();
     }
 
 }

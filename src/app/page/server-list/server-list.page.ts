@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ServerAddressService } from '../../service/server-address.service';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 
 @Component({
     selector: 'app-server-list',
@@ -16,6 +16,7 @@ export class ServerListPage implements OnInit {
     constructor(
         private _saSvc: ServerAddressService,
         private _mdlCtrl: ModalController,
+        private _alertCtrl: AlertController,
     ) { }
 
     ngOnInit() {
@@ -58,7 +59,13 @@ export class ServerListPage implements OnInit {
     }
 
     public defaultServerChange(event) {
-        this._saSvc.setDefaultServer(event.detail.value);
+        this._saSvc.setDefaultServer(event.detail.value).catch((e: Error) => {
+            this._alertCtrl.create({
+                header: 'Error Setting Default Server',
+                message: e.message,
+                buttons: ['OK']
+            }).then(a => a.present());
+        });
     }
 
 }
