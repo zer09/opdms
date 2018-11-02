@@ -7,5 +7,5 @@ export interface IUserDetails {
     };
     address?: string;
     contact?: string;
-    regDate: string;
+    regDate?: string;
 }

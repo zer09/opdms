@@ -14,7 +14,7 @@ import { EncryptGCM } from '../class/encrypt-gcm';
 })
 export class PeersService {
 
-    public _secDrs: SecDoctor[] = [];
+    private _secDrs: SecDoctor[] = [];
 
     constructor(
         private _usrSvc: UserService,

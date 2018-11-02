@@ -1,6 +1,8 @@
 import { IUserDetails } from '../interface/iuser-details';
 
 export class SecDoctor {
+    private static _default: SecDoctor = new SecDoctor();
+
     // doctor shared enc key.
     public UUID2: string;
     public PS: string;
@@ -10,7 +12,19 @@ export class SecDoctor {
     public signature: string;
     public userDetails: IUserDetails;
 
-    constructor() { }
+
+    constructor() {
+        this.userDetails = {
+            name: {
+                first: '',
+                last: 'Default',
+            }
+        };
+    }
+
+    public static get Default(): SecDoctor {
+        return SecDoctor._default;
+    }
 
     public static parse(secDoctorSTR: string): SecDoctor {
         const p = JSON.parse(secDoctorSTR);
@@ -24,6 +38,13 @@ export class SecDoctor {
         secDr.userDetails = p.userDetails;
 
         return secDr;
+    }
+
+    public compactName(): string {
+        return [
+            this.userDetails.name.first,
+            this.userDetails.name.last
+        ].join(' ');
     }
 
     public stringify(): string {
