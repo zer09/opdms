@@ -87,23 +87,22 @@ export class ServerAddressService {
         }
 
         return new Promise<void>((resolve, reject) => {
-            this.getDefaultServer().then(ska => {
-                this._localStorage.set(this._defaultAddress, name)
-                    .then(() => this._localStorage.get(this._keyPrefix + name))
-                    .then((adr: ServerKeyAddress) => this._http.get(
-                        adr + '/server/uuid'
-                    )).then(g => g.subscribe((res: IGetResponse) => {
-                        this._localStorage.set(Helper.strDefNode, res.msg)
-                            .then(() => {
-                                Helper.clinicNode = res.msg;
-                            })
-                            .catch(e => reject(e));
-                    }, err => {
-                        reject(err);
-                    })).catch(e => {
-                        reject(e);
-                    });
-            });
+            this._localStorage.set(this._defaultAddress, name)
+                .then(() => this._localStorage.get(this._keyPrefix + name))
+                .then((adr: ServerKeyAddress) => this._http.get(
+                    adr + '/server/uuid'
+                )).then(g => g.subscribe((res: IGetResponse) => {
+                    this._localStorage.set(Helper.strDefNode, res.msg)
+                        .then(() => {
+                            Helper.clinicNode = res.msg;
+                            resolve();
+                        })
+                        .catch(e => reject(e));
+                }, err => {
+                    reject(err);
+                })).catch(e => {
+                    reject(e);
+                });
         });
     }
 
