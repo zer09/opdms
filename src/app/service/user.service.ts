@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { HttpClient } from '@angular/common/http';
 import { Events } from '@ionic/angular';
+import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
 import { ServerAddressService } from './server-address.service';
 import { User } from '../class/user';
 import { IPostResponse } from '../interface/response/ipost-response';
 import { UserType } from '../enum/user/user-type.enum';
-import { Observable } from 'rxjs';
+import { Helper } from '../helper';
 
 @Injectable({
     providedIn: 'root'
@@ -91,7 +92,7 @@ export class UserService {
 
                             this._localStorage.set('session', this.user)
                                 .then(() => {
-                                    this._events.publish('usr:ses:chg', this.user);
+                                    this._events.publish(Helper.strUsrSesChg, this.user);
                                 });
                         }
 

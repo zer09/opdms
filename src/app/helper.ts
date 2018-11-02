@@ -12,4 +12,8 @@ export class Helper {
         return 'usr:clinic:node';
     }
 
+    public static get strUsrSesChg(): string {
+        return 'usr:ses:chg';
+    }
+
 }

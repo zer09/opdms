@@ -45,7 +45,7 @@ export class AppComponent {
                 this.logout();
             });
 
-            this._events.subscribe('usr:ses:chg', (usr: User) => {
+            this._events.subscribe(Helper.strUsrSesChg, (usr: User) => {
                 if (!usr) {
                     this.appPages = [];
                     this._menuCtrl.enable(false, this.mainMenuId);
@@ -71,7 +71,7 @@ export class AppComponent {
                 Helper.clinicNode = node;
 
                 this._localStorage.get('session').then((usr: User) => {
-                    this._events.publish('usr:ses:chg', usr);
+                    this._events.publish(Helper.strUsrSesChg, usr);
                 });
             });
 
