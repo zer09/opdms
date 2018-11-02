@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -27,8 +26,6 @@ import { AddRemovePopoverPageModule } from './page/common/add-remove-popover/add
             driverOrder: ['indexeddb', 'sqlite', 'websql'],
         }),
         AppRoutingModule,
-        FormsModule,
-        ReactiveFormsModule,
         HttpClientModule,
         ServerListPageModule,
         AddRemovePopoverPageModule,
