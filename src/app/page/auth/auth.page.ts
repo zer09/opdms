@@ -46,7 +46,7 @@ export class AuthPage implements OnInit {
             return;
         }
 
-        await this._localStorage.get('usr:clinic:node').then(node => {
+        await this._localStorage.get(Helper.strDefNode).then(node => {
             Helper.clinicNode = node;
         });
 

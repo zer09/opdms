@@ -63,7 +63,7 @@ export class AppComponent {
                 }
             });
 
-            this._localStorage.get('usr:clinic:node').then((node: string) => {
+            this._localStorage.get(Helper.strDefNode).then((node: string) => {
                 if (!node) {
                     return this._localStorage.set('session', undefined);
                 }

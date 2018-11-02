@@ -93,7 +93,7 @@ export class ServerAddressService {
                     .then((adr: ServerKeyAddress) => this._http.get(
                         adr + '/server/uuid'
                     )).then(g => g.subscribe((res: IGetResponse) => {
-                        this._localStorage.set('usr:clinic:node', res.msg)
+                        this._localStorage.set(Helper.strDefNode, res.msg)
                             .then(() => {
                                 Helper.clinicNode = res.msg;
                             })

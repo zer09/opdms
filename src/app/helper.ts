@@ -8,4 +8,8 @@ export class Helper {
         return '18YZR9UJZ2nOYVQQzRR9wjWt9ii';
     }
 
+    public static get strDefNode(): string {
+        return 'usr:clinic:node';
+    }
+
 }
