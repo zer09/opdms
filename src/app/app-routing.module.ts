@@ -59,6 +59,11 @@ const routes: Routes = [
         path: 'serverList',
         loadChildren: './page/server-list/server-list.module#ServerListPageModule'
     },
+    {
+        path: 'PatientProfile/:dr/:pt',
+        loadChildren: './page/patient-profile/patient-profile.module#PatientProfilePageModule',
+        canActivate: [AuthGuard]
+    },
 ];
 
 @NgModule({

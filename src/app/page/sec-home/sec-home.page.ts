@@ -3,6 +3,7 @@ import { PeersService } from '../../service/peers.service';
 import { AlertController } from '@ionic/angular';
 import { SecDoctor } from '../../class/sec-doctor';
 import { PatientSearchService } from '../../service/patient-search.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-sec-home',
@@ -17,6 +18,7 @@ export class SecHomePage implements OnInit {
         public ptSearch: PatientSearchService,
         private _peers: PeersService,
         private _alertCtrl: AlertController,
+        private _route: Router,
     ) { }
 
     ngOnInit() {
@@ -56,6 +58,48 @@ export class SecHomePage implements OnInit {
                 handler: data => this._selectedDoctor = data,
             }]
         }).then(a => a.present());
+    }
+
+    public newPatient() {
+        if (this._selectedDoctor !== SecDoctor.Default) {
+            this._route.navigate([
+                'PatientProfile', this._selectedDoctor.signature, ''
+            ]);
+            return;
+        }
+
+        const dInputs: any[] = [];
+        let selectedDr: SecDoctor;
+
+        for (let i = 0; i < this._peers.secDrs.length; i++) {
+            dInputs.push({
+                type: 'radio',
+                label: this._peers.secDrs[i].compactName(),
+                value: this._peers.secDrs[i],
+            });
+        }
+
+        this._alertCtrl.create({
+            header: 'Select Doctor',
+            message: 'Please select to whom you want to save the new patient.',
+            inputs: dInputs,
+            buttons: [{
+                text: 'Cancel',
+                role: 'cancel'
+            }, {
+                text: 'OK',
+                handler: (dr: SecDoctor) => selectedDr = dr
+            }]
+        }).then(a => {
+            a.onDidDismiss().then(() => {
+                this._route.navigate([
+                    'PatientProfile', selectedDr.signature, ''
+                ]);
+            });
+
+            a.present();
+        });
+
     }
 
 }
