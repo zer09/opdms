@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PeersService } from '../../service/peers.service';
 import { AlertController } from '@ionic/angular';
 import { SecDoctor } from '../../class/sec-doctor';
+import { PatientSearchService } from '../../service/patient-search.service';
 
 @Component({
     selector: 'app-sec-home',
@@ -13,11 +14,17 @@ export class SecHomePage implements OnInit {
     private _selectedDoctor: SecDoctor = SecDoctor.Default;
 
     constructor(
+        public ptSearch: PatientSearchService,
         private _peers: PeersService,
         private _alertCtrl: AlertController,
     ) { }
 
     ngOnInit() {
+    }
+
+    public get searchOnDrs(): SecDoctor[] {
+        return this._selectedDoctor === SecDoctor.Default ?
+            this._peers.secDrs : [this._selectedDoctor];
     }
 
     public changeDoctor() {
