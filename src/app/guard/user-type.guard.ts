@@ -11,7 +11,7 @@ export class UserTypeGuard implements CanActivate {
 
     constructor(
         private _usrSvc: UserService,
-        private _route: Router
+        private _route: Router,
     ) { }
 
     canActivate(

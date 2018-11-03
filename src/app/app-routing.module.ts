@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './guard/auth.guard';
 import { UserTypeGuard } from './guard/user-type.guard';
+import { InitSecGuard } from './guard/init-sec.guard';
 
 const routes: Routes = [
     {
@@ -36,7 +37,7 @@ const routes: Routes = [
     },
     {
         path: 'SecHome',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, InitSecGuard],
         children: [
             {
                 path: '',
