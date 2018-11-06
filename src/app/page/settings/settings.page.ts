@@ -5,6 +5,7 @@ import { LanguageService } from '../../service/common/language.service';
 import { SecretaryService } from '../../service/common/secretaries.service';
 import { UserService } from '../../service/user.service';
 import { UserType } from '../../enum/user/user-type.enum';
+import { CityService } from '../../service/common/city.service';
 
 @Component({
     selector: 'app-settings',
@@ -21,6 +22,7 @@ export class SettingsPage implements OnInit {
         public titles: TitlesService,
         public religions: ReligionService,
         public languages: LanguageService,
+        public cities: CityService,
     ) { }
 
     ngOnInit() {
@@ -31,6 +33,7 @@ export class SettingsPage implements OnInit {
         this.titles.fetchTitles();
         this.religions.fetchReligion();
         this.languages.fetchLanguages();
+        this.cities.fetchCities();
     }
 
     public secPopover(event: Event) {
@@ -47,6 +50,10 @@ export class SettingsPage implements OnInit {
 
     public languagePopover(event: Event) {
         this.languages.popOver(event);
+    }
+
+    public cityPopover(event: Event) {
+        this.cities.popOver(event);
     }
 
 }
