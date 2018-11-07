@@ -16,4 +16,9 @@ export class Helper {
         return 'usr:ses:chg';
     }
 
+    public static toLocaleTimeString(date: Date | string): string {
+        return date instanceof Date ? date.toLocaleTimeString('en-US') :
+            new Date(date).toLocaleTimeString('en-US');
+    }
+
 }
