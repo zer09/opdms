@@ -7,6 +7,407 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+
+      <ion-col size="12" size-md="6" size-lg="6" size-xl="6">
+
+        <ion-row>
+          <ion-col size="12" size-md="4" size-lg="4" size-xl="4">
+            <ng-container *showItBootstrap="['md', 'lg', 'xl']">
+              <ion-img src="assets/icons/test.png"></ion-img>
+            </ng-container>
+            <ng-container *showItBootstrap="['xs', 'sm']">
+              <ion-avatar horizontal="center">
+                <ion-img src="assets/icons/User-512.png"></ion-img>
+              </ion-avatar>
+            </ng-container>
+          </ion-col>
+
+          <ion-col>
+            <ion-row>
+              <ion-col>
+                <ion-item>
+                  <ion-label position="floating">Title</ion-label>
+                  <ion-select interface="popover">
+                    <ion-select-option *ngFor="let t of titles.titleList" value="{{t.title}}">
+                      {{t.title}}
+                    </ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+              <ion-col>
+                <ion-item>
+                  <ion-label position="floating">Suffix Name</ion-label>
+                  <ion-input type="text"></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-item>
+                  <ion-label position="floating">First Name</ion-label>
+                  <ion-input type="text"></ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col>
+                <ion-item>
+                  <ion-label position="floating">Last Name</ion-label>
+                  <ion-input type="text"></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-item>
+                  <ion-label position="floating">Middle Name</ion-label>
+                  <ion-input type="text"></ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col>
+                <ion-item>
+                  <ion-label position="floating">Nick Name</ion-label>
+                  <ion-input type="text"></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Birthdate</ion-label>
+              <ion-input type="text"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Sex</ion-label>
+              <ion-select interface="popover">
+                <ion-select-option value="0">Male</ion-select-option>
+                <ion-select-option value="1">Female</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Marital Status</ion-label>
+              <ion-select interface="popover">
+                <ion-select-option value="0">Single</ion-select-option>
+                <ion-select-option value="1">Married</ion-select-option>
+                <ion-select-option value="2">Widow</ion-select-option>
+                <ion-select-option value="3">Separated</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Language</ion-label>
+              <ion-select interface="popover">
+                <ion-select-option *ngFor="let l of languages.languageList" value="{{l.language}}">
+                  {{l.language}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Religion</ion-label>
+              <ion-select interface="popover">
+                <ion-select-option *ngFor="let r of religions.religionList" value="{{r.religion}}">
+                  {{r.religion}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">City/Municipality</ion-label>
+              <ion-select interface="popover">
+                <ion-select-option *ngFor="let c of cities.cityList" value="{{c.city}}">
+                  {{c.city}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Occupation</ion-label>
+              <ion-input type="text"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Address</ion-label>
+              <ion-input type="text"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-segment value="contact" (ionChange)="segmentChangeAddInfo($event)">
+                <ng-container *showItBootstrap="['md','lg','xl']">
+                  <ion-segment-button value="contact">
+                    Contact Information
+                  </ion-segment-button>
+                  <ion-segment-button value="parent">
+                    Parent Information
+                  </ion-segment-button>
+                  <ion-segment-button value="other">
+                    Other Information
+                  </ion-segment-button>
+                </ng-container>
+                <ng-container *showItBootstrap="['xs','sm']">
+                  <ion-segment-button value="contact">
+                    Contact
+                  </ion-segment-button>
+                  <ion-segment-button value="parent">
+                    Parent
+                  </ion-segment-button>
+                  <ion-segment-button value="other">
+                    Other
+                  </ion-segment-button>
+                </ng-container>
+              </ion-segment>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+
+            <div [hidden]="segmentAdditional !== 'contact'">
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Mobile</ion-label>
+                    <ion-input type="text"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Home</ion-label>
+                    <ion-input type="text"></ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Office</ion-label>
+                    <ion-input type="text"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Email</ion-label>
+                    <ion-input type="text"></ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </div>
+
+            <div [hidden]="segmentAdditional !== 'parent'">
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Father</ion-label>
+                    <ion-input type="text"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Mother</ion-label>
+                    <ion-input type="text"></ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Guardian</ion-label>
+                    <ion-input type="text"></ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </div>
+
+            <div [hidden]="segmentAdditional !== 'other'">
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Referred By</ion-label>
+                    <ion-input type="text"></ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </div>
+
+          </ion-col>
+        </ion-row>
+
+      </ion-col>
+
+      <ion-col size="12" size-md="6" size-lg="6" size-xl="6">
+
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Allergies</ion-label>
+              <ion-textarea rows="5" wrap="soft"></ion-textarea>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-segment value="vital" (ionChange)="segmentChangeVital($event)">
+              <ng-container *showItBootstrap="['md','lg','xl']">
+                <ion-segment-button value="vital">
+                  Vital Sign
+                </ion-segment-button>
+                <ion-segment-button value="medical">
+                  Medical Profile
+                </ion-segment-button>
+                <ion-segment-button value="scanned">
+                  Scanned File
+                </ion-segment-button>
+              </ng-container>
+              <ng-container *showItBootstrap="['xs','sm']">
+                <ion-segment-button value="vital">
+                  Vital
+                </ion-segment-button>
+                <ion-segment-button value="medical">
+                  Med. Prof.
+                </ion-segment-button>
+                <ion-segment-button value="scanned">
+                  Scanned
+                </ion-segment-button>
+              </ng-container>
+            </ion-segment>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <div [hidden]="segmentVital !== 'vital'">
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Arrival Time</ion-label>
+                    <ion-datetime displayFormat="hh:mm A" pickerFormat="hh:mm A"></ion-datetime>
+                  </ion-item>
+                </ion-col>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Schedule Status</ion-label>
+                    <ion-select interface="popover">
+                      <ion-select-option value="0">Waiting</ion-select-option>
+                      <ion-select-option value="1">Confirmed</ion-select-option>
+                      <ion-select-option value="2">Cancelled</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Blood Pressure</ion-label>
+                    <ion-input type="text"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Weight</ion-label>
+                    <ion-input type="text"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Height</ion-label>
+                    <ion-input type="text"></ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Pulse</ion-label>
+                    <ion-input type="text"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Temperature</ion-label>
+                    <ion-input type="text"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Resperation</ion-label>
+                    <ion-input type="text"></ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Waist</ion-label>
+                    <ion-input type="text"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Hip</ion-label>
+                    <ion-input type="text"></ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Patient Complaint</ion-label>
+                    <ion-textarea rows="7" wrap="soft"></ion-textarea>
+                  </ion-item>
+                </ion-col>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Notes</ion-label>
+                    <ion-textarea rows="7" wrap="softf"></ion-textarea>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </div>
+
+            <div [hidden]="segmentVital !== 'medical'">
+
+            </div>
+
+            <div [hidden]="segmentVital !== 'scanned'">
+
+            </div>
+          </ion-col>
+        </ion-row>
+
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
 
 </ion-content>
