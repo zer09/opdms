@@ -11,6 +11,7 @@ export class Patient {
         nicname: string,
     };
 
+    public birthdate: string;
     public sex: Sex;
     public maritalStatus: MaritalStatus;
     public language: string;
