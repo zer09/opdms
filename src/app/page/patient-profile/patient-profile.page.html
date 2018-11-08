@@ -168,24 +168,24 @@
             <ion-item>
               <ion-segment value="contact" (ionChange)="segmentChangeAddInfo($event)">
                 <ng-container *showItBootstrap="['md','lg','xl']">
-                  <ion-segment-button value="contact">
+                  <ion-segment-button tabindex="-1" value="contact">
                     Contact Information
                   </ion-segment-button>
-                  <ion-segment-button value="parent">
+                  <ion-segment-button tabindex="-1" value="parent">
                     Parent Information
                   </ion-segment-button>
-                  <ion-segment-button value="other">
+                  <ion-segment-button tabindex="-1" value="other">
                     Other Information
                   </ion-segment-button>
                 </ng-container>
                 <ng-container *showItBootstrap="['xs','sm']">
-                  <ion-segment-button value="contact">
+                  <ion-segment-button tabindex="-1" value="contact">
                     Contact
                   </ion-segment-button>
-                  <ion-segment-button value="parent">
+                  <ion-segment-button tabindex="-1" value="parent">
                     Parent
                   </ion-segment-button>
-                  <ion-segment-button value="other">
+                  <ion-segment-button tabindex="-1" value="other">
                     Other
                   </ion-segment-button>
                 </ng-container>
@@ -282,26 +282,26 @@
 
         <ion-row>
           <ion-col>
-            <ion-segment value="vital" (ionChange)="segmentChangeVital($event)">
+            <ion-segment tabindex="-1" value="vital" (ionChange)="segmentChangeVital($event)">
               <ng-container *showItBootstrap="['md','lg','xl']">
-                <ion-segment-button value="vital">
+                <ion-segment-button tabindex="-1" value="vital">
                   Vital Sign
                 </ion-segment-button>
-                <ion-segment-button value="medical">
+                <ion-segment-button tabindex="-1" value="medical">
                   Medical Profile
                 </ion-segment-button>
-                <ion-segment-button value="scanned">
+                <ion-segment-button tabindex="-1" value="scanned">
                   Scanned File
                 </ion-segment-button>
               </ng-container>
               <ng-container *showItBootstrap="['xs','sm']">
-                <ion-segment-button value="vital">
+                <ion-segment-button tabindex="-1" value="vital">
                   Vital
                 </ion-segment-button>
-                <ion-segment-button value="medical">
+                <ion-segment-button tabindex="-1" value="medical">
                   Med. Prof.
                 </ion-segment-button>
-                <ion-segment-button value="scanned">
+                <ion-segment-button tabindex="-1" value="scanned">
                   Scanned
                 </ion-segment-button>
               </ng-container>
