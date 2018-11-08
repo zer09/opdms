@@ -183,7 +183,7 @@ export class SecretaryService {
                 secs.join('<br>'),
             buttons: [{
                 text: 'Cancel',
-                role: 'cancelr'
+                role: 'cancel'
             }, {
                 text: 'Confirm',
                 handler: () => this.remove(del),
