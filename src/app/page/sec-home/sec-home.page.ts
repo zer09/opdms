@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PeersService } from '../../service/peers.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { SecDoctor } from '../../class/sec-doctor';
 import { PatientSearchService } from '../../service/patient-search.service';
 import { Router } from '@angular/router';
@@ -15,10 +15,11 @@ export class SecHomePage implements OnInit {
     private _selectedDoctor: SecDoctor = SecDoctor.Default;
 
     constructor(
-        public ptSearch: PatientSearchService,
-        private _peers: PeersService,
         private _alertCtrl: AlertController,
+        private _toast: ToastController,
         private _route: Router,
+        private _peers: PeersService,
+        public ptSearch: PatientSearchService,
     ) { }
 
     ngOnInit() {
@@ -92,6 +93,16 @@ export class SecHomePage implements OnInit {
             }]
         }).then(a => {
             a.onDidDismiss().then(() => {
+                if (!selectedDr || selectedDr.signature.length < 1) {
+                    this._toast.create({
+                        message: `No doctor selected. Please try again.`,
+                        color: 'danger',
+                        position: 'middle',
+                        showCloseButton: true
+                    }).then(t => t.present());
+                    return;
+                }
+
                 this._route.navigate([
                     'PatientProfile', selectedDr.signature, ''
                 ]);
