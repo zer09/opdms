@@ -4,6 +4,9 @@ import { TitlesService } from '../../service/common/titles.service';
 import { LanguageService } from '../../service/common/language.service';
 import { ReligionService } from '../../service/common/religion.service';
 import { CityService } from '../../service/common/city.service';
+import { Appointment } from '../../class/appointment';
+import { Patient } from '../../class/patient';
+import { AgeHelper } from '../../age-helper';
 
 @Component({
     selector: 'app-patient-profile',
@@ -16,8 +19,12 @@ export class PatientProfilePage implements OnInit {
     private _drSignature: string;
     private _new: boolean;
 
+    public ageText = 'Age: ';
     public segmentAdditional = 'contact';
     public segmentVital = 'vital';
+
+    public appointment: Appointment;
+    public patient: Patient;
 
     constructor(
         public titles: TitlesService,
@@ -37,7 +44,11 @@ export class PatientProfilePage implements OnInit {
         this._drSignature = this._aRoute.snapshot.paramMap.get('dr');
         this._new = this._ptId.length < 1;
 
-        console.log({ _id: this._ptId, _dr: this._drSignature });
+        if (this._new) {
+            this.patient = new Patient();
+            this.appointment = new Appointment(this.patient);
+        }
+
     }
 
     public segmentChangeAddInfo(ev: any) {
@@ -46,6 +57,11 @@ export class PatientProfilePage implements OnInit {
 
     public segmentChangeVital(ev: any) {
         this.segmentVital = ev.target.value;
+    }
+
+    public birthdateChange(ev: any) {
+        this.patient.birthdate = ev.target.value;
+        this.ageText = 'Age: ' + AgeHelper.longAgeString(this.appointment.patient);
     }
 
 }

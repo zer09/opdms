@@ -28,7 +28,7 @@ export class AgeHelper {
             st += bdv.d > 1 ? bdv.d + ' Days ' : bdv.d + ' Day ';
         }
 
-        return st.trim();
+        return st.trim() + ' old';
     }
 
     public shortAgeString(pt: Patient): string {
@@ -62,8 +62,7 @@ export class AgeHelper {
                 st += bdv.d > 1 ? bdv.d + ' days ' : bdv.d + ' day ';
             }
 
-            st += 'old';
-            return st;
+            return st + 'old';
         }
     }
 

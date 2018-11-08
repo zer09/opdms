@@ -2,35 +2,35 @@ import { Sex } from '../enum/sex.enum';
 import { MaritalStatus } from '../enum/marital-status.enum';
 
 export class Patient {
-    public title: string;
+    public title = '';
     public name: {
-        first: string,
-        last: string,
-        middle: string,
-        suffix: string,
-        nicname: string,
+        first: '',
+        last: '',
+        middle: '',
+        suffix: '',
+        nicname: '',
     };
 
-    public birthdate: string;
+    public birthdate = '';
     public sex: Sex;
-    public maritalStatus: MaritalStatus;
-    public language: string;
-    public religion: string;
-    public occupation: string;
-    public city: string;
-    public address: string;
+    public maritalStatus = MaritalStatus.Single;
+    public language = '';
+    public religion = '';
+    public occupation = '';
+    public city = '';
+    public address = '';
 
-    public contactMobile: string;
-    public contactHome: string;
-    public contactEmail: string;
-    public contactOffice: string;
+    public contactMobile = '';
+    public contactHome = '';
+    public contactEmail = '';
+    public contactOffice = '';
 
-    public father: string;
-    public mother: string;
-    public guardian: string;
+    public father = '';
+    public mother = '';
+    public guardian = '';
 
-    public referredBy: string;
-    public allergies: string;
+    public referredBy = '';
+    public allergies = '';
 
     constructor() { }
 }
