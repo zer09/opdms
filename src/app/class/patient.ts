@@ -3,12 +3,12 @@ import { MaritalStatus } from '../enum/marital-status.enum';
 
 export class Patient {
     public title = '';
-    public name: {
+    public name = {
         first: '',
         last: '',
         middle: '',
         suffix: '',
-        nicname: '',
+        nickname: '',
     };
 
     public birthdate = '';
@@ -20,10 +20,12 @@ export class Patient {
     public city = '';
     public address = '';
 
-    public contactMobile = '';
-    public contactHome = '';
-    public contactEmail = '';
-    public contactOffice = '';
+    public contact = {
+        mobile: '',
+        home: '',
+        email: '',
+        office: ''
+    };
 
     public father = '';
     public mother = '';

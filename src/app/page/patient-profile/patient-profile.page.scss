@@ -1,6 +1,6 @@
 ion-avatar,
 ion-avatar > img {
-  /* border-radius: 50%; */
+  // border-radius: 50%;
   height: 14rem;
   margin: auto;
   width: 14rem;
@@ -9,4 +9,9 @@ ion-avatar > img {
 ion-img {
   height: 14rem;
   width: 14rem;
+}
+
+.invalid-field {
+  color: var(--ion-color-danger);
+  font-size: .8rem;
 }
