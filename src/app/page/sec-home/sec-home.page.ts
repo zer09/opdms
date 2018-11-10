@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PeersService } from '../../service/peers.service';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, ToastController, NavController } from '@ionic/angular';
 import { SecDoctor } from '../../class/sec-doctor';
 import { PatientSearchService } from '../../service/patient-search.service';
-import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-sec-home',
@@ -15,10 +14,10 @@ export class SecHomePage implements OnInit {
     private _selectedDoctor: SecDoctor = SecDoctor.Default;
 
     constructor(
+        private _peers: PeersService,
         private _alertCtrl: AlertController,
         private _toast: ToastController,
-        private _route: Router,
-        private _peers: PeersService,
+        private _navCtrl: NavController,
         public ptSearch: PatientSearchService,
     ) { }
 
@@ -63,9 +62,10 @@ export class SecHomePage implements OnInit {
 
     public newPatient() {
         if (this._selectedDoctor !== SecDoctor.Default) {
-            this._route.navigate([
+            this._navCtrl.navigateForward([
                 'PatientProfile', this._selectedDoctor.signature, ''
             ]);
+
             return;
         }
 
@@ -103,7 +103,7 @@ export class SecHomePage implements OnInit {
                     return;
                 }
 
-                this._route.navigate([
+                this._navCtrl.navigateForward([
                     'PatientProfile', selectedDr.signature, ''
                 ]);
             });
