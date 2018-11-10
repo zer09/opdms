@@ -1,4 +1,12 @@
+import { ULID, monotonicFactory } from 'ulid';
 export class Helper {
+
+    private static _ulid: ULID = monotonicFactory();
+
+    public static get ulidString(): string {
+        return this._ulid();
+    }
+
     public static clinicNode: string;
 
     public static isApp: boolean = (!document.URL.startsWith('http') ||
