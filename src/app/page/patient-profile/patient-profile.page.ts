@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import moment from 'moment';
 import { TitlesService } from '../../service/common/titles.service';
 import { LanguageService } from '../../service/common/language.service';
@@ -10,6 +10,11 @@ import { CityService } from '../../service/common/city.service';
 import { Appointment } from '../../class/appointment';
 import { Patient } from '../../class/patient';
 import { AgeHelper } from '../../age-helper';
+import { AppointmentService } from '../../service/appointment.service';
+import { SecDoctor } from '../../class/sec-doctor';
+import { PeersService } from '../../service/peers.service';
+import { PatientService } from '../../service/patient.service';
+import { LoggerService } from '../../service/logger.service';
 
 @Component({
     selector: 'app-patient-profile',
@@ -19,8 +24,10 @@ import { AgeHelper } from '../../age-helper';
 export class PatientProfilePage implements OnInit {
 
     private _ptId: string;
-    private _drSignature: string;
     private _new: boolean;
+
+    private _drSignature: string;
+    private _dr: SecDoctor;
 
     public ageText = 'Age: ';
     public segmentAdditional = 'contact';
@@ -31,7 +38,12 @@ export class PatientProfilePage implements OnInit {
     public patientProfileForm: FormGroup;
 
     constructor(
+        private _ptSvc: PatientService,
+        private _aptSvc: AppointmentService,
+        private _peerSvc: PeersService,
+        private _logSvc: LoggerService,
         private _aRoute: ActivatedRoute,
+        private _navCtrl: NavController,
         private _fb: FormBuilder,
         private _alertCrl: AlertController,
         public titles: TitlesService,
@@ -49,6 +61,7 @@ export class PatientProfilePage implements OnInit {
 
         this._ptId = this._aRoute.snapshot.paramMap.get('pt');
         this._drSignature = this._aRoute.snapshot.paramMap.get('dr');
+        this._dr = this._peerSvc.getDrBySignature(this._drSignature);
         this._new = this._ptId.length < 1;
 
         if (this._new) {
@@ -146,6 +159,22 @@ export class PatientProfilePage implements OnInit {
     }
 
     public save() {
+        if (!this._dr) {
+            this._alertCrl.create({
+                header: 'Unexpected Error',
+                message: 'The doctor information is not set.' +
+                    '<br>To prevent further errors, the app will navigate back' +
+                    ' and all your changs is lost.' +
+                    '<br>Please try again.',
+                buttons: ['OK']
+            }).then(a => {
+                a.onDidDismiss().then(() => this._navCtrl.navigateBack(['SecHome']));
+                a.present();
+            });
+
+            return;
+        }
+
         if (!this.patientProfileForm.valid) {
             this.patientProfileForm.controls['title'].markAsTouched();
             this.patientProfileForm.controls['firstName'].markAsTouched();
@@ -165,6 +194,59 @@ export class PatientProfilePage implements OnInit {
             }).then(a => a.present());
             return;
         }
+
+        const v = this.patientProfileForm.value;
+
+        this.patient.title = v.title;
+        this.patient.name.first = v.firstName;
+        this.patient.name.last = v.lastName;
+        this.patient.name.middle = v.middleName;
+        this.patient.name.suffix = v.suffixName;
+        this.patient.name.nickname = v.nickName;
+        this.patient.birthdate = v.birthdate;
+        this.patient.sex = v.sex;
+        this.patient.maritalStatus = v.maritalStatus;
+        this.patient.language = v.language;
+        this.patient.religion = v.religion;
+        this.patient.occupation = v.occupation;
+        this.patient.city = v.city;
+        this.patient.address = v.address;
+        this.patient.contact.mobile = v.mobile;
+        this.patient.contact.home = v.home;
+        this.patient.contact.email = v.email;
+        this.patient.contact.office = v.office;
+        this.patient.father = v.father;
+        this.patient.mother = v.mother;
+        this.patient.guardian = v.guardian;
+        this.patient.referredBy = v.referredBy;
+        this.patient.allergies = v.allergies;
+
+        this.appointment.arrivalTime = v.arrivalTime;
+        this.appointment.scheduleStatus = v.scheduleStatus;
+        this.appointment.bloodPressure = v.bloodPressure;
+        this.appointment.pulse = v.pulse;
+        this.appointment.weight = v.weight;
+        this.appointment.height = v.height;
+        this.appointment.temp = v.temp;
+        this.appointment.resp = v.resp;
+        this.appointment.waist = v.waist;
+        this.appointment.hip = v.hip;
+        this.appointment.patientComplaint = v.patientComplaint;
+        this.appointment.notes = v.notes;
+
+        this._ptSvc.save(this.appointment.patient, this._dr)
+            .then(() => this._aptSvc.save(this.appointment, this._dr))
+            .then(() => {
+                this._navCtrl.navigateBack(['SecHome']);
+            }).catch(e => {
+                this._logSvc.log(e);
+                this._alertCrl.create({
+                    header: 'Failed to save.',
+                    message: 'There was an error while saving the data.' +
+                        '<br>Please try again.',
+                    buttons: ['OK']
+                }).then(a => a.present());
+            });
     }
 
 }
