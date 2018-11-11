@@ -9,10 +9,10 @@ describe('AddRemovePopoverPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddRemovePopoverPage ],
+      declarations: [AddRemovePopoverPage],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

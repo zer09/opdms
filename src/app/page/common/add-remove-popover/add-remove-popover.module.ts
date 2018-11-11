@@ -8,19 +8,19 @@ import { IonicModule } from '@ionic/angular';
 import { AddRemovePopoverPage } from './add-remove-popover.page';
 
 const routes: Routes = [
-    {
-        path: '',
-        component: AddRemovePopoverPage
-    }
+  {
+    path: '',
+    component: AddRemovePopoverPage
+  }
 ];
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        IonicModule,
-        RouterModule.forChild(routes)
-    ],
-    declarations: [AddRemovePopoverPage]
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    RouterModule.forChild(routes)
+  ],
+  declarations: [AddRemovePopoverPage]
 })
 export class AddRemovePopoverPageModule { }

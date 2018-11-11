@@ -5,69 +5,69 @@ import { UserTypeGuard } from './guard/user-type.guard';
 import { InitSecGuard } from './guard/init-sec.guard';
 
 const routes: Routes = [
-    {
+  {
+    path: '',
+    pathMatch: 'full',
+    children: [],
+    canActivate: [AuthGuard, UserTypeGuard]
+  },
+  {
+    path: 'auth',
+    loadChildren: './page/auth/auth.module#AuthPageModule'
+  },
+  {
+    path: 'AdminHome',
+    loadChildren: './page/admin-home/admin-home.module#AdminHomePageModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'DoctorHome',
+    canActivate: [AuthGuard],
+    children: [
+      {
         path: '',
         pathMatch: 'full',
-        children: [],
-        canActivate: [AuthGuard, UserTypeGuard]
-    },
-    {
-        path: 'auth',
-        loadChildren: './page/auth/auth.module#AuthPageModule'
-    },
-    {
-        path: 'AdminHome',
-        loadChildren: './page/admin-home/admin-home.module#AdminHomePageModule',
-        canActivate: [AuthGuard]
-    },
-    {
-        path: 'DoctorHome',
-        canActivate: [AuthGuard],
-        children: [
-            {
-                path: '',
-                pathMatch: 'full',
-                loadChildren: './page/doctor-home/doctor-home.module#DoctorHomePageModule',
-            },
-            {
-                path: 'medicines',
-                loadChildren: './page/medicines/medicines.module#MedicinesPageModule',
-            }
-        ]
-    },
-    {
-        path: 'SecHome',
-        canActivate: [AuthGuard, InitSecGuard],
-        children: [
-            {
-                path: '',
-                pathMatch: 'full',
-                loadChildren: './page/sec-home/sec-home.module#SecHomePageModule',
-            }
-        ]
-    },
-    {
-        path: 'settings',
-        loadChildren: './page/settings/settings.module#SettingsPageModule',
-        canActivate: [AuthGuard]
-    },
-    {
-        path: 'registration',
-        loadChildren: './page/registration/registration.module#RegistrationPageModule'
-    },
-    {
-        path: 'serverList',
-        loadChildren: './page/server-list/server-list.module#ServerListPageModule'
-    },
-    {
-        path: 'PatientProfile/:dr/:pt',
-        loadChildren: './page/patient-profile/patient-profile.module#PatientProfilePageModule',
-        canActivate: [AuthGuard]
-    },
+        loadChildren: './page/doctor-home/doctor-home.module#DoctorHomePageModule',
+      },
+      {
+        path: 'medicines',
+        loadChildren: './page/medicines/medicines.module#MedicinesPageModule',
+      }
+    ]
+  },
+  {
+    path: 'SecHome',
+    canActivate: [AuthGuard, InitSecGuard],
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadChildren: './page/sec-home/sec-home.module#SecHomePageModule',
+      }
+    ]
+  },
+  {
+    path: 'settings',
+    loadChildren: './page/settings/settings.module#SettingsPageModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'registration',
+    loadChildren: './page/registration/registration.module#RegistrationPageModule'
+  },
+  {
+    path: 'serverList',
+    loadChildren: './page/server-list/server-list.module#ServerListPageModule'
+  },
+  {
+    path: 'PatientProfile/:dr/:pt',
+    loadChildren: './page/patient-profile/patient-profile.module#PatientProfilePageModule',
+    canActivate: [AuthGuard]
+  },
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
 export class AppRoutingModule { }

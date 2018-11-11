@@ -1,7 +1,7 @@
 import { SecDoctor } from '../class/sec-doctor';
 import { Patient } from '../class/patient';
 
-export interface IPatientSearch {
-    Dr: SecDoctor;
-    Patient: Patient[];
+export interface PatientSearch {
+  Dr: SecDoctor;
+  Patient: Patient[];
 }

@@ -23,4 +23,4 @@ const routes: Routes = [
   ],
   declarations: [AdminHomePage]
 })
-export class AdminHomePageModule {}
+export class AdminHomePageModule { }

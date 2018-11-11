@@ -7,98 +7,98 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { StoreService } from './service/store.service';
-import { IPage } from './interface/ipage';
+import { PageInfo } from './interface/page-info';
 import { User } from './class/user';
 import { UserType } from './enum/user/user-type.enum';
 import { Helper } from './helper';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: 'app.component.html'
+  selector: 'app-root',
+  templateUrl: 'app.component.html'
 })
 export class AppComponent {
 
-    public appPages: IPage[] = [];
-    public mainMenuId = 'main-menu';
+  public appPages: PageInfo[] = [];
+  public mainMenuId = 'main-menu';
 
-    constructor(
-        private _sSvc: StoreService,
-        private _localStorage: Storage,
-        private _events: Events,
-        private _route: Router,
-        private _menuCtrl: MenuController,
-        private _platform: Platform,
-        private _splashScreen: SplashScreen,
-        private _statusBar: StatusBar
-    ) {
-        this._sSvc.monitorStore();
-        this.initializeApp();
-    }
+  constructor(
+    private _sSvc: StoreService,
+    private _localStorage: Storage,
+    private _events: Events,
+    private _route: Router,
+    private _menuCtrl: MenuController,
+    private _platform: Platform,
+    private _splashScreen: SplashScreen,
+    private _statusBar: StatusBar
+  ) {
+    this._sSvc.monitorStore();
+    this.initializeApp();
+  }
 
-    initializeApp() {
-        this._platform.ready().then(() => {
-            this._menuCtrl.enable(false, this.mainMenuId);
-            this._statusBar.styleDefault();
-            this._splashScreen.hide();
+  initializeApp() {
+    this._platform.ready().then(() => {
+      this._menuCtrl.enable(false, this.mainMenuId);
+      this._statusBar.styleDefault();
+      this._splashScreen.hide();
 
-            this._events.subscribe('usr:ses:logout', () => {
-                this.logout();
-            });
+      this._events.subscribe('usr:ses:logout', () => {
+        this.logout();
+      });
 
-            this._events.subscribe(Helper.strUsrSesChg, (usr: User) => {
-                if (!usr) {
-                    this.appPages = [];
-                    this._menuCtrl.enable(false, this.mainMenuId);
-                    this._route.navigate(['']);
-                    return;
-                }
+      this._events.subscribe(Helper.strUsrSesChg, (usr: User) => {
+        if (!usr) {
+          this.appPages = [];
+          this._menuCtrl.enable(false, this.mainMenuId);
+          this._route.navigate(['']);
+          return;
+        }
 
-                if (usr.userType === UserType.ADMIN) {
-                } else if (usr.userType === UserType.DOCTOR) {
-                    this._initDoctorPage();
-                } else if (usr.userType === UserType.SECRETARY) {
-                    this._initSecPage();
-                } else {
-                    this.logout();
-                }
-            });
+        if (usr.userType === UserType.ADMIN) {
+        } else if (usr.userType === UserType.DOCTOR) {
+          this._initDoctorPage();
+        } else if (usr.userType === UserType.SECRETARY) {
+          this._initSecPage();
+        } else {
+          this.logout();
+        }
+      });
 
-            this._localStorage.get(Helper.strDefNode).then((node: string) => {
-                if (!node) {
-                    return this._localStorage.set('session', undefined);
-                }
+      this._localStorage.get(Helper.strDefNode).then((node: string) => {
+        if (!node) {
+          return this._localStorage.set('session', undefined);
+        }
 
-                Helper.clinicNode = node;
+        Helper.clinicNode = node;
 
-                this._localStorage.get('session').then((usr: User) => {
-                    this._events.publish(Helper.strUsrSesChg, usr);
-                });
-            });
-
+        this._localStorage.get('session').then((usr: User) => {
+          this._events.publish(Helper.strUsrSesChg, usr);
         });
-    }
+      });
 
-    private _initDoctorPage() {
-        this.appPages = [
-            { title: 'Home', url: '', icon: 'home' },
-            { title: 'Medicines', url: '/DoctorHome/medicines', icon: 'medkit' },
-            { title: 'Settings', url: '/settings', icon: 'settings' }
-        ];
-    }
+    });
+  }
 
-    private _initSecPage() {
-        this.appPages = [
-            { title: 'Home', url: '', icon: 'home' },
-            { title: 'Settings', url: '/settings', icon: 'settings' }
-        ];
-    }
+  private _initDoctorPage() {
+    this.appPages = [
+      { title: 'Home', url: '', icon: 'home' },
+      { title: 'Medicines', url: '/DoctorHome/medicines', icon: 'medkit' },
+      { title: 'Settings', url: '/settings', icon: 'settings' }
+    ];
+  }
 
-    public logout() {
-        this.appPages = [];
-        this._menuCtrl.enable(false, this.mainMenuId);
-        this._localStorage.set('session', undefined).then(() => {
-            window.location.reload();
-        });
-    }
+  private _initSecPage() {
+    this.appPages = [
+      { title: 'Home', url: '', icon: 'home' },
+      { title: 'Settings', url: '/settings', icon: 'settings' }
+    ];
+  }
+
+  public logout() {
+    this.appPages = [];
+    this._menuCtrl.enable(false, this.mainMenuId);
+    this._localStorage.set('session', undefined).then(() => {
+      window.location.reload();
+    });
+  }
 
 }

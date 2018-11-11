@@ -16,26 +16,26 @@ import { ServerListPageModule } from './page/server-list/server-list.module';
 import { AddRemovePopoverPageModule } from './page/common/add-remove-popover/add-remove-popover.module';
 
 @NgModule({
-    declarations: [AppComponent],
-    entryComponents: [],
-    imports: [
-        BrowserModule,
-        IonicModule.forRoot(),
-        IonicStorageModule.forRoot({
-            name: '__OPDMSStorage',
-            driverOrder: ['indexeddb', 'sqlite', 'websql'],
-        }),
-        AppRoutingModule,
-        HttpClientModule,
-        ServerListPageModule,
-        AddRemovePopoverPageModule,
-        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-    ],
-    providers: [
-        StatusBar,
-        SplashScreen,
-        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
-    ],
-    bootstrap: [AppComponent]
+  declarations: [AppComponent],
+  entryComponents: [],
+  imports: [
+    BrowserModule,
+    IonicModule.forRoot(),
+    IonicStorageModule.forRoot({
+      name: '__OPDMSStorage',
+      driverOrder: ['indexeddb', 'sqlite', 'websql'],
+    }),
+    AppRoutingModule,
+    HttpClientModule,
+    ServerListPageModule,
+    AddRemovePopoverPageModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+  ],
+  providers: [
+    StatusBar,
+    SplashScreen,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
