@@ -29,4 +29,18 @@ export class Helper {
             new Date(date).toLocaleTimeString('en-US');
     }
 
+    // https://www.rosettacode.org/wiki/Remove_duplicate_elements#JavaScript
+    public static unique(arr: any) {
+        const u = arr.concat().sort();
+        for (let i = 1; i < u.length;) {
+            if (u[i - 1] === u[i]) {
+                u.splice(i, 1);
+            } else {
+                i++;
+            }
+        }
+
+        return u;
+    }
+
 }
