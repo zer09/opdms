@@ -5,6 +5,7 @@ import { SecDoctor } from '../../class/sec-doctor';
 import { PatientSearchService } from '../../service/patient-search.service';
 import { Sex } from '../../enum/sex.enum';
 import { MaritalStatus } from '../../enum/marital-status.enum';
+import { Patient } from '../../class/patient';
 
 @Component({
   selector: 'app-sec-home',
@@ -65,7 +66,7 @@ export class SecHomePage implements OnInit {
     }).then(a => a.present());
   }
 
-  public newPatient() {
+  public newPatient(): void {
     if (this._selectedDoctor !== SecDoctor.Default) {
       this._navCtrl.navigateForward([
         'PatientProfile', this._selectedDoctor.signature, ''
@@ -115,7 +116,15 @@ export class SecHomePage implements OnInit {
 
       a.present();
     });
-
   }
 
+  public patientOpen(pt: Patient, dr: SecDoctor): void {
+    if (!pt || !dr) {
+      return;
+    }
+
+    this._navCtrl.navigateForward([
+      'PatientProfile', dr.signature, pt.Id
+    ]);
+  }
 }

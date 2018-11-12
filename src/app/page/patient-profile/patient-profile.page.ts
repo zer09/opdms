@@ -64,101 +64,148 @@ export class PatientProfilePage implements OnInit {
     this._dr = this._peerSvc.getDrBySignature(this._drSignature);
     this._new = this._ptId.length < 1;
 
-    if (this._new) {
-      this.patient = new Patient();
-      this.appointment = new Appointment(this.patient);
-    }
-
     this._initProfile();
 
+    if (!this._new) {
+      return this._ptSvc.getPatient(this._ptId, this._dr).then(pt => {
+        this.patient = pt;
+        this.appointment = new Appointment(this.patient);
+        this.setPatientData();
+      });
+    }
+
+    this.patient = new Patient();
+    this.appointment = new Appointment(this.patient);
   }
 
-  private _initProfile() {
-    const m = moment(this.appointment.arrivalTime);
-    const arrival: string = m.isValid() ? m.format() : moment().format();
-
+  private _initProfile(): void {
     this.patientProfileForm = this._fb.group({
-      title: [this.patient.title, Validators.required],
+      title: ['', Validators.required],
       firstName: [
-        this.patient.name.first,
+        '',
         Validators.compose([
           Validators.required,
           Validators.pattern('[a-zA-Z ]*')
         ])
       ],
       lastName: [
-        this.patient.name.last,
+        '',
         Validators.compose([
           Validators.required,
           Validators.pattern('[a-zA-Z ]*')
         ])
       ],
       middleName: [
-        this.patient.name.middle,
+        '',
         Validators.compose([
           Validators.required,
           Validators.pattern('[a-zA-Z ]*')
         ])
       ],
       suffixName: [
-        this.patient.name.suffix,
+        '',
         Validators.pattern('[a-zA-Z ]*')
       ],
       nickName: [
-        this.patient.name.nickname,
+        '',
         Validators.pattern('[a-zA-Z ]*')
       ],
-      birthdate: [this.patient.birthdate, Validators.required],
-      sex: [this.patient.sex, Validators.required],
-      maritalStatus: [this.patient.maritalStatus],
-      language: [this.patient.language],
-      religion: [this.patient.religion],
-      occupation: [this.patient.occupation],
-      city: [this.patient.city],
-      address: [this.patient.address],
-      mobile: [this.patient.contact.mobile],
-      home: [this.patient.contact.home],
-      email: [this.patient.contact.email],
-      office: [this.patient.contact.office],
-      father: [this.patient.father],
-      mother: [this.patient.mother],
-      guardian: [this.patient.guardian],
-      referredBy: [this.patient.referredBy],
-      allergies: [this.patient.allergies],
-      arrivalTime: [arrival, Validators.required],
-      scheduleStatus: [this.appointment.scheduleStatus, Validators.required],
-      bloodPressure: [this.appointment.bloodPressure],
-      pulse: [this.appointment.pulse],
-      weight: [this.appointment.weight],
-      height: [this.appointment.height],
-      temp: [this.appointment.temp],
-      resp: [this.appointment.resp],
-      waist: [this.appointment.waist],
-      hip: [this.appointment.hip],
-      patientComplaint: [this.appointment.patientComplaint],
-      notes: [this.appointment.notes],
+      birthdate: ['', Validators.required],
+      sex: ['', Validators.required],
+      maritalStatus: ['0'],
+      language: [''],
+      religion: [''],
+      occupation: [''],
+      city: [''],
+      address: [''],
+      mobile: [''],
+      home: [''],
+      email: [''],
+      office: [''],
+      father: [''],
+      mother: [''],
+      guardian: [''],
+      referredBy: [''],
+      allergies: [''],
+      arrivalTime: [moment().format(), Validators.required],
+      scheduleStatus: ['0', Validators.required],
+      bloodPressure: [''],
+      pulse: [''],
+      weight: [''],
+      height: [''],
+      temp: [''],
+      resp: [''],
+      waist: [''],
+      hip: [''],
+      patientComplaint: [''],
+      notes: [''],
     });
   }
 
-  public segmentChangeAddInfo(ev: any) {
+  private setPatientData(): void {
+    const p = this.appointment.patient;
+    const a = this.appointment;
+
+    this.patientProfileForm.controls['title'].setValue(p.title);
+    this.patientProfileForm.controls['firstName'].setValue(p.name.first);
+    this.patientProfileForm.controls['lastName'].setValue(p.name.last);
+    this.patientProfileForm.controls['middleName'].setValue(p.name.middle);
+    this.patientProfileForm.controls['suffixName'].setValue(p.name.suffix);
+    this.patientProfileForm.controls['nickName'].setValue(p.name.nickname);
+    this.patientProfileForm.controls['birthdate'].setValue(p.birthdate);
+    this.patientProfileForm.controls['sex'].setValue(p.sex.toString());
+    this.patientProfileForm.controls['maritalStatus']
+      .setValue(p.maritalStatus.toString());
+    this.patientProfileForm.controls['language'].setValue(p.language);
+    this.patientProfileForm.controls['religion'].setValue(p.religion);
+    this.patientProfileForm.controls['occupation'].setValue(p.occupation);
+    this.patientProfileForm.controls['city'].setValue(p.city);
+    this.patientProfileForm.controls['address'].setValue(p.address);
+    this.patientProfileForm.controls['mobile'].setValue(p.contact.mobile);
+    this.patientProfileForm.controls['home'].setValue(p.contact.home);
+    this.patientProfileForm.controls['email'].setValue(p.contact.email);
+    this.patientProfileForm.controls['office'].setValue(p.contact.office);
+    this.patientProfileForm.controls['father'].setValue(p.father);
+    this.patientProfileForm.controls['mother'].setValue(p.mother);
+    this.patientProfileForm.controls['guardian'].setValue(p.guardian);
+    this.patientProfileForm.controls['referredBy'].setValue(p.referredBy);
+    this.patientProfileForm.controls['allergies'].setValue(p.allergies);
+    this.patientProfileForm.controls['arrivalTime']
+      .setValue(moment(a.arrivalTime).format());
+    this.patientProfileForm.controls['scheduleStatus']
+      .setValue(a.scheduleStatus.toString());
+    this.patientProfileForm.controls['bloodPressure'].setValue(a.bloodPressure);
+    this.patientProfileForm.controls['pulse'].setValue(a.pulse);
+    this.patientProfileForm.controls['weight'].setValue(a.weight);
+    this.patientProfileForm.controls['height'].setValue(a.height);
+    this.patientProfileForm.controls['temp'].setValue(a.temp);
+    this.patientProfileForm.controls['resp'].setValue(a.resp);
+    this.patientProfileForm.controls['waist'].setValue(a.waist);
+    this.patientProfileForm.controls['hip'].setValue(a.hip);
+    this.patientProfileForm.controls['patientComplaint']
+      .setValue(a.patientComplaint);
+    this.patientProfileForm.controls['notes'].setValue(a.notes);
+  }
+
+  public segmentChangeAddInfo(ev: any): void {
     this.segmentAdditional = ev.target.value;
   }
 
-  public segmentChangeVital(ev: any) {
+  public segmentChangeVital(ev: any): void {
     this.segmentVital = ev.target.value;
   }
 
-  public birthdateChange(ev: any) {
+  public birthdateChange(ev: any): void {
     this.patient.birthdate = ev.target.value;
     this.ageText = 'Age: ' + AgeHelper.longAgeString(this.appointment.patient);
   }
 
-  public isFieldValid(field: string) {
+  public isFieldValid(field: string): boolean {
     const f = this.patientProfileForm.get(field);
     return !f.valid && f.touched;
   }
 
-  public save() {
+  public save(): void {
     if (!this._dr) {
       this._alertCrl.create({
         header: 'Unexpected Error',

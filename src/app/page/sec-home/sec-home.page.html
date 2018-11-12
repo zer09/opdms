@@ -37,7 +37,7 @@
             <ion-grid>
               <ion-row>
                 <ion-col>
-                  {{s.value.Dr.compactName()}}
+                  {{s.value.Dr}}
                 </ion-col>
               </ion-row>
               <ion-row class="grid-row">
@@ -50,15 +50,15 @@
                 <ion-col>Referred By</ion-col>
                 <ion-col>Registration</ion-col>
               </ion-row>
-              <ion-row class="grid-row cursor" *ngFor="let pc of s.value.Patients" (click)="patientOpen(pc)">
-                <ion-col size="3">{{pc}}</ion-col>
-                <ion-col>{{pc.name.nickname}}</ion-col>
-                <ion-col>{{Sex[pc.sex]}}</ion-col>
-                <ion-col>{{pc.singleAgeString}}</ion-col>
-                <ion-col>{{MaritalStatus[pc.MaritalStatus]}}</ion-col>
-                <ion-col>{{pc.contact.modile}}</ion-col>
-                <ion-col>{{pc.referredby}}</ion-col>
-                <ion-col>{{pc.registration}}</ion-col>
+              <ion-row class="grid-row cursor" *ngFor="let pt of s.value.Patients" (click)="patientOpen(pt, s.value.Dr)">
+                <ion-col size="3">{{pt}}</ion-col>
+                <ion-col>{{pt.name.nickname}}</ion-col>
+                <ion-col>{{Sex[pt.sex]}}</ion-col>
+                <ion-col>{{pt.singleAgeString}}</ion-col>
+                <ion-col>{{MaritalStatus[pt.MaritalStatus]}}</ion-col>
+                <ion-col>{{pt.contact.modile}}</ion-col>
+                <ion-col>{{pt.referredby}}</ion-col>
+                <ion-col>{{pt.registration}}</ion-col>
               </ion-row>
             </ion-grid>
           </ng-container>
@@ -73,9 +73,9 @@
         <ion-item>PATIENT LISTS</ion-item>
         <ng-container *ngFor="let s of ptSearch.searchedPatients | keyvalue">
           <ng-container *ngIf="s.value.Patients.length > 0">
-            <ion-item-divider>{{s.value.Dr.compactName()}}</ion-item-divider>
-            <ion-item button="true" detail="true" type="button" *ngFor="let pc of s.value.Patients" (click)="patientOpen(pc)">
-              {{pc}}
+            <ion-item-divider>{{s.value.Dr}}</ion-item-divider>
+            <ion-item button="true" detail="true" type="button" *ngFor="let pt of s.value.Patients" (click)="patientOpen(pt, s.value.Dr)">
+              {{pt}}
             </ion-item>
           </ng-container>
         </ng-container>
