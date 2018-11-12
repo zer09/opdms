@@ -34,11 +34,11 @@ export class SecHomePage implements OnInit {
       this._peers.secDrs : [this._selectedDoctor];
   }
 
-  public changeDoctor() {
+  public changeDoctor(): void {
     const dInputs: any[] = [];
     dInputs.push({
       type: 'radio',
-      label: SecDoctor.Default.compactName(),
+      label: SecDoctor.Default.toString(),
       value: SecDoctor.Default,
       checked: this._selectedDoctor === SecDoctor.Default
     });
@@ -46,7 +46,7 @@ export class SecHomePage implements OnInit {
     for (let i = 0; i < this._peers.secDrs.length; i++) {
       dInputs.push({
         type: 'radio',
-        label: this._peers.secDrs[i].compactName(),
+        label: this._peers.secDrs[i].toString(),
         value: this._peers.secDrs[i],
         checked: this._selectedDoctor === this._peers.secDrs[i]
       });
@@ -80,7 +80,7 @@ export class SecHomePage implements OnInit {
     for (let i = 0; i < this._peers.secDrs.length; i++) {
       dInputs.push({
         type: 'radio',
-        label: this._peers.secDrs[i].compactName(),
+        label: this._peers.secDrs[i].toString(),
         value: this._peers.secDrs[i],
       });
     }

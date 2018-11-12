@@ -40,8 +40,9 @@ export class SecDoctor {
     return secDr;
   }
 
-  public compactName(): string {
+  public toString(): string {
     return [
+      'Dr.',
       this.userDetails.name.first,
       this.userDetails.name.last
     ].join(' ');
