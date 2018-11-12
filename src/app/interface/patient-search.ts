@@ -3,5 +3,5 @@ import { Patient } from '../class/patient';
 
 export interface PatientSearch {
   Dr: SecDoctor;
-  Patient: Patient[];
+  Patients: Patient[];
 }

@@ -12,7 +12,8 @@ import { PatientSearch } from '../interface/patient-search';
 export class PatientSearchService {
 
   private _searchTerms: string[] = [];
-  private _searchedPatients: Map<string, PatientSearch>;
+  public searchedPatients: Map<string, PatientSearch> =
+    new Map<string, PatientSearch>();
 
   constructor(
     private _sSvc: StoreService,
@@ -42,7 +43,7 @@ export class PatientSearchService {
 
   public onSearch(ev: any, dr: SecDoctor[]) {
     this._searchTerms.length = 0;
-    this._searchedPatients = new Map<string, PatientSearch>();
+    this.searchedPatients = new Map<string, PatientSearch>();
 
     if (!ev || !ev.target.value) {
       return;
@@ -63,15 +64,14 @@ export class PatientSearchService {
 
     dr.forEach(drElem => {
       const ps = this._sSvc.get(drElem.PS);
-      this._searchedPatients.set(drElem.signature, {
+      this.searchedPatients.set(drElem.signature, {
         Dr: drElem,
-        Patient: []
+        Patients: []
       });
 
       this._searchTerms.forEach(tElem => {
         this._indexSearch(tElem, drElem).then(ids => {
-          const pts = this._searchedPatients.get(drElem.signature).Patient;
-
+          const pts = this.searchedPatients.get(drElem.signature).Patients;
           for (let i = 0; i < ids.length; i++) {
             ps.get(ids[i]).then(doc => {
               const pt = new Patient(doc._id);
