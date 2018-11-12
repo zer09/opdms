@@ -31,7 +31,7 @@ export class AgeHelper {
     return st.trim() + ' old';
   }
 
-  public shortAgeString(pt: Patient): string {
+  public static shortAgeString(pt: Patient): string {
     const now: moment.Moment = moment();
     const bd: moment.Moment = moment(pt.birthdate);
     const dif: number = now.diff(bd);
@@ -66,7 +66,7 @@ export class AgeHelper {
     }
   }
 
-  public singleAgeString(pt: Patient): string {
+  public static singleAgeString(pt: Patient): string {
     const now: moment.Moment = moment();
     const bd: moment.Moment = moment(pt.birthdate);
     const dif: number = now.diff(bd);
@@ -88,5 +88,5 @@ export class AgeHelper {
 
     return bdv.d + ' day/o';
   }
-
 }
+
