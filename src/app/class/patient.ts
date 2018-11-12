@@ -1,6 +1,7 @@
 import { Sex } from '../enum/sex.enum';
 import { MaritalStatus } from '../enum/marital-status.enum';
 import { Helper } from '../helper';
+import { AgeHelper } from '../age-helper';
 
 export class Patient {
   private _id: string;
@@ -44,6 +45,15 @@ export class Patient {
   public get Id(): string {
     return this._id;
   }
+
+  public get singleAgeString(): string {
+    return AgeHelper.singleAgeString(this);
+  }
+
+  public toString(): string {
+    return [this.name.first, this.name.middle, this.name.last].join(' ');
+  }
+
 
   public minified(): string {
     const p = {
