@@ -27,4 +27,39 @@
 
 <ion-content>
   <ion-button expand="full" *ngIf="ptSearch.showAddButton" (click)="newPatient()">add new patient</ion-button>
+
+  <ion-list *ngIf="ptSearch.searchedPatients.size > 0">
+    <ion-item>PATIENT LISTS</ion-item>
+    <ng-container *ngFor="let s of ptSearch.searchedPatients | keyvalue">
+      <ng-container *ngIf="s.value.Patients.length > 0">
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              {{s.value.Dr.compactName()}}
+            </ion-col>
+          </ion-row>
+          <ion-row class="grid-row">
+            <ion-col size="3">Patient Name</ion-col>
+            <ion-col>Nick Name</ion-col>
+            <ion-col>Sex</ion-col>
+            <ion-col>Age</ion-col>
+            <ion-col>Marital Status</ion-col>
+            <ion-col>Contact</ion-col>
+            <ion-col>Referred By</ion-col>
+            <ion-col>Registration</ion-col>
+          </ion-row>
+          <ion-row class="grid-row" *ngFor="let pc of s.value.Patients">
+            <ion-col size="3">{{pc}}</ion-col>
+            <ion-col>{{pc.name.nickname}}</ion-col>
+            <ion-col>{{Sex[pc.sex]}}</ion-col>
+            <ion-col>{{pc.singleAgeString}}</ion-col>
+            <ion-col>{{MaritalStatus[pc.MaritalStatus]}}</ion-col>
+            <ion-col>{{pc.contact.modile}}</ion-col>
+            <ion-col>{{pc.referredby}}</ion-col>
+            <ion-col>{{pc.registration}}</ion-col>
+          </ion-row>
+        </ion-grid>
+      </ng-container>
+    </ng-container>
+  </ion-list>
 </ion-content>

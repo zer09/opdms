@@ -3,6 +3,8 @@ import { PeersService } from '../../service/peers.service';
 import { AlertController, ToastController, NavController } from '@ionic/angular';
 import { SecDoctor } from '../../class/sec-doctor';
 import { PatientSearchService } from '../../service/patient-search.service';
+import { Sex } from '../../enum/sex.enum';
+import { MaritalStatus } from '../../enum/marital-status.enum';
 
 @Component({
   selector: 'app-sec-home',
@@ -10,6 +12,9 @@ import { PatientSearchService } from '../../service/patient-search.service';
   styleUrls: ['./sec-home.page.scss'],
 })
 export class SecHomePage implements OnInit {
+
+  public Sex = Sex;
+  public MaritalStatus = MaritalStatus;
 
   private _selectedDoctor: SecDoctor = SecDoctor.Default;
 
