@@ -212,22 +212,6 @@ export class PatientProfilePage implements OnInit {
   }
 
   public save(): void {
-    if (!this._dr) {
-      this._alertCrl.create({
-        header: 'Unexpected Error',
-        message: 'The doctor information is not set.' +
-          '<br>To prevent further errors, the app will navigate back' +
-          ' and all your changs is lost.' +
-          '<br>Please try again.',
-        buttons: ['OK']
-      }).then(a => {
-        a.onDidDismiss().then(() => this._navCtrl.navigateBack(['SecHome']));
-        a.present();
-      });
-
-      return;
-    }
-
     if (!this.patientProfileForm.valid) {
       this.patientProfileForm.controls['title'].markAsTouched();
       this.patientProfileForm.controls['firstName'].markAsTouched();
