@@ -1,6 +1,5 @@
 import moment from 'moment';
 import { Patient } from './patient';
-import { Helper } from '../helper';
 
 export class Appointment {
   private _id: string;
@@ -28,7 +27,7 @@ export class Appointment {
 
     this._patient = pt;
     this._id = !id || id.length !== 40 ?
-      m.format('YYYYMMDD') + Helper.ulidString + m.format('HHmmss') : id;
+      m.format('YYYYMMDD') + this._patient.Id + m.format('HHmmss') : id;
   }
 
   public get Id(): string {
@@ -37,6 +36,10 @@ export class Appointment {
 
   public get patient(): Patient {
     return this._patient;
+  }
+
+  public static extractPatientId(ptId: string): string {
+    return ptId.substring(7, 34);
   }
 
   public minified(): string {
