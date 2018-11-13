@@ -16,7 +16,7 @@ import { Helper } from '../helper';
 })
 export class UserService {
 
-  public user: User;
+  public user!: User;
 
   constructor(
     private _saSvc: ServerAddressService,
@@ -39,66 +39,66 @@ export class UserService {
 
   public login(username: string, password: string): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      this._saSvc.getDefaultServerAPI().then(addr => this._http.post(
-        addr + '/users/login',
-        JSON.stringify({ username, password }), {
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+      this._saSvc.getDefaultServerAPI()
+        .then(addr => this._http.post<PostResponse>(
+          addr + '/users/login',
+          JSON.stringify({ username, password }), {
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            }
           }
-        }
-      )).then(post => {
-        post.subscribe((res: PostResponse) => {
-          if (res.successful) {
-            const msg = res.msg;
-            this.user = new User(
-              parseInt(msg.act, 10) as UserType
-            );
+        )).then(post => {
+          post.subscribe(res => {
+            if (res.successful) {
+              const msg = res.msg;
+              const u = new User(parseInt(msg.act, 10) as UserType);
 
-            this.user.userDetails = {
-              name: {
-                first: msg.name.first,
-                middle: msg.name.middle,
-                last: msg.name.last,
-                suffix: msg.name.suffix,
-              },
-              address: msg.address,
-              contact: msg.contact,
-              regDate: msg.regdate,
-            };
+              u.userDetails = {
+                name: {
+                  first: msg.name.first,
+                  middle: msg.name.middle,
+                  last: msg.name.last,
+                  suffix: msg.name.suffix,
+                },
+                address: msg.address,
+                contact: msg.contact,
+                regDate: msg.regdate,
+              };
 
-            this.user.UUID = msg.uuid;
-            this.user.UUID2 = msg.uuid2;
-            // this.user.privKey = msg.privKey;
-            // this.user.pubKey = msg.pubKey;
-            this.user.signature = msg.signature;
+              u.UUID = msg.uuid;
+              u.UUID2 = msg.uuid2;
+              // this.user.privKey = msg.privKey;
+              // this.user.pubKey = msg.pubKey;
+              u.signature = msg.signature;
 
 
-            if (this.user.userType === UserType.ADMIN) {
+              if (u.userType === UserType.ADMIN) {
 
-            } else if (this.user.userType === UserType.DOCTOR) {
-              this.user.PS = msg.ps;
-              this.user.PES = msg.pes;
-              this.user.APS = msg.aps;
-              this.user.VS = msg.vs;
-              this.user.PTI = msg.pti;
-            } else if (this.user.userType === UserType.SECRETARY) {
+              } else if (u.userType === UserType.DOCTOR) {
+                u.PS = msg.ps;
+                u.PES = msg.pes;
+                u.APS = msg.aps;
+                u.VS = msg.vs;
+                u.PTI = msg.pti;
+              } else if (u.userType === UserType.SECRETARY) {
 
-            } else {
-              this.user = undefined;
-              this._route.navigate(['']);
+              } else {
+                this._route.navigate(['']);
+              }
+
+              this.user = u;
+
+              this._localStorage.set('session', this.user).then(() => {
+                this._events.publish(Helper.strUsrSesChg, this.user);
+              });
             }
 
-            this._localStorage.set('session', this.user).then(() => {
-              this._events.publish(Helper.strUsrSesChg, this.user);
-            });
-          }
-
-          resolve(res.successful);
-        }, err => {
-          reject(err);
+            resolve(res.successful);
+          }, err => {
+            reject(err);
+          });
         });
-      });
     });
   }
 
@@ -114,8 +114,8 @@ export class UserService {
     );
   }
 
-  public register(userInfo): Observable<Object> {
-    return this._http.post(
+  public register(userInfo) {
+    return this._http.post<PostResponse>(
       this._saSvc.getServerAPI(this._saSvc.remoteName) + '/registration/register',
       JSON.stringify(userInfo), {
         headers: {

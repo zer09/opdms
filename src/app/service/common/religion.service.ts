@@ -11,7 +11,7 @@ import { AddRemovePopoverPage } from '../../page/common/add-remove-popover/add-r
 })
 export class ReligionService {
 
-  public religionList: Religion[];
+  public religionList: Religion[] = [];
 
   constructor(
     private _sSvc: StoreService,

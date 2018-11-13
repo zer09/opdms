@@ -23,19 +23,18 @@ import { LoggerService } from '../../service/logger.service';
 })
 export class PatientProfilePage implements OnInit {
 
-  private _ptId: string;
-  private _new: boolean;
+  private _ptId!: string;
+  private _new!: boolean;
 
-  private _drSignature: string;
-  private _dr: SecDoctor;
+  private _dr!: SecDoctor;
 
   public ageText = 'Age: ';
   public segmentAdditional = 'contact';
   public segmentVital = 'vital';
 
-  public appointment: Appointment;
-  public patient: Patient;
-  public patientProfileForm: FormGroup;
+  public appointment!: Appointment;
+  public patient!: Patient;
+  public patientProfileForm!: FormGroup;
 
   constructor(
     private _ptSvc: PatientService,
@@ -54,28 +53,35 @@ export class PatientProfilePage implements OnInit {
   }
 
   ngOnInit() {
+    this._ptId = this._aRoute.snapshot.paramMap.get('pt') || '';
+    this._dr = this._peerSvc.getDrBySignature(
+      this._aRoute.snapshot.paramMap.get('dr') || ''
+    ) || SecDoctor.Default;
+
+    if (this._dr === SecDoctor.Default) {
+      this._navCtrl.goBack();
+    }
+
+
     this.titles.fetchTitles();
     this.languages.fetchLanguages();
     this.religions.fetchReligion();
     this.cities.fetchCities();
 
-    this._ptId = this._aRoute.snapshot.paramMap.get('pt');
-    this._drSignature = this._aRoute.snapshot.paramMap.get('dr');
-    this._dr = this._peerSvc.getDrBySignature(this._drSignature);
     this._new = this._ptId.length < 1;
 
     this._initProfile();
 
     if (!this._new) {
-      return this._ptSvc.getPatient(this._ptId, this._dr).then(pt => {
+      this._ptSvc.getPatient(this._ptId, this._dr).then(pt => {
         this.patient = pt;
         this.appointment = new Appointment(this.patient);
         this.setPatientData();
       });
+    } else {
+      this.patient = new Patient();
+      this.appointment = new Appointment(this.patient);
     }
-
-    this.patient = new Patient();
-    this.appointment = new Appointment(this.patient);
   }
 
   private _initProfile(): void {
@@ -202,7 +208,7 @@ export class PatientProfilePage implements OnInit {
 
   public isFieldValid(field: string): boolean {
     const f = this.patientProfileForm.get(field);
-    return !f.valid && f.touched;
+    return !!f && !f.valid && f.touched;
   }
 
   public save(): void {

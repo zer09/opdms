@@ -19,7 +19,7 @@ import { SecDoctor } from '../../class/sec-doctor';
 })
 export class SecretaryService {
 
-  public secList: Secretary[];
+  public secList: Secretary[] = [];
 
   constructor(
     private _usrSvc: UserService,
@@ -59,14 +59,14 @@ export class SecretaryService {
   public addSecretary(username: string, password: string): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       this._saSvc.getDefaultServerAPI().then(addr => {
-        this._http.post(
+        this._http.post<PostResponse>(
           addr + '/users/login',
           JSON.stringify({ username, password }), {
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             }
-          }).subscribe((res: PostResponse) => {
+          }).subscribe(res => {
             if (!res.successful ||
               parseInt(res.msg.act, 10) !== UserType.SECRETARY) {
               return resolve(false);

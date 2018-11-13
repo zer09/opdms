@@ -12,7 +12,7 @@ import { Helper } from '../../helper';
 })
 export class TitlesService {
 
-  public titleList: Title[];
+  public titleList: Title[] = [];
 
   constructor(
     private _sSvc: StoreService,

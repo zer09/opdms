@@ -23,9 +23,7 @@ export class AddRemovePopoverPage implements OnInit {
   constructor(
     private _navParams: NavParams,
     private _popCtrl: PopoverController,
-  ) { }
-
-  ngOnInit() {
+  ) {
     this.addCB = this._navParams.get('addCB');
     this.rmCB = this._navParams.get('rmCB');
     this.upCB = this._navParams.get('upCB');
@@ -33,6 +31,9 @@ export class AddRemovePopoverPage implements OnInit {
     this.showAdd = this._navParams.get('showAdd') || true;
     this.showRemove = this._navParams.get('showRemove') || true;
     this.showUpdate = this._navParams.get('showUpdate') || false;
+  }
+
+  ngOnInit() {
   }
 
   public add() {

@@ -6,7 +6,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { AuthPage } from './auth.page';
-import { ServerListPage } from '../server-list/server-list.page';
 
 const routes: Routes = [
   {

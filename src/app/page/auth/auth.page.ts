@@ -28,17 +28,16 @@ export class AuthPage implements OnInit {
     private _modalCtrl: ModalController,
     private _route: Router,
   ) {
-  }
-
-  ngOnInit() {
-    if (this._usrSvc.user) {
-      return this._route.navigate(['']);
-    }
-
     this.lf = this._fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
+  }
+
+  ngOnInit() {
+    if (this._usrSvc.user) {
+      this._route.navigate(['']);
+    }
   }
 
   public async  login() {

@@ -63,7 +63,7 @@ export class ServerAddressService {
   }
 
   public getServer(name: string): string {
-    return this._addressMap.get(name);
+    return this._addressMap.get(name) || '';
   }
 
   public getServerAPI(name: string): string {
@@ -89,8 +89,9 @@ export class ServerAddressService {
     return new Promise<void>((resolve, reject) => {
       this._localStorage.set(this._defaultAddress, name)
         .then(() => this._localStorage.get(this._keyPrefix + name))
-        .then((adr: ServerKeyAddress) => this._http.get(adr + '/server/uuid'))
-        .then(g => g.subscribe((res: GetResponse) => {
+        .then((adr: ServerKeyAddress) =>
+          this._http.get<GetResponse>(adr + '/server/uuid'))
+        .then(g => g.subscribe(res => {
           this._localStorage.set(Helper.strDefNode, res.msg).then(() => {
             Helper.clinicNode = res.msg;
             resolve();

@@ -4,12 +4,12 @@ export class SecDoctor {
   private static _default: SecDoctor = new SecDoctor();
 
   // doctor shared enc key.
-  public UUID2: string;
-  public PS: string;
-  public PES: string;
-  public APS: string;
-  public PTI: string;
-  public signature: string;
+  public UUID2!: string;
+  public PS!: string;
+  public PES!: string;
+  public APS!: string;
+  public PTI!: string;
+  public signature!: string;
   public userDetails: UserDetails;
 
 

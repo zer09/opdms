@@ -19,7 +19,7 @@ export class StoreService {
   private _storeLocation: string[] = [];
   private _serverAddress: string[] = [];
 
-  public serverUUID: string;
+  public serverUUID!: string;
 
   constructor(
     private _saSvc: ServerAddressService,

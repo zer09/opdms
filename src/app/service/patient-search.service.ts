@@ -64,14 +64,9 @@ export class PatientSearchService {
 
     dr.forEach(drElem => {
       const ps = this._sSvc.get(drElem.PS);
-      this.searchedPatients.set(drElem.signature, {
-        Dr: drElem,
-        Patients: []
-      });
-
       this._searchTerms.forEach(tElem => {
         this._indexSearch(tElem, drElem).then(ids => {
-          const pts = this.searchedPatients.get(drElem.signature).Patients;
+          const pts: Patient[] = [];
           for (let i = 0; i < ids.length; i++) {
             ps.get(ids[i]).then(doc => {
               const pt = new Patient(doc._id);
@@ -79,6 +74,11 @@ export class PatientSearchService {
               pts.push(pt);
             });
           }
+
+          this.searchedPatients.set(drElem.signature, {
+            Dr: drElem,
+            Patients: pts
+          });
         });
       });
     });

@@ -12,7 +12,7 @@ import { Helper } from '../../helper';
 })
 export class LanguageService {
 
-  public languageList: Language[];
+  public languageList: Language[] = [];
 
   constructor(
     private _sSvc: StoreService,

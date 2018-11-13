@@ -73,6 +73,7 @@ export class AppComponent {
         this._localStorage.get('session').then((usr: User) => {
           this._events.publish(Helper.strUsrSesChg, usr);
         });
+        return;
       });
 
     });

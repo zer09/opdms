@@ -16,7 +16,7 @@ export class Patient {
   };
 
   public birthdate = '';
-  public sex: Sex;
+  public sex!: Sex;
   public maritalStatus = MaritalStatus.Single;
   public language = '';
   public religion = '';

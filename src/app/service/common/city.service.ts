@@ -11,7 +11,7 @@ import { AddRemovePopoverPage } from '../../page/common/add-remove-popover/add-r
 })
 export class CityService {
 
-  public cityList: City[];
+  public cityList: City[] = [];
 
   constructor(
     private _sSvc: StoreService,

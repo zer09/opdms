@@ -9,9 +9,9 @@ import { ModalController, AlertController } from '@ionic/angular';
 })
 export class ServerListPage implements OnInit {
 
-  public serverName: string;
-  public serverAddress: string;
-  public serverRadioGroup: string;
+  public serverName!: string;
+  public serverAddress!: string;
+  public serverRadioGroup!: string;
 
   constructor(
     private _saSvc: ServerAddressService,
@@ -40,7 +40,7 @@ export class ServerListPage implements OnInit {
 
     do {
       if (k && k.value !== 'remote') {
-        m.set(k.value, orig.get(k.value));
+        m.set(k.value, orig.get(k.value) || '');
       }
       k = iterator.next();
     } while (!k.done);

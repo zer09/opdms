@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { map } from 'rxjs/operators';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+// import { map } from 'rxjs/operators';
 
 import { UserService } from '../../service/user.service';
 import { LoadingController, AlertController, NavController } from '@ionic/angular';
 import { LoggerService } from '../../service/logger.service';
-import { PostResponse } from '../../interface/response/post-response';
 
 @Component({
   selector: 'app-registration',
@@ -24,9 +23,7 @@ export class RegistrationPage implements OnInit {
     private _navCtrl: NavController,
     private _loadingCtrl: LoadingController,
     private _alertCtrl: AlertController,
-  ) { }
-
-  ngOnInit() {
+  ) {
     this.rf = this._fb.group({
       username: ['', Validators.required],
       userType: ['2', Validators.required],
@@ -56,15 +53,18 @@ export class RegistrationPage implements OnInit {
       });
   }
 
+  ngOnInit() {
+  }
+
   public get rfc() {
     return this.rf.controls;
   }
 
-  private validateUsername(control: FormControl) {
-    return this._usrSvc.usernameExists(control.value).pipe(map(res => {
-      return res['exists'] ? { exists: true } : null;
-    }));
-  }
+  // private validateUsername(control: FormControl) {
+  //   return this._usrSvc.usernameExists(control.value).pipe(map(res => {
+  //     return res['exists'] ? { exists: true } : null;
+  //   }));
+  // }
 
   private matchingPassword(password: string, repassword: string) {
     return (group: FormGroup): { [key: string]: any } => {
@@ -74,6 +74,8 @@ export class RegistrationPage implements OnInit {
       if (p.value !== r.value) {
         return { mismatchedPassword: true };
       }
+
+      return {};
     };
   }
 
@@ -97,7 +99,7 @@ export class RegistrationPage implements OnInit {
 
     l.present().then(() => {
       this._usrSvc.register(this.rf.value)
-        .subscribe((res: PostResponse) => {
+        .subscribe(res => {
           l.onDidDismiss().then(() => {
             if (!res['success']) {
               this._alertCtrl.create({
