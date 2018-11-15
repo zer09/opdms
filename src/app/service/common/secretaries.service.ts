@@ -42,11 +42,11 @@ export class SecretaryService {
     }).then(res => {
       res.rows.forEach(row => {
         if (row.doc) {
-          const p = JSON.parse(this._enc.decrypt(row.doc.p, usr.UUID2));
+          const p = JSON.parse(this._enc.decrypt(row.doc.p, usr.UUID));
           this.secList.push({
             _id: row.doc._id,
             _rev: row.doc._rev,
-            name: [p.nam.first, p.name.last].join(' '),
+            name: [p.name.first, p.name.last].join(' '),
           });
         }
       });
@@ -65,7 +65,7 @@ export class SecretaryService {
             }
           }
         ).subscribe(res => {
-          if (res.successful || parseInt(res.msg.act, 10) !==
+          if (!res.successful || parseInt(res.msg.act, 10) !==
             UserType.SECRETARY) {
             return resolve(false);
           }
