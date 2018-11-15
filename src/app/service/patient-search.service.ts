@@ -46,7 +46,7 @@ export class PatientSearchService {
     });
   }
 
-  public onSearch(ev: any, dr: SecDoctor[]) {
+  public onSearch(ev: any, dr: SecDoctor[]): void {
     this._searchTerms.length = 0;
     this.searchedPatients = new Map<string, PatientSearch>();
 

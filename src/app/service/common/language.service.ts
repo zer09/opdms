@@ -21,7 +21,7 @@ export class LanguageService {
     private _alertCtrl: AlertController,
   ) { }
 
-  public fetchLanguages() {
+  public fetchLanguages(): void {
     this.languageList = [];
     this._sSvc.get(Helper.defStore).allDocs<{ language: string }>({
       include_docs: true,
@@ -41,7 +41,7 @@ export class LanguageService {
     }).catch(e => this._logSvc.log(e));
   }
 
-  public add(language: string) {
+  public add(language: string): void {
     if (!language || language.trim().length < 1) {
       return;
     }
@@ -65,7 +65,7 @@ export class LanguageService {
       }).catch(e => this._logSvc.log(e));
   }
 
-  public remove(languages: Language[]) {
+  public remove(languages: Language[]): void {
     for (let i = 0; i < languages.length; i++) {
       (languages[i] as any)._deleted = true;
     }
@@ -115,7 +115,7 @@ export class LanguageService {
     }).then(a => a.present());
   }
 
-  public popOver(event: Event) {
+  public popOver(event: Event): void {
     this._popCtrl.create({
       component: AddRemovePopoverPage,
       event: event,

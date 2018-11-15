@@ -21,7 +21,7 @@ export class TitlesService {
     private _alertCtrl: AlertController,
   ) { }
 
-  public fetchTitles() {
+  public fetchTitles(): void {
     this.titleList = [];
     this._sSvc.get(Helper.defStore).allDocs<{ title: string }>({
       include_docs: true,
@@ -41,7 +41,7 @@ export class TitlesService {
     }).catch(e => this._logSvc.log(e));
   }
 
-  public add(title: string) {
+  public add(title: string): void {
     if (!title || title.trim().length < 1) {
       return;
     }
@@ -65,7 +65,7 @@ export class TitlesService {
       }).catch(e => this._logSvc.log(e));
   }
 
-  public remove(titles: Title[]) {
+  public remove(titles: Title[]): void {
     for (let i = 0; i < titles.length; i++) {
       (titles[i] as any)._deleted = true;
     }
@@ -115,7 +115,7 @@ export class TitlesService {
     }).then(a => a.present());
   }
 
-  public popOver(event: Event) {
+  public popOver(event: Event): void {
     this._popCtrl.create({
       component: AddRemovePopoverPage,
       event: event,

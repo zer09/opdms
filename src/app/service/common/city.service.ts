@@ -20,7 +20,7 @@ export class CityService {
     private _alertCtrl: AlertController,
   ) { }
 
-  public fetchCities() {
+  public fetchCities(): void {
     this.cityList = [];
     this._sSvc.get(Helper.defStore).allDocs<{ city: string }>({
       include_docs: true,
@@ -40,7 +40,7 @@ export class CityService {
     }).catch(e => this._logSvc.log(e));
   }
 
-  public add(city: string) {
+  public add(city: string): void {
     if (!city || city.trim().length < 1) {
       return;
     }
@@ -64,7 +64,7 @@ export class CityService {
       }).catch(e => this._logSvc.log(e));
   }
 
-  public remove(cities: City[]) {
+  public remove(cities: City[]): void {
     for (let i = 0; i < cities.length; i++) {
       (cities[i] as any)._deleted = true;
     }
@@ -114,7 +114,7 @@ export class CityService {
     }).then(a => a.present());
   }
 
-  public popOver(event: Event) {
+  public popOver(event: Event): void {
     this._popCtrl.create({
       component: AddRemovePopoverPage,
       event: event,

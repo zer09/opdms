@@ -54,9 +54,9 @@ export class PatientProfilePage implements OnInit {
 
   ngOnInit() {
     this._ptId = this._aRoute.snapshot.paramMap.get('pt') || '';
-    this._dr = this._peerSvc.getDrBySignature(
-      this._aRoute.snapshot.paramMap.get('dr') || ''
-    ) || SecDoctor.Default;
+
+    this._dr = this._peerSvc.getDrBySignature(this._aRoute.snapshot.
+      paramMap.get('dr') || '');
 
     if (this._dr === SecDoctor.Default) {
       this._navCtrl.goBack();

@@ -49,10 +49,9 @@ export class PeersService {
     }).catch(e => this._logSvc.log(e));
   }
 
-  public getDrBySignature(sig: string) {
+  public getDrBySignature(sig: string): SecDoctor {
     return this._secDrs.find(e => {
       return e.signature === sig;
-    });
+    }) || SecDoctor.Default;
   }
-
 }

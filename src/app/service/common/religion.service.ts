@@ -20,7 +20,7 @@ export class ReligionService {
     private _alertCtrl: AlertController,
   ) { }
 
-  public fetchReligion() {
+  public fetchReligion(): void {
     this.religionList = [];
     this._sSvc.get(Helper.defStore).allDocs<{ religion: string }>({
       include_docs: true,
@@ -40,7 +40,7 @@ export class ReligionService {
     }).catch(e => this._logSvc.log(e));
   }
 
-  public add(religion: string) {
+  public add(religion: string): void {
     if (!religion || religion.trim().length < 1) {
       return;
     }
@@ -64,7 +64,7 @@ export class ReligionService {
       }).catch(e => this._logSvc.log(e));
   }
 
-  public remove(religions: Religion[]) {
+  public remove(religions: Religion[]): void {
     for (let i = 0; i < religions.length; i++) {
       (religions[i] as any)._deleted = true;
     }
@@ -114,7 +114,7 @@ export class ReligionService {
     }).then(a => a.present());
   }
 
-  public popOver(event: Event) {
+  public popOver(event: Event): void {
     this._popCtrl.create({
       component: AddRemovePopoverPage,
       event: event,

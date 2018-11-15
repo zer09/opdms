@@ -79,7 +79,7 @@ export class AppComponent {
     });
   }
 
-  private _initDoctorPage() {
+  private _initDoctorPage(): void {
     this.appPages = [
       { title: 'Home', url: '', icon: 'home' },
       { title: 'Medicines', url: '/DoctorHome/medicines', icon: 'medkit' },
@@ -87,14 +87,14 @@ export class AppComponent {
     ];
   }
 
-  private _initSecPage() {
+  private _initSecPage(): void {
     this.appPages = [
       { title: 'Home', url: '', icon: 'home' },
       { title: 'Settings', url: '/settings', icon: 'settings' }
     ];
   }
 
-  public logout() {
+  public logout(): void {
     this.appPages = [];
     this._menuCtrl.enable(false, this.mainMenuId);
     this._localStorage.set('session', undefined).then(() => {
