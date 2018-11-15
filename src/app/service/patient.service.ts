@@ -16,31 +16,21 @@ export class PatientService {
 
   private _indexName(pt: Patient, sc: SecDoctor): void {
     const pti = this._sSvc.get(sc.PTI);
-    [
-      pt.name.first.toLowerCase(),
-      pt.name.last.toLowerCase(),
-      pt.name.middle.toLowerCase(),
-    ].forEach(ele => {
-      pti.get<{ l: string[] }>(ele).then(doc => {
-        if (doc.l.findIndex(e => e === pt.Id) >= 0) {
-          return;
-        }
+
+    const st = (name: string): Promise<void> => {
+      return pti.get<{ l: string[] }>(name).then(doc => {
+        if (doc.l.findIndex(e => e === pt.Id) >= 0) { return; }
 
         doc.l.push(pt.Id);
-        pti.put(doc).catch(e => { throw e; });
+        pti.put(doc);
       }).catch(() => {
-        pti.put({ _id: ele, l: [pt.Id], }).catch(() => {
-          pti.get<{ l: string[] }>(ele).then(doc => {
-            if (doc.l.findIndex(e => e === pt.Id) >= 0) {
-              return;
-            }
-
-            doc.l.push(pt.Id);
-            pti.put(doc).catch(e => { throw e; });
-          });
-        });
+        pti.put({ _id: name, l: [pt.Id] });
       });
-    });
+    };
+
+    st(pt.name.first.toLowerCase())
+      .then(() => st(pt.name.last.toLowerCase()))
+      .then(() => st(pt.name.middle.toLowerCase()));
   }
 
   public getPatient(id: string, sc: SecDoctor): Promise<Patient> {
