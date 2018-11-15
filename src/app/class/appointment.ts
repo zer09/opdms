@@ -38,8 +38,8 @@ export class Appointment {
     return this._patient;
   }
 
-  public static extractPatientId(ptId: string): string {
-    return ptId.substring(7, 34);
+  public static extractPatientId(aptId: string): string {
+    return aptId.substring(7, 34);
   }
 
   public minified(): string {
