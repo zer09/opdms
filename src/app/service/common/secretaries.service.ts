@@ -35,29 +35,26 @@ export class SecretaryService {
   public fetchDoctorSecrtaries(): void {
     this.secList = [];
     const usr: User = this._usrSvc.user;
-    this._sSvc.get(Helper.defStore)
-      .allDocs({
-        include_docs: true,
-        startkey: `ds${usr.signature}`,
-        endkey: `ds${usr.signature}\ufff0`
-      }).then(res => {
-        const rows = res.rows;
-
-        for (let i = 0; i < rows.length; i++) {
-          const doc = rows[i].doc;
-          const p = JSON.parse(this._enc.decrypt(doc.p, usr.UUID));
+    this._sSvc.get(Helper.defStore).allDocs<{ p: string }>({
+      include_docs: true,
+      startkey: `ds${usr.signature}`,
+      endkey: `ds${usr.signature}\ufff0`
+    }).then(res => {
+      res.rows.forEach(row => {
+        if (row.doc) {
+          const p = JSON.parse(this._enc.decrypt(row.doc.p, usr.UUID2));
           this.secList.push({
-            _id: doc._id,
-            _rev: doc._rev,
-            name: [p.name.first, p.name.last].join(' ')
+            _id: row.doc._id,
+            _rev: row.doc._rev,
+            name: [p.nam.first, p.name.last].join(' '),
           });
         }
-      }).catch(e => this._logSvc.log(e));
+      });
+    }).catch(e => this._logSvc.log(e));
   }
 
-
   public addSecretary(username: string, password: string): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
+    return new Promise<boolean>(resolve => {
       this._saSvc.getDefaultServerAPI().then(addr => {
         this._http.post<PostResponse>(
           addr + '/users/login',
@@ -66,57 +63,65 @@ export class SecretaryService {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             }
-          }).subscribe(res => {
-            if (!res.successful ||
-              parseInt(res.msg.act, 10) !== UserType.SECRETARY) {
-              return resolve(false);
+          }
+        ).subscribe(res => {
+          if (res.successful || parseInt(res.msg.act, 10) !==
+            UserType.SECRETARY) {
+            return resolve(false);
+          }
+
+          const usr: User = this._usrSvc.user;
+          const st = this._sSvc.get(Helper.defStore);
+
+          // will save the sec information to dr.
+          const sSec = st.get<{ p: string }>(
+            `ds${usr.signature}${res.msg.signature}`
+          ).then(doc => {
+            const oldP = this._enc.decrypt(doc.p, usr.UUID);
+            const newP = JSON.stringify(res.msg);
+            if (oldP !== newP) {
+              doc.p = this._enc.encrypt(newP, usr.UUID2);
+              st.put(doc);
             }
-
-            const usr: User = this._usrSvc.user;
-            const st = this._sSvc.get(Helper.defStore);
-
-            // will save the sec information to dr.
-            const sSec = st.upsert(
-              `ds${usr.signature}${res.msg.signature}`,
-              doc => {
-                doc.p = this._enc.encrypt(
-                  JSON.stringify(res.msg),
-                  usr.UUID);
-                return doc;
-              }
-            );
-
-            // will save the dr information to sec.
-            const sDr = st.upsert(
-              `sd${res.msg.signature}${usr.signature}`,
-              doc => {
-                const secDr = new SecDoctor();
-                secDr.signature = usr.signature;
-                secDr.UUID2 = usr.UUID2;
-                secDr.PS = usr.PS;
-                secDr.PES = usr.PES;
-                secDr.APS = usr.APS;
-                secDr.PTI = usr.PTI;
-                secDr.userDetails = usr.userDetails;
-
-                doc.p = this._enc.encrypt(
-                  secDr.stringify(),
-                  res.msg.uuid
-                );
-
-                return doc;
-              }
-            );
-
-            Promise.all([sSec, sDr]).then(() => {
-              this.fetchDoctorSecrtaries();
-              resolve(true);
-            }).catch(e => {
-              reject(e);
+          }).catch(() => {
+            st.put({
+              _id: `ds${usr.signature}${res.msg.signature}`,
+              p: this._enc.encrypt(JSON.stringify(res.msg), usr.UUID)
             });
-          }, err => {
-            reject(err);
           });
+
+          const secDr = new SecDoctor();
+          secDr.signature = usr.signature;
+          secDr.UUID2 = usr.UUID2;
+          secDr.PS = usr.PS;
+          secDr.PES = usr.PES;
+          secDr.APS = usr.APS;
+          secDr.PTI = usr.PTI;
+          secDr.userDetails = usr.userDetails;
+
+          // will save th dr information to sec.
+          const sDr = st.get<{ p: string }>(
+            `sd${res.msg.signature}${usr.signature}`
+          ).then(doc => {
+            const oldP = this._enc.decrypt(doc.p, res.msg.uuid);
+            if (oldP !== secDr.stringify()) {
+              doc.p = this._enc.encrypt(secDr.stringify(), res.msg.uuid);
+              st.put(doc);
+            }
+          }).catch(() => {
+            st.put({
+              _id: `sd${res.msg.signature}${usr.signature}`,
+              p: this._enc.encrypt(secDr.stringify(), res.msg.uuid),
+            });
+          });
+
+          return Promise.all([sSec, sDr]).then(() => {
+            this.fetchDoctorSecrtaries();
+            return resolve(true);
+          });
+        }, err => {
+          throw err;
+        });
       });
     });
   }
@@ -145,6 +150,9 @@ export class SecretaryService {
   }
 
   private _alertAdd(): void {
+    let uname: string;
+    let passw: string;
+
     this._alertCtrl.create({
       header: 'Add New Secretary',
       message: 'Please provide secretary credentials',
@@ -153,7 +161,7 @@ export class SecretaryService {
         placeholder: 'Username',
         type: 'text',
       }, {
-        name: 'pass',
+        name: 'passw',
         placeholder: 'Password',
         type: 'password'
       }],
@@ -163,10 +171,33 @@ export class SecretaryService {
       }, {
         text: 'Login',
         handler: data => {
-          this.addSecretary(data.uname.trim(), data.pass.trim());
+          uname = data.uname.trim();
+          passw = data.passw.trim();
+          // this.addSecretary(data.uname.trim(), data.pass.trim());
         },
       }]
-    }).then(a => a.present());
+    }).then(a => {
+      a.onDidDismiss().then(() => {
+        this.addSecretary(uname, passw).then(success => {
+          if (!success) {
+            this._alertCtrl.create({
+              header: 'Failed to Login',
+              message: 'Please try again.',
+              buttons: ['OK'],
+            }).then(a2 => a2.present());
+          }
+        }).catch(e => {
+          this._logSvc.log(e);
+          this._alertCtrl.create({
+            header: 'Unexpected Error',
+            message: `Please tyr again.<br><br>Error: ${e.message}`,
+            buttons: ['OK'],
+          }).then(a2 => a2.present());
+        });
+      });
+
+      a.present();
+    });
   }
 
   private _alertRM(): void {

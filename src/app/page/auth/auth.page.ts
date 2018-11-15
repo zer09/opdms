@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AlertController, LoadingController, ModalController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController, Events } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 
 import { UserService } from '../../service/user.service';
@@ -8,6 +8,7 @@ import { ServerListPage } from '../../page/server-list/server-list.page';
 import { Router } from '@angular/router';
 import { PeersService } from '../../service/peers.service';
 import { Helper } from '../../helper';
+import { LoggerService } from '../../service/logger.service';
 
 @Component({
   selector: 'app-auth',
@@ -21,12 +22,14 @@ export class AuthPage implements OnInit {
   constructor(
     private _usrSvc: UserService,
     private _peerSvc: PeersService,
+    private _logSvc: LoggerService,
     private _fb: FormBuilder,
     private _localStorage: Storage,
     private _alertCtrl: AlertController,
     private _loadingCtrl: LoadingController,
     private _modalCtrl: ModalController,
     private _route: Router,
+    private _events: Events,
   ) {
     this.lf = this._fb.group({
       username: ['', Validators.required],
@@ -79,6 +82,10 @@ export class AuthPage implements OnInit {
           } else {
             this._route.navigate(['']);
           }
+        })
+        .catch(e => {
+          this._logSvc.log(e);
+          this._events.publish('usr:ses:logout');
         });
 
       this.lf.controls['username'].reset();

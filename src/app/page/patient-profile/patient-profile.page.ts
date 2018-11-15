@@ -273,15 +273,14 @@ export class PatientProfilePage implements OnInit {
 
     this._ptSvc.save(this.appointment.patient, this._dr)
       .then(() => this._aptSvc.save(this.appointment, this._dr))
-      .then(() => {
-        this._navCtrl.navigateBack(['SecHome']);
-      }).catch(e => {
+      .then(() => this._navCtrl.navigateBack(['SecHome']))
+      .catch(e => {
         this._logSvc.log(e);
         this._alertCrl.create({
-          header: 'Failed to save.',
-          message: 'There was an error while saving the data.' +
-            '<br>Please try again.',
-          buttons: ['OK']
+          header: 'Failed to Save',
+          message: 'There was an error while saving the data. Please try again' +
+            `<br><br>Error: ${e.message}`,
+          buttons: ['OK'],
         }).then(a => a.present());
       });
   }

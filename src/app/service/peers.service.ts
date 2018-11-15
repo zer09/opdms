@@ -34,17 +34,18 @@ export class PeersService {
       return Promise.resolve();
     }
 
-    return this._sSvc.get(Helper.defStore).allDocs({
+    return this._sSvc.get(Helper.defStore).allDocs<{ p: string }>({
       include_docs: true,
       startkey: `sd${this._usrSvc.user.signature}`,
       endkey: `sd${this._usrSvc.user.signature}\ufff0`
     }).then(res => {
-      const rows = res.rows;
-      for (let i = 0; i < rows.length; i++) {
-        let p = rows[i].doc.p;
-        p = this._enc.decrypt(p, this._usrSvc.user.UUID);
-        this._secDrs.push(SecDoctor.parse(p));
-      }
+      res.rows.forEach(row => {
+        const doc = row.doc;
+        if (doc) {
+          const p = this._enc.decrypt(doc.p, this._usrSvc.user.UUID);
+          this._secDrs.push(SecDoctor.parse(p));
+        }
+      });
     }).catch(e => this._logSvc.log(e));
   }
 

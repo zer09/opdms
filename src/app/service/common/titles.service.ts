@@ -23,23 +23,22 @@ export class TitlesService {
 
   public fetchTitles() {
     this.titleList = [];
-    this._sSvc.get(Helper.defStore)
-      .allDocs({
-        include_docs: true,
-        startkey: 'settings:title:',
-        endkey: 'settings:title:\ufff0'
-      }).then(res => {
-        const rows = res.rows;
-
-        for (let i = 0; i < rows.length; i++) {
-          const doc = rows[i].doc;
+    this._sSvc.get(Helper.defStore).allDocs<{ title: string }>({
+      include_docs: true,
+      startkey: 'settings:title:',
+      endkey: 'settings:title:\ufff0'
+    }).then(res => {
+      res.rows.forEach(row => {
+        const doc = row.doc;
+        if (doc) {
           this.titleList.push({
             _id: doc._id,
             _rev: doc._rev,
             title: doc.title
           });
         }
-      }).catch(e => this._logSvc.log(e));
+      });
+    }).catch(e => this._logSvc.log(e));
   }
 
   public add(title: string) {

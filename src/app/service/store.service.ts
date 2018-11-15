@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Events } from '@ionic/angular';
 
 import cordovaSqlitePlugin from 'pouchdb-adapter-cordova-sqlite';
-import upsert from 'pouchdb-upsert';
 import PouchDB from 'pouchdb';
 
 import { ServerAddressService } from './server-address.service';
@@ -14,7 +13,8 @@ import { Helper } from '../helper';
 })
 export class StoreService {
 
-  private _stores: any = {};
+  private _sMap: Map<string, PouchDB.Database> =
+    new Map<string, PouchDB.Database>();
 
   private _storeLocation: string[] = [];
   private _serverAddress: string[] = [];
@@ -28,68 +28,52 @@ export class StoreService {
     if (Helper.isApp) {
       PouchDB.plugin(cordovaSqlitePlugin);
     }
-
-    PouchDB.plugin(upsert);
   }
 
-  public monitorStore() {
+  public monitorStore(): void {
     this._monitorAddress();
 
     this._registerStore(Helper.defStore);
-
-    const adrs = this._saSvc.listServers();
-    for (let i = 0; i < adrs.length; i++) {
-      this._registerAddress(adrs[i]);
-    }
+    this._saSvc.listServers().forEach(sa => {
+      this._registerAddress(sa);
+    });
   }
 
-  public get(name: string) {
-    const s = this._stores[name];
-    return !s ? this._registerStore(name) : s;
+  public get(name: string): PouchDB.Database {
+    return this._sMap.get(name) || this._registerStore(name);
   }
 
-  private _monitorAddress() {
+  private _monitorAddress(): void {
     this._events.subscribe('server:address', sa => {
       this._registerAddress(sa);
     });
   }
 
-  private _registerAddress(sa: string) {
+  private _registerAddress(sa: string): void {
     if (!sa || this._serverAddress.indexOf(sa) > -1) {
       return;
     }
 
     this._serverAddress.push(sa);
-    for (let i = 0; i < this._storeLocation.length; i++) {
-      const name = this._storeLocation[i];
-
-      this._stores[name].sync(
-        new PouchDB(sa + '/store/' + name), {
-          live: true, retry: true
-        }
-      );
-    }
+    this._storeLocation.forEach(sl => {
+      const s = this._sMap.get(sl);
+      if (s) {
+        s.sync(new PouchDB(sa + '/store/' + sl), { live: true, retry: true });
+      }
+    });
   }
 
-  private _registerStore(sl: string) {
-    if (!sl || this._stores[sl]) {
-      return;
-    }
+  private _registerStore(sl: string): PouchDB.Database {
+    const s: PouchDB.Database = this._sMap.get(sl) ||
+      Helper.isApp ? new PouchDB(sl, { adapter: 'cordova-sqlite' })
+      : new PouchDB(sl);
 
-    const s = Helper.isApp ? new PouchDB(sl, {
-      adapter: 'cordova-sqlite'
-    }) : new PouchDB(sl);
-
-    this._stores[sl] = s;
+    this._sMap.set(sl, s);
     this._storeLocation.push(sl);
 
-    for (let i = 0; i < this._serverAddress.length; i++) {
-      s.sync(
-        new PouchDB(this._serverAddress[i] + '/store/' + sl), {
-          live: true, retry: true
-        }
-      );
-    }
+    this._serverAddress.forEach(sa => {
+      s.sync(new PouchDB(sa + '/store/' + sl), { live: true, retry: true });
+    });
 
     return s;
   }

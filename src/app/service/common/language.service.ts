@@ -23,23 +23,22 @@ export class LanguageService {
 
   public fetchLanguages() {
     this.languageList = [];
-    this._sSvc.get(Helper.defStore)
-      .allDocs({
-        include_docs: true,
-        startkey: `settings:lang:`,
-        endkey: `settings:lang:\ufff0`
-      }).then(res => {
-        const rows = res.rows;
-
-        for (let i = 0; i < rows.length; i++) {
-          const doc = rows[i].doc;
+    this._sSvc.get(Helper.defStore).allDocs<{ language: string }>({
+      include_docs: true,
+      startkey: `settings:lang:`,
+      endkey: `settings:lang:\ufff0`
+    }).then(res => {
+      res.rows.forEach(row => {
+        const doc = row.doc;
+        if (doc) {
           this.languageList.push({
             _id: doc._id,
             _rev: doc._rev,
             language: doc.language
           });
         }
-      }).catch(e => this._logSvc.log(e));
+      });
+    }).catch(e => this._logSvc.log(e));
   }
 
   public add(language: string) {
@@ -73,7 +72,7 @@ export class LanguageService {
 
     this._sSvc.get(Helper.defStore)
       .bulkDocs(languages).then(() => this.fetchLanguages())
-      .cath(e => this._logSvc.log(e));
+      .catch(e => this._logSvc.log(e));
   }
 
   private _alertAdd(): void {

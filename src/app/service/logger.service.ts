@@ -22,7 +22,10 @@ export class LoggerService {
     this._errLog.put({
       _id: Helper.ulidString,
       t: moment().unix(),
-      e: e.message
+      e: e.message,
+      s: e.toString(),
+      f: e.fileName,
+      l: e.lineNumber,
     });
   }
 

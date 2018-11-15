@@ -22,23 +22,22 @@ export class CityService {
 
   public fetchCities() {
     this.cityList = [];
-    this._sSvc.get(Helper.defStore)
-      .allDocs({
-        include_docs: true,
-        startkey: `settings:city:`,
-        endkey: `settings:city:\ufff0`
-      }).then(res => {
-        const rows = res.rows;
-
-        for (let i = 0; i < rows.length; i++) {
-          const doc = rows[i].doc;
+    this._sSvc.get(Helper.defStore).allDocs<{ city: string }>({
+      include_docs: true,
+      startkey: `settings:city:`,
+      endkey: `settings:city:\ufff0`
+    }).then(res => {
+      res.rows.forEach(row => {
+        const doc = row.doc;
+        if (doc) {
           this.cityList.push({
             _id: doc._id,
             _rev: doc._rev,
             city: doc.city
           });
         }
-      }).catch(e => this._logSvc.log(e));
+      });
+    }).catch(e => this._logSvc.log(e));
   }
 
   public add(city: string) {
