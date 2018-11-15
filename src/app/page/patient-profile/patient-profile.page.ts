@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, NavController, LoadingController } from '@ionic/angular';
 import moment from 'moment';
 import { TitlesService } from '../../service/common/titles.service';
 import { LanguageService } from '../../service/common/language.service';
@@ -44,7 +44,8 @@ export class PatientProfilePage implements OnInit {
     private _aRoute: ActivatedRoute,
     private _navCtrl: NavController,
     private _fb: FormBuilder,
-    private _alertCrl: AlertController,
+    private _alertCtrl: AlertController,
+    private _loadingCtrl: LoadingController,
     public titles: TitlesService,
     public languages: LanguageService,
     public religions: ReligionService,
@@ -224,7 +225,7 @@ export class PatientProfilePage implements OnInit {
       this.patientProfileForm.controls['arrivalTime'].markAsTouched();
       this.patientProfileForm.controls['scheduleStatus'].markAsTouched();
 
-      this._alertCrl.create({
+      this._alertCtrl.create({
         header: 'Failed to save.',
         message: 'Some fields is incomplete or have errors.',
         buttons: ['OK']
@@ -271,18 +272,28 @@ export class PatientProfilePage implements OnInit {
     this.appointment.patientComplaint = v.patientComplaint;
     this.appointment.notes = v.notes;
 
-    this._ptSvc.save(this.appointment.patient, this._dr)
-      .then(() => this._aptSvc.save(this.appointment, this._dr))
-      .then(() => this._navCtrl.navigateBack(['SecHome']))
-      .catch(e => {
-        this._logSvc.log(e);
-        this._alertCrl.create({
-          header: 'Failed to Save',
-          message: 'There was an error while saving the data. Please try again' +
-            `<br><br>Error: ${e.message}`,
-          buttons: ['OK'],
-        }).then(a => a.present());
-      });
-  }
+    this._loadingCtrl.create({
+      message: 'Saving ...'
+    }).then(l => {
+      l.present();
 
+      this._ptSvc.save(this.appointment.patient, this._dr)
+        .then(() => this._aptSvc.save(this.appointment, this._dr))
+        .then(() => this._navCtrl.navigateBack(['SecHome']))
+        .then(() => l.dismiss())
+        .catch(e => {
+          l.onDidDismiss().then(() => {
+            this._alertCtrl.create({
+              header: 'Failed to Save',
+              message: 'There was an error while saving the data. Please try again' +
+                `<br><br>Error: ${e.message}`,
+              buttons: ['OK'],
+            }).then(a => a.present());
+          });
+
+          this._logSvc.log(e);
+          l.dismiss();
+        });
+    });
+  }
 }
