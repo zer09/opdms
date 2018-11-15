@@ -17,3 +17,8 @@
 .grid-row {
   border-bottom: 1px solid var(--ion-color-primary);
 }
+
+.invalid-field {
+  color: var(--ion-color-danger);
+  font-size: 0.8rem;
+}
