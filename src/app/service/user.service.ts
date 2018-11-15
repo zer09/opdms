@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { HttpClient } from '@angular/common/http';
 import { Events } from '@ionic/angular';
-import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
 import { ServerAddressService } from './server-address.service';
@@ -102,27 +101,25 @@ export class UserService {
     });
   }
 
-  public usernameExists(username: string): Observable<Object> {
-    return this._http.post(
-      this._saSvc.getServerAPI(this._saSvc.remoteName) + '/users/usernameexists',
-      JSON.stringify({ username }), {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+  public register(userInfo): Promise<PostResponse> {
+    return new Promise<PostResponse>(resolve => {
+      this._http.post<PostResponse>(
+        this._saSvc.getServerAPI(this._saSvc.remoteName) +
+        '/registration/register',
+        JSON.stringify(userInfo), {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          }
         }
-      }
-    );
-  }
-
-  public register(userInfo) {
-    return this._http.post<PostResponse>(
-      this._saSvc.getServerAPI(this._saSvc.remoteName) + '/registration/register',
-      JSON.stringify(userInfo), {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
-      }
-    );
+      ).subscribe(res => {
+        resolve(res);
+      }, err => {
+        resolve({
+          successful: false,
+          msg: err.messsage
+        });
+      });
+    });
   }
 }

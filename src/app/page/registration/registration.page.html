@@ -19,14 +19,8 @@
               <ion-input type="text" formControlName="username"></ion-input>
             </ion-item>
 
-            <ion-item *ngIf="rfc.username.pending">
-              <p>Checking Username...</p>
-            </ion-item>
-            <ion-item *ngIf="submitted && rfc.username.hasError('required')">
+            <ion-item class="invalid-field" lines="none" *ngIf="submitted && rfc.username.hasError('required')">
               <p>Please provide valid username.</p>
-            </ion-item>
-            <ion-item *ngIf="rfc.username.touched && !rfc.username.pending && !rfc.username.hasError('required') && !rfc.username.valid">
-              <p>Username is already taken.</p>
             </ion-item>
 
           </ion-list>
@@ -52,8 +46,11 @@
               <ion-input type="password" formControlName="password"></ion-input>
             </ion-item>
 
-            <ion-item *ngIf="submitted && !rfc.password.valid">
+            <ion-item class="invalid-field" lines="none" *ngIf="submitted && !rfc.password.valid">
               <p>Required, minimum of 8 characters.</p>
+            </ion-item>
+            <ion-item class="invalid-field" lines="none" *ngIf="rf.hasError('mismatchedPassword') && rf.controls.repassword.touched">
+              <p>Password do not match.</p>
             </ion-item>
 
           </ion-list>
@@ -65,7 +62,7 @@
               <ion-input type="password" formControlName="repassword"></ion-input>
             </ion-item>
 
-            <ion-item *ngIf="submitted && rf.hasError('mismatchedPassword')">
+            <ion-item class="invalid-field" lines="none" *ngIf="rf.hasError('mismatchedPassword') && rf.controls.repassword.touched">
               <p>Password do not match.</p>
             </ion-item>
 
@@ -81,7 +78,7 @@
               <ion-input type="text" formControlName="firstname"></ion-input>
             </ion-item>
 
-            <ion-item *ngIf="submitted && !rfc.firstname.valid">
+            <ion-item class="invalid-field" lines="none" *ngIf="submitted && !rfc.firstname.valid">
               <p>Please enter a valid first name.</p>
             </ion-item>
 
@@ -94,7 +91,7 @@
               <ion-input type="text" formControlName="lastname"></ion-input>
             </ion-item>
 
-            <ion-item *ngIf="submitted && !rfc.lastname.valid">
+            <ion-item class="invalid-field" lines="none" *ngIf="submitted && !rfc.lastname.valid">
               <p>Please enter a valid last name.</p>
             </ion-item>
 
@@ -110,7 +107,7 @@
               <ion-input type="text" formControlName="middlename"></ion-input>
             </ion-item>
 
-            <ion-item *ngIf="submitted && !rfc.middlename.valid">
+            <ion-item class="invalid-field" lines="none" *ngIf="submitted && !rfc.middlename.valid">
               <p>Please enter a valid middle name.</p>
             </ion-item>
 
@@ -123,7 +120,7 @@
               <ion-input type="text" formControlName="suffixname"></ion-input>
             </ion-item>
 
-            <ion-item *ngIf="submitted && !rfc.suffixname.valid">
+            <ion-item class="invalid-field" lines="none" *ngIf="submitted && !rfc.suffixname.valid">
               <p>Please enter a valid suffix name.</p>
             </ion-item>
 
@@ -159,7 +156,7 @@
               <ion-input type="text" formControlName="question1"></ion-input>
             </ion-item>
 
-            <ion-item *ngIf="submitted && !rfc.question1.valid">
+            <ion-item class="invalid-field" lines="none" *ngIf="submitted && !rfc.question1.valid">
               <p>Required.</p>
             </ion-item>
 
@@ -175,7 +172,7 @@
               <ion-input type="text" formControlName="answer1"></ion-input>
             </ion-item>
 
-            <ion-item *ngIf="submitted && !rfc.answer1.valid">
+            <ion-item class="invalid-field" lines="none" *ngIf="submitted && !rfc.answer1.valid">
               <p>Required.</p>
             </ion-item>
 
@@ -191,7 +188,7 @@
               <ion-input type="text" formControlName="question2"></ion-input>
             </ion-item>
 
-            <ion-item *ngIf="submitted && !rfc.question2.valid">
+            <ion-item class="invalid-field" lines="none" *ngIf="submitted && !rfc.question2.valid">
               <p>Required.</p>
             </ion-item>
 
@@ -207,7 +204,7 @@
               <ion-input type="text" formControlName="answer2"></ion-input>
             </ion-item>
 
-            <ion-item *ngIf="submitted && !rfc.answer2.valid">
+            <ion-item class="invalid-field" lines="none" *ngIf="submitted && !rfc.answer2.valid">
               <p>Required.</p>
             </ion-item>
 
