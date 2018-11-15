@@ -28,6 +28,9 @@ export class SecHomePage implements OnInit {
   ) { }
 
   ngOnInit() {
+    if (this._peers.secDrs.length === 1) {
+      this._selectedDoctor = this._peers.secDrs[0];
+    }
   }
 
   public get searchOnDrs(): SecDoctor[] {
@@ -39,7 +42,7 @@ export class SecHomePage implements OnInit {
     const dInputs: any[] = [];
     dInputs.push({
       type: 'radio',
-      label: SecDoctor.Default.toString(),
+      label: 'Default',
       value: SecDoctor.Default,
       checked: this._selectedDoctor === SecDoctor.Default
     });
@@ -77,6 +80,7 @@ export class SecHomePage implements OnInit {
 
     const dInputs: any[] = [];
     let selectedDr: SecDoctor;
+    let canceled = false;
 
     for (let i = 0; i < this._peers.secDrs.length; i++) {
       dInputs.push({
@@ -92,14 +96,15 @@ export class SecHomePage implements OnInit {
       inputs: dInputs,
       buttons: [{
         text: 'Cancel',
-        role: 'cancel'
+        role: 'cancel',
+        handler: () => canceled = true,
       }, {
         text: 'OK',
-        handler: (dr: SecDoctor) => selectedDr = dr
+        handler: (dr: SecDoctor) => selectedDr = dr,
       }]
     }).then(a => {
       a.onDidDismiss().then(() => {
-        if (!selectedDr || selectedDr.signature.length < 1) {
+        if ((!selectedDr || selectedDr.signature.length < 1) && !canceled) {
           this._toast.create({
             message: `No doctor selected. Please try again.`,
             color: 'danger',
@@ -109,9 +114,11 @@ export class SecHomePage implements OnInit {
           return;
         }
 
-        this._navCtrl.navigateForward([
-          'PatientProfile', selectedDr.signature, ''
-        ]);
+        if (!canceled) {
+          this._navCtrl.navigateForward([
+            'PatientProfile', selectedDr.signature, ''
+          ]);
+        }
       });
 
       a.present();
