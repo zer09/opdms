@@ -18,5 +18,8 @@
     "strict": true,
     "noUnusedLocals": true,
     "noImplicitAny": false
-  }
+  },
+  "excldue": [
+    "**/flycheck_*.ts"
+  ]
 }
