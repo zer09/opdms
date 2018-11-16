@@ -6,6 +6,8 @@ import { PatientSearchService } from '../../service/patient-search.service';
 import { Sex } from '../../enum/sex.enum';
 import { MaritalStatus } from '../../enum/marital-status.enum';
 import { Patient } from '../../class/patient';
+import { AppointmentService } from '../../service/appointment.service';
+import { AppointmentSearch } from '../../interface/appointment-search';
 
 @Component({
   selector: 'app-sec-home',
@@ -25,6 +27,7 @@ export class SecHomePage implements OnInit {
     private _toast: ToastController,
     private _navCtrl: NavController,
     public ptSearch: PatientSearchService,
+    public aptSvc: AppointmentService,
   ) { }
 
   ngOnInit() {
@@ -36,6 +39,10 @@ export class SecHomePage implements OnInit {
   public get searchOnDrs(): SecDoctor[] {
     return this._selectedDoctor === SecDoctor.Default ?
       this._peers.secDrs : [this._selectedDoctor];
+  }
+
+  public aptList(): Map<string, AppointmentSearch> {
+    return this.aptSvc.aptList;
   }
 
   public changeDoctor(): void {

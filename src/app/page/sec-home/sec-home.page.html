@@ -29,6 +29,43 @@
   <ion-button expand="full" *ngIf="ptSearch.showAddButton" (click)="newPatient()">add new patient</ion-button>
 
   <ng-container *showItBootstrap="['md', 'lg', 'xl']">
+    <ng-container *ngIf="aptList().size > 0">
+      <ion-list>
+        <ion-item>APPOINTMENT LIST</ion-item>
+        <ng-container *ngFor="let a of aptList() | keyvalue">
+          <ng-container *ngIf="a.value.Appointments.length > 0">
+            <ion-grid>
+              <ion-row>
+                <ion-col>{{a.value.Dr}}</ion-col>
+              </ion-row>
+              <ion-row class="grid-row">
+                <ion-col size="3">Patient Name</ion-col>
+                <ion-col>Arrival Time</ion-col>
+                <ion-col>Blood Pressure</ion-col>
+                <ion-col>Pulse</ion-col>
+                <ion-col>Age</ion-col>
+                <ion-col>Contact</ion-col>
+                <ion-col>Referral</ion-col>
+                <ion-col>Payable</ion-col>
+              </ion-row>
+              <ion-row class="grid-row cursor" *ngFor="let apt of a.value.Appointments" (click)="appointmentOpen(apt, a.value.Dr)">
+                <ion-col size="3">{{apt.patient}}</ion-col>
+                <ion-col>{{apt.arrivalTimeString}}</ion-col>
+                <ion-col>{{apt.bloodPressure}}</ion-col>
+                <ion-col>{{apt.pulse}}</ion-col>
+                <ion-col>{{apt.patient.singleAgeString}}</ion-col>
+                <ion-col>{{apt.patient.contactMobile}}</ion-col>
+                <ion-col>{{apt.patient.referredby}}</ion-col>
+                <ion-col>0.00</ion-col>
+              </ion-row>
+            </ion-grid>
+          </ng-container>
+        </ng-container>
+      </ion-list>
+    </ng-container>
+  </ng-container>
+
+  <ng-container *showItBootstrap="['md', 'lg', 'xl']">
     <ng-container *ngIf="ptSearch.searchedPatients.size > 0">
       <ion-list>
         <ion-item>PATIENT LISTS</ion-item>
