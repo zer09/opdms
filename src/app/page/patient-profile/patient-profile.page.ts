@@ -177,8 +177,7 @@ export class PatientProfilePage implements OnInit {
     this.patientProfileForm.controls['guardian'].setValue(p.guardian);
     this.patientProfileForm.controls['referredBy'].setValue(p.referredBy);
     this.patientProfileForm.controls['allergies'].setValue(p.allergies);
-    this.patientProfileForm.controls['arrivalTime']
-      .setValue(moment(a.arrivalTime).format());
+
     this.patientProfileForm.controls['arrivalTime'].setValue(
       a.arrivalTime.length > 0 ? moment(a.arrivalTime).format() : moment().format()
     );
