@@ -28,6 +28,7 @@ export class PatientProfilePage implements OnInit {
 
   private _dr!: SecDoctor;
 
+  public patientProfile = 'Patient Profile';
   public ageText = 'Age: ';
   public segmentAdditional = 'contact';
   public segmentVital = 'vital';
@@ -194,6 +195,8 @@ export class PatientProfilePage implements OnInit {
     this.patientProfileForm.controls['patientComplaint']
       .setValue(a.patientComplaint);
     this.patientProfileForm.controls['notes'].setValue(a.notes);
+
+    this.patientProfile = p.toString();
   }
 
   public segmentChangeAddInfo(ev: any): void {
