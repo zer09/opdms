@@ -6,6 +6,7 @@ import { PeersService } from '../service/peers.service';
 import { UserService } from '../service/user.service';
 import { LoggerService } from '../service/logger.service';
 import { AppointmentService } from '../service/appointment.service';
+import { Helper } from '../helper';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,7 @@ export class InitSecGuard implements CanActivate {
     return this._usrSvc.sessionCheck()
       .then(() => this._peerSvc.fetchSecDrs())
       .then(() => {
-        this._aptSvc.monitorAPT(moment(), this._peerSvc.secDrs);
+        this._aptSvc.monitorAPT(moment(), Helper.clinicNode, this._peerSvc.secDrs);
         return true;
       })
       .catch(e => {

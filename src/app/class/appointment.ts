@@ -1,7 +1,9 @@
 import moment from 'moment';
 import { Patient } from './patient';
+import { Helper } from '../helper';
 
 export class Appointment {
+  private _clinicNode = '';
   private _id: string;
   private _patient: Patient;
 
@@ -36,6 +38,16 @@ export class Appointment {
 
   public get patient(): Patient {
     return this._patient;
+  }
+
+  public set clinicNode(node: string) {
+    if (this._clinicNode.length < 1) {
+      this._clinicNode = node;
+    }
+  }
+
+  public get clinicNode(): string {
+    return this._clinicNode;
   }
 
   public get arrivalTimeString(): string {

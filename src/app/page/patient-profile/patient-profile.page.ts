@@ -15,6 +15,7 @@ import { SecDoctor } from '../../class/sec-doctor';
 import { PeersService } from '../../service/peers.service';
 import { PatientService } from '../../service/patient.service';
 import { LoggerService } from '../../service/logger.service';
+import { Helper } from '../../helper';
 
 @Component({
   selector: 'app-patient-profile',
@@ -87,12 +88,14 @@ export class PatientProfilePage implements OnInit {
           });
         } else {
           this.appointment = new Appointment(this.patient);
+          this.appointment.clinicNode = Helper.clinicNode;
           this.setPatientData();
         }
       });
     } else {
       this.patient = new Patient();
       this.appointment = new Appointment(this.patient);
+      this.appointment.clinicNode = Helper.clinicNode;
     }
   }
 

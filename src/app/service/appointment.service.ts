@@ -13,6 +13,7 @@ import { LoggerService } from './logger.service';
 })
 export class AppointmentService {
 
+  private aptListActiveNode = '';
   public aptList: Map<string, AppointmentSearch>
     = new Map<string, AppointmentSearch>();
 
@@ -23,8 +24,9 @@ export class AppointmentService {
     private _logSvc: LoggerService,
   ) { }
 
-  public monitorAPT(m: moment.Moment, dr: SecDoctor[]): void {
-    if (this.aptList.size > 0) { return; }
+  public monitorAPT(m: moment.Moment, node: string, dr: SecDoctor[]): void {
+    if (this.aptList.size > 0 && this.aptListActiveNode === node) { return; }
+    this.aptListActiveNode = node;
 
     this.aptList = new Map<string, AppointmentSearch>();
 
@@ -37,7 +39,7 @@ export class AppointmentService {
         Appointments: apsSearch
       });
 
-      aps.allDocs<{ p: string }>({
+      aps.allDocs<{ p: string, n: string }>({
         include_docs: true,
         startkey: m.format('YYYYMMDD'),
         endkey: m.format('YYYYMMDD') + `\ufff0`
@@ -45,6 +47,7 @@ export class AppointmentService {
         res.rows.forEach(row => {
           const doc = row.doc;
           if (!doc) { return; }
+          if (doc.n !== this.aptListActiveNode) { return; }
 
           const aptId = doc._id;
           const ptId = Appointment.extractPatientId(aptId);
@@ -52,12 +55,13 @@ export class AppointmentService {
           this._ptSvc.getPatient(ptId, drElem).then(pt => {
             const apt = new Appointment(pt, aptId);
             apt.unminified(this._enc.decrypt(doc.p, drElem.UUID2));
+            apt.clinicNode = doc.n;
             apsSearch.push(apt);
           }).catch(e => this._logSvc.log(e));
         });
       }).catch(e => this._logSvc.log(e));
 
-      aps.changes<{ p: string }>({
+      aps.changes<{ p: string, n: string }>({
         since: 'now',
         live: true,
         include_docs: true
@@ -71,6 +75,7 @@ export class AppointmentService {
         this._ptSvc.getPatient(ptId, drElem).then(pt => {
           const apt = new Appointment(pt, aptId);
           apt.unminified(this._enc.decrypt(doc.p, drElem.UUID2));
+          apt.clinicNode = doc.n;
 
           const ix = apsSearch.findIndex(i => i.Id === apt.Id);
           if (ix >= 0) {
@@ -92,11 +97,12 @@ export class AppointmentService {
       }
     }
 
-    return this._sSvc.get(sc.APS).get<{ p: string }>(id).then(doc => {
+    return this._sSvc.get(sc.APS).get<{ p: string, n: string }>(id).then(doc => {
       return this._ptSvc.getPatient(Appointment.extractPatientId(id), sc)
         .then(pt => {
           const apt = new Appointment(pt, doc._id);
           apt.unminified(this._enc.decrypt(doc.p, sc.UUID2));
+          apt.clinicNode = doc.n;
 
           return apt;
         }).catch(e => {
@@ -109,7 +115,7 @@ export class AppointmentService {
 
   public save(apt: Appointment, sc: SecDoctor): Promise<Appointment> {
     const s = this._sSvc.get(sc.APS);
-    return s.get<{ p: string }>(apt.Id).then(doc => {
+    return s.get<{ p: string, n: string }>(apt.Id).then(doc => {
       const oldP = this._enc.decrypt(doc.p, sc.UUID2);
       const newP = apt.minified();
       if (oldP === newP) {
@@ -122,6 +128,7 @@ export class AppointmentService {
       return s.put({
         _id: apt.Id,
         p: this._enc.encrypt(apt.minified(), sc.UUID2),
+        n: apt.clinicNode,
       }).then(() => apt);
     });
   }
