@@ -38,6 +38,10 @@ export class Appointment {
     return this._patient;
   }
 
+  public get arrivalTimeString(): string {
+    return Helper.toLocaleTimeString(this.arrivalTime);
+  }
+
   public static extractPatientId(aptId: string): string {
     return aptId.substring(8, 34);
   }
