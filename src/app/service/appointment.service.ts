@@ -83,6 +83,15 @@ export class AppointmentService {
     });
   }
 
+  public async getAppointment(id: string, sc: SecDoctor): Promise<Appointment> {
+    const apts = this.aptList.get(sc.signature);
+    if (apts) {
+      const apt = await apts.Appointments.find(f => f.Id === id);
+      if (apt) {
+        return apt;
+      }
+    }
+
     return this._sSvc.get(sc.APS).get<{ p: string }>(id).then(doc => {
       return this._ptSvc.getPatient(Appointment.extractPatientId(id), sc)
         .then(pt => {

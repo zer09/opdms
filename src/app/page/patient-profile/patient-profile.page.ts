@@ -24,9 +24,10 @@ import { LoggerService } from '../../service/logger.service';
 export class PatientProfilePage implements OnInit {
 
   private _initLoadingCtrl = this._loadingCtrl.create({ message: 'Loading...' });
-  private _ptId!: string;
-  private _new!: boolean;
   private _dr!: SecDoctor;
+  private _ptId!: string;
+  private _aptId!: string;
+  private _new!: boolean;
 
   public patientProfile = 'Patient Profile';
   public ageText = 'Age: ';
@@ -57,6 +58,7 @@ export class PatientProfilePage implements OnInit {
 
   ngOnInit() {
     this._ptId = this._aRoute.snapshot.paramMap.get('pt') || '';
+    this._aptId = this._aRoute.snapshot.paramMap.get('apt') || '';
 
     this._dr = this._peerSvc.getDrBySignature(this._aRoute.snapshot.
       paramMap.get('dr') || '');
@@ -78,8 +80,15 @@ export class PatientProfilePage implements OnInit {
     if (!this._new) {
       this._ptSvc.getPatient(this._ptId, this._dr).then(pt => {
         this.patient = pt;
-        this.appointment = new Appointment(this.patient);
-        this.setPatientData();
+        if (this._aptId.length > 0) {
+          this._aptSvc.getAppointment(this._aptId, this._dr).then(a => {
+            this.appointment = a;
+            this.setPatientData();
+          });
+        } else {
+          this.appointment = new Appointment(this.patient);
+          this.setPatientData();
+        }
       });
     } else {
       this.patient = new Patient();
