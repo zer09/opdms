@@ -23,9 +23,9 @@ import { LoggerService } from '../../service/logger.service';
 })
 export class PatientProfilePage implements OnInit {
 
+  private _initLoadingCtrl = this._loadingCtrl.create({ message: 'Loading...' });
   private _ptId!: string;
   private _new!: boolean;
-
   private _dr!: SecDoctor;
 
   public patientProfile = 'Patient Profile';
@@ -52,6 +52,7 @@ export class PatientProfilePage implements OnInit {
     public religions: ReligionService,
     public cities: CityService,
   ) {
+    this._initLoadingCtrl.then(l => l.present());
   }
 
   ngOnInit() {
@@ -84,6 +85,10 @@ export class PatientProfilePage implements OnInit {
       this.patient = new Patient();
       this.appointment = new Appointment(this.patient);
     }
+  }
+
+  ngAfterViewInit() {
+    this._initLoadingCtrl.then(l => l.dismiss());
   }
 
   private _initProfile(): void {
