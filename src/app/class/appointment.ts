@@ -39,7 +39,7 @@ export class Appointment {
   }
 
   public static extractPatientId(aptId: string): string {
-    return aptId.substring(7, 34);
+    return aptId.substring(8, 34);
   }
 
   public minified(): string {
