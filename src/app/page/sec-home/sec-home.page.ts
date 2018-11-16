@@ -8,6 +8,7 @@ import { MaritalStatus } from '../../enum/marital-status.enum';
 import { Patient } from '../../class/patient';
 import { AppointmentService } from '../../service/appointment.service';
 import { AppointmentSearch } from '../../interface/appointment-search';
+import { Appointment } from '../../class/appointment';
 
 @Component({
   selector: 'app-sec-home',
@@ -79,7 +80,7 @@ export class SecHomePage implements OnInit {
   public newPatient(): void {
     if (this._selectedDoctor !== SecDoctor.Default) {
       this._navCtrl.navigateForward([
-        'PatientProfile', this._selectedDoctor.signature, ''
+        'PatientProfile', this._selectedDoctor.signature, '', ''
       ]);
 
       return;
@@ -123,7 +124,7 @@ export class SecHomePage implements OnInit {
 
         if (!canceled) {
           this._navCtrl.navigateForward([
-            'PatientProfile', selectedDr.signature, ''
+            'PatientProfile', selectedDr.signature, '', ''
           ]);
         }
       });
@@ -133,12 +134,16 @@ export class SecHomePage implements OnInit {
   }
 
   public patientOpen(pt: Patient, dr: SecDoctor): void {
-    if (!pt || !dr) {
-      return;
-    }
+    if (!pt || !dr) { return; }
+
+    this._navCtrl.navigateForward(['PatientProfile', dr.signature, pt.Id, '']);
+  }
+
+  public appointmentOpen(apt: Appointment, dr: SecDoctor): void {
+    if (!apt || !dr) { return; }
 
     this._navCtrl.navigateForward([
-      'PatientProfile', dr.signature, pt.Id
+      'PatientProfile', dr.signature, apt.patient.Id, apt.Id
     ]);
   }
 }

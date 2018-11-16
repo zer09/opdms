@@ -60,7 +60,7 @@ const routes: Routes = [
     loadChildren: './page/server-list/server-list.module#ServerListPageModule'
   },
   {
-    path: 'PatientProfile/:dr/:pt',
+    path: 'PatientProfile/:dr/:pt/:apt',
     loadChildren: './page/patient-profile/patient-profile.module#PatientProfilePageModule',
     canActivate: [AuthGuard]
   },
