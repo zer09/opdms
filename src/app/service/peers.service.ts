@@ -15,6 +15,7 @@ import { EncryptGCM } from '../class/encrypt-gcm';
 export class PeersService {
 
   private _secDrs: SecDoctor[] = [];
+  private _curDr!: SecDoctor;
 
   constructor(
     private _usrSvc: UserService,
@@ -25,6 +26,10 @@ export class PeersService {
 
   public get secDrs(): SecDoctor[] {
     return this._secDrs;
+  }
+
+  public get curDr(): SecDoctor {
+    return this._curDr;
   }
 
   public fetchSecDrs(): Promise<void> {
@@ -47,6 +52,19 @@ export class PeersService {
         }
       });
     }).catch(e => this._logSvc.log(e));
+  }
+
+  public fetchCurDr(): void {
+    if (!this._usrSvc.user ||
+      this._usrSvc.user.userType !== UserType.DOCTOR ||
+      !this._curDr) {
+      return;
+    }
+
+    const curDr = SecDoctor.UserToDr(this._usrSvc.user);
+    if (curDr) {
+      this._curDr = curDr;
+    }
   }
 
   public getDrBySignature(sig: string): SecDoctor {
