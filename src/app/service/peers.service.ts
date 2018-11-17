@@ -57,7 +57,7 @@ export class PeersService {
   public fetchCurDr(): void {
     if (!this._usrSvc.user ||
       this._usrSvc.user.userType !== UserType.DOCTOR ||
-      !this._curDr) {
+      this._curDr) {
       return;
     }
 
