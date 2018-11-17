@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './guard/auth.guard';
 import { UserTypeGuard } from './guard/user-type.guard';
 import { InitSecGuard } from './guard/init-sec.guard';
+import { InitDrGuard } from './guard/init-dr.guard';
 
 const routes: Routes = [
   {
@@ -22,7 +23,7 @@ const routes: Routes = [
   },
   {
     path: 'DoctorHome',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, InitDrGuard],
     children: [
       {
         path: '',
