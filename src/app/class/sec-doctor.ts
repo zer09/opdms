@@ -1,4 +1,6 @@
 import { UserDetails } from '../interface/user-details';
+import { User } from './user';
+import { UserType } from '../enum/user/user-type.enum';
 
 export class SecDoctor {
   private static _default: SecDoctor = new SecDoctor();
@@ -36,6 +38,23 @@ export class SecDoctor {
     secDr.APS = p.APS;
     secDr.PTI = p.PTI;
     secDr.userDetails = p.userDetails;
+
+    return secDr;
+  }
+
+  public static UserToDr(usr: User): SecDoctor | undefined {
+    if (usr.userType !== UserType.DOCTOR) {
+      return undefined;
+    }
+
+    const secDr = new SecDoctor();
+    secDr.signature = usr.signature;
+    secDr.UUID2 = usr.UUID2;
+    secDr.PS = usr.PS;
+    secDr.PES = usr.PES;
+    secDr.APS = usr.APS;
+    secDr.PTI = usr.PTI;
+    secDr.userDetails = usr.userDetails;
 
     return secDr;
   }
