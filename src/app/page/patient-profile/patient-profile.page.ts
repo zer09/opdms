@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, NavController, LoadingController } from '@ionic/angular';
@@ -22,7 +22,7 @@ import { Helper } from '../../helper';
   templateUrl: './patient-profile.page.html',
   styleUrls: ['./patient-profile.page.scss'],
 })
-export class PatientProfilePage implements OnInit {
+export class PatientProfilePage implements OnInit, AfterViewInit {
 
   private _initLoadingCtrl = this._loadingCtrl.create({ message: 'Loading...' });
   private _dr!: SecDoctor;
@@ -99,7 +99,7 @@ export class PatientProfilePage implements OnInit {
     }
   }
 
-  ngOnAfterViewInit() {
+  ngAfterViewInit() {
     this._initLoadingCtrl.then(l => l.dismiss());
   }
 
