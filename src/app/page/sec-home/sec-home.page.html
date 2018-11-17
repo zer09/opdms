@@ -5,7 +5,7 @@
     </ion-buttons>
 
     <ng-container *showItBootstrap="['md', 'lg', 'xl']">
-      <ion-searchbar #patientSearchBar animated debounce="450" placeholder="Patient Search" (ionChange)="ptSearch.onSearch($event, searchOnDrs)"></ion-searchbar>
+      <ion-searchbar #patientSearchBar animated debounce="450" placeholder="Patient Search" (ionChange)="onSearch($event, searchOnDrs)"></ion-searchbar>
     </ng-container>
 
     <ion-buttons slot="end">
@@ -20,7 +20,7 @@
 
   <ng-container *showItBootstrap="['xs', 'sm' ]">
     <ion-toolbar color="primary">
-      <ion-searchbar #patientSearchBar animated debounce="450" placeholder="Patient Search" (ionChange)="ptSearch.onSearch($event, searchOnDrs)"></ion-searchbar>
+      <ion-searchbar #patientSearchBar animated debounce="450" placeholder="Patient Search" (ionChange)="onSearch($event, searchOnDrs)"></ion-searchbar>
     </ion-toolbar>
   </ng-container>
 </ion-header>
@@ -29,10 +29,10 @@
   <ion-button expand="full" *ngIf="ptSearch.showAddButton" (click)="newPatient()">add new patient</ion-button>
 
   <ng-container *showItBootstrap="['md', 'lg', 'xl']">
-    <ng-container *ngIf="aptList().size > 0">
+    <ng-container *ngIf="aptSvc.appointmentList.size > 0">
       <ion-list>
         <ion-item>APPOINTMENT LIST</ion-item>
-        <ng-container *ngFor="let a of aptList() | keyvalue">
+        <ng-container *ngFor="let a of aptSvc.appointmentList | keyvalue">
           <ng-container *ngIf="a.value.Appointments.length > 0">
             <ion-grid>
               <ion-row>
@@ -66,10 +66,10 @@
   </ng-container>
 
   <ng-container *showItBootstrap="['xs', 'sm']">
-    <ng-container *ngIf="aptList().size > 0">
+    <ng-container *ngIf="aptSvc.appointmentList.size > 0">
       <ion-list>
         <ion-item>APPOINTMENT LISTS</ion-item>
-        <ng-container *ngFor="let a of aptList() | keyvalue">
+        <ng-container *ngFor="let a of aptSvc.appointmentList | keyvalue">
           <ng-container *ngIf="a.value.Appointments.length > 0">
             <ion-item-divider>{{a.value.Dr}}</ion-item-divider>
             <ion-item button="true" detail="true" type="button" *ngFor="let apt of a.value.Appointments" (click)="appointmentOpen(apt, a.value.Dr)">

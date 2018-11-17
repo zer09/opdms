@@ -7,7 +7,6 @@ import { Sex } from '../../enum/sex.enum';
 import { MaritalStatus } from '../../enum/marital-status.enum';
 import { Patient } from '../../class/patient';
 import { AppointmentService } from '../../service/appointment.service';
-import { AppointmentSearch } from '../../interface/appointment-search';
 import { Appointment } from '../../class/appointment';
 
 @Component({
@@ -42,8 +41,9 @@ export class SecHomePage implements OnInit {
       this._peers.secDrs : [this._selectedDoctor];
   }
 
-  public aptList(): Map<string, AppointmentSearch> {
-    return this.aptSvc.aptList;
+  public onSearch(ev: any, dr: SecDoctor[]): void {
+    this.ptSearch.onSearch(ev, dr);
+    this.aptSvc.onSearch(ev, dr);
   }
 
   public changeDoctor(): void {

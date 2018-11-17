@@ -14,8 +14,10 @@ import { LoggerService } from './logger.service';
 export class AppointmentService {
 
   private aptListActiveNode = '';
-  public aptList: Map<string, AppointmentSearch>
-    = new Map<string, AppointmentSearch>();
+
+  private _searchTerms: string[] = [];
+  private _aptList = new Map<string, AppointmentSearch>();
+  private _aptTempList = new Map<string, AppointmentSearch>();
 
   constructor(
     private _sSvc: StoreService,
@@ -24,17 +26,25 @@ export class AppointmentService {
     private _logSvc: LoggerService,
   ) { }
 
+  public get appointmentList(): Map<string, AppointmentSearch> {
+    if (this._searchTerms.length > 0) {
+      return this._aptTempList;
+    } else {
+      return this._aptList;
+    }
+  }
+
   public monitorAPT(m: moment.Moment, node: string, dr: SecDoctor[]): void {
-    if (this.aptList.size > 0 && this.aptListActiveNode === node) { return; }
+    if (this._aptList.size > 0 && this.aptListActiveNode === node) { return; }
     this.aptListActiveNode = node;
 
-    this.aptList = new Map<string, AppointmentSearch>();
+    this._aptList = new Map<string, AppointmentSearch>();
 
     dr.forEach(drElem => {
       const apsSearch: Appointment[] = [];
       const aps = this._sSvc.get(drElem.APS);
 
-      this.aptList.set(drElem.signature, {
+      this._aptList.set(drElem.signature, {
         Dr: drElem,
         Appointments: apsSearch
       });
@@ -88,8 +98,46 @@ export class AppointmentService {
     });
   }
 
+  public onSearch(ev: any, dr: SecDoctor[]): void {
+    this._aptTempList.clear();
+    this._searchTerms.length = 0;
+
+    if (!ev || !ev.target.value) {
+      return;
+    }
+
+    const terms: string[] = ev.target.value.split(/\s+/);
+
+    if (terms.length === 1 && terms[0].length < 3) {
+      return;
+    }
+
+    for (let i = 0; i < terms.length; i++) {
+      if (terms[i].length > 2 && !this._searchTerms.includes(terms[i])) {
+        this._searchTerms.push(terms[i].toLowerCase());
+      }
+    }
+
+    this._aptList.forEach((v, k) => {
+      if (!dr.some(ele => ele.signature === v.Dr.signature)) { return; }
+
+      const apts: Appointment[] = [];
+      this._aptTempList.set(k, { Dr: v.Dr, Appointments: apts });
+
+      v.Appointments.forEach(a => {
+        this._searchTerms.forEach(t => {
+          if (a.patient.name.first.toLowerCase().includes(t) ||
+            a.patient.name.last.toLowerCase().includes(t) ||
+            a.patient.name.middle.toLowerCase().includes(t)) {
+            apts.push(a);
+          }
+        });
+      });
+    });
+  }
+
   public async getAppointment(id: string, sc: SecDoctor): Promise<Appointment> {
-    const apts = this.aptList.get(sc.signature);
+    const apts = this._aptList.get(sc.signature);
     if (apts) {
       const apt = await apts.Appointments.find(f => f.Id === id);
       if (apt) {
