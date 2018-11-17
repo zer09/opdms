@@ -54,6 +54,10 @@ export class Appointment {
     return Helper.toLocaleTimeString(this.arrivalTime);
   }
 
+  public get appointmentDate(): moment.Moment {
+    return moment(this.Id.substr(0, 8), 'YYYYMMDD');
+  }
+
   public static extractPatientId(aptId: string): string {
     return aptId.substring(8, 34);
   }

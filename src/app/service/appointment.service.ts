@@ -37,6 +37,7 @@ export class AppointmentService {
   public monitorAPT(m: moment.Moment, node: string, dr: SecDoctor[]): void {
     if (this._aptList.size > 0 && this.aptListActiveNode === node) { return; }
     this.aptListActiveNode = node;
+    m = moment(m.format('YYYYMMDD'), 'YYYYMMDD');
 
     this._aptList = new Map<string, AppointmentSearch>();
 
@@ -66,7 +67,10 @@ export class AppointmentService {
             const apt = new Appointment(pt, aptId);
             apt.unminified(this._enc.decrypt(doc.p, drElem.UUID2));
             apt.clinicNode = doc.n;
-            apsSearch.push(apt);
+
+            if (apt.appointmentDate.isSame(m)) {
+              apsSearch.push(apt);
+            }
           }).catch(e => this._logSvc.log(e));
         });
       }).catch(e => this._logSvc.log(e));
@@ -86,6 +90,8 @@ export class AppointmentService {
           const apt = new Appointment(pt, aptId);
           apt.unminified(this._enc.decrypt(doc.p, drElem.UUID2));
           apt.clinicNode = doc.n;
+
+          if (!apt.appointmentDate.isSame(m)) { return; }
 
           const ix = apsSearch.findIndex(i => i.Id === apt.Id);
           if (ix >= 0) {
