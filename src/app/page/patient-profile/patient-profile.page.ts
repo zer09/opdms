@@ -99,7 +99,7 @@ export class PatientProfilePage implements OnInit {
     }
   }
 
-  ngAfterViewInit() {
+  ngOnAfterViewInit() {
     this._initLoadingCtrl.then(l => l.dismiss());
   }
 
