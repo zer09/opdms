@@ -1,4 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
+import { Sex } from '../../enum/sex.enum';
+import { MaritalStatus } from '../../enum/marital-status.enum';
+import { SecDoctor } from '../../class/sec-doctor';
+import { PeersService } from '../../service/peers.service';
+import { Patient } from '../../class/patient';
+import { Appointment } from '../../class/appointment';
+import { PatientSearchService } from '../../service/patient-search.service';
+import { AppointmentService } from '../../service/appointment.service';
 
 @Component({
   selector: 'app-doctor-home',
@@ -7,9 +16,47 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DoctorHomePage implements OnInit {
 
-  constructor() { }
+  public Sex = Sex;
+  public MaritalStatus = MaritalStatus;
+
+  public curDr: SecDoctor;
+
+  constructor(
+    private _peers: PeersService,
+    private _navCtrl: NavController,
+    public ptSearch: PatientSearchService,
+    public aptSvc: AppointmentService,
+  ) {
+    this.curDr = this._peers.curDr;
+  }
 
   ngOnInit() {
   }
 
+  public onSearch(ev: Event) {
+    this.ptSearch.onSearch(ev, [this.curDr]);
+    this.aptSvc.onSearch(ev, [this.curDr]);
+  }
+
+  public newPatient(): void {
+    this._navCtrl.navigateForward([
+      'PatientProfile', this.curDr.signature, '', ''
+    ]);
+  }
+
+  public patientOpen(pt: Patient, dr: SecDoctor): void {
+    if (!pt || !dr) { return; }
+
+    this._navCtrl.navigateForward([
+      'PatientProfile', this.curDr.signature, pt.Id, '',
+    ]);
+  }
+
+  public appointmentOpen(apt: Appointment, dr: SecDoctor): void {
+    if (!apt || !dr) { return; }
+
+    this._navCtrl.navigateForward([
+      'PatientProfile', dr.signature, apt.patient.Id, apt.Id
+    ]);
+  }
 }
