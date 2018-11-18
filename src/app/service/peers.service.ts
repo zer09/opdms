@@ -68,8 +68,12 @@ export class PeersService {
   }
 
   public getDrBySignature(sig: string): SecDoctor {
-    return this._secDrs.find(e => {
-      return e.signature === sig;
-    }) || SecDoctor.Default;
+    if (this._usrSvc.user.userType === UserType.DOCTOR) {
+      return this._curDr;
+    } else {
+      return this._secDrs.find(e => {
+        return e.signature === sig;
+      }) || SecDoctor.Default;
+    }
   }
 }
