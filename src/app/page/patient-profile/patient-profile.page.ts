@@ -16,6 +16,8 @@ import { PeersService } from '../../service/peers.service';
 import { PatientService } from '../../service/patient.service';
 import { LoggerService } from '../../service/logger.service';
 import { Helper } from '../../helper';
+import { UserService } from '../../service/user.service';
+import { UserType } from '../../enum/user/user-type.enum';
 
 @Component({
   selector: 'app-patient-profile',
@@ -40,6 +42,7 @@ export class PatientProfilePage implements OnInit, AfterViewInit {
   public patientProfileForm!: FormGroup;
 
   constructor(
+    private _usrSvc: UserService,
     private _ptSvc: PatientService,
     private _aptSvc: AppointmentService,
     private _peerSvc: PeersService,
@@ -301,7 +304,13 @@ export class PatientProfilePage implements OnInit, AfterViewInit {
 
       this._ptSvc.save(this.appointment.patient, this._dr)
         .then(() => this._aptSvc.save(this.appointment, this._dr))
-        .then(() => this._navCtrl.navigateBack(['SecHome']))
+        .then(() => {
+          if (this._usrSvc.user.userType === UserType.DOCTOR) {
+            this._navCtrl.navigateBack(['DoctorHome']);
+          } else {
+            this._navCtrl.navigateBack(['SecHome']);
+          }
+        })
         .then(() => l.dismiss())
         .catch(e => {
           l.onDidDismiss().then(() => {
