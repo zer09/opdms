@@ -30,7 +30,7 @@
     "@ionic/angular": "^4.0.0-beta.16",
     "@ionic/storage": "^2.2.0",
     "@types/pouchdb": "^6.3.2",
-    "@types/pouchdb-upsert": "^2.2.4",
+    "@types/pouchdb-upsert": "^2.2.5",
     "cordova-android": "^7.1.2",
     "cordova-browser": "^5.0.4",
     "cordova-plugin-device": "^2.0.2",
