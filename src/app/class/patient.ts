@@ -54,6 +54,24 @@ export class Patient {
     return [this.name.first, this.name.middle, this.name.last].join(' ');
   }
 
+  public toLongString(showNickName = false): string {
+    let name = this.toString();
+    if (this.name.suffix.length > 0) {
+      name += ', ' + this.name.suffix;
+    }
+
+    if (showNickName && this.name.nickname.length > 0) {
+      name += ` (${this.name.nickname})`;
+    }
+
+    name += ', ' + AgeHelper.singleAgeString(this);
+    name += ', ' + Sex[this.sex];
+    return name;
+  }
+
+  public completeAddress(): string {
+    return [this.address, this.city].join(', ');
+  }
 
   public minified(): string {
     const p = {
