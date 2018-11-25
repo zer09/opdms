@@ -45,7 +45,7 @@
                 <ion-col>Referral</ion-col>
                 <ion-col>Payable</ion-col>
               </ion-row>
-              <ion-row class="grid-row cursor" *ngFor="let apt of a.value.Appointments" (click)="appointmentOpen(apt, a.value.Dr)">
+              <ion-row class="grid-row cursor" *ngFor="let apt of a.value.Appointments" (click)="visitOpen(apt)">
                 <ion-col size="3">{{apt.patient}}</ion-col>
                 <ion-col>{{apt.arrivalTimeString}}</ion-col>
                 <ion-col>{{apt.bloodPressure}}</ion-col>
@@ -68,7 +68,7 @@
         <ion-item>APPOINTMENT LISTS</ion-item>
         <ng-container *ngFor="let a of aptSvc.appointmentList | keyvalue">
           <ng-container *ngIf="a.value.Appointments.length > 0">
-            <ion-item button="true" detail="true" type="button" *ngFor="let apt of a.value.Appointments" (click)="appointmentOpen(apt, a.value.Dr)">
+            <ion-item button="true" detail="true" type="button" *ngFor="let apt of a.value.Appointments" (click)="visitOpen(apt)">
               {{apt.patient}}
             </ion-item>
           </ng-container>

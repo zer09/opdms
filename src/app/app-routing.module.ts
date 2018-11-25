@@ -33,7 +33,11 @@ const routes: Routes = [
       {
         path: 'medicines',
         loadChildren: './page/medicines/medicines.module#MedicinesPageModule',
-      }
+      },
+      {
+        path: 'visit/:vid',
+        loadChildren: './page/visit/visit.module#VisitPageModule'
+      },
     ]
   },
   {

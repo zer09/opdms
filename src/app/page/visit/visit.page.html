@@ -1,0 +1,214 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ng-container *showItBootstrap="['md', 'lg', 'xl']">
+      <ion-title>{{title}}</ion-title>
+    </ng-container>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="save()">
+        <ion-icon slot="end" name="bookmark"></ion-icon>
+        <ng-container *showItBootstrap="['md', 'lg', 'xl']">
+          Save
+        </ng-container>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+  <ng-container *showItBootstrap="['xs', 'sm']">
+    <ion-toolbar color="secondary">
+      <ion-title>{{title}}</ion-title>
+    </ion-toolbar>
+  </ng-container>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="2" size-lg="2" size-xl="2">
+        <ng-container *showItBootstrap="['md', 'lg', 'xl']">
+          <ion-img src="assets/icons/test.png"></ion-img>
+        </ng-container>
+        <ng-container *showItBootstrap="['xs', 'sm']">
+          <ion-avatar horizontal="center">
+            <ion-img src="assets/icons/User-512.png"></ion-img>
+          </ion-avatar>
+        </ng-container>
+      </ion-col>
+      <ion-col size="12" size-md="10" size-lg="10" size-xl="10">
+        <ion-segment value="0" (ionChange)="vitalSegmentChange($event)">
+          <ion-segment-button tabindex="-1" value="0">
+            <ion-label>Profile</ion-label>
+          </ion-segment-button>
+          <ion-segment-button tabindex="-1" value="1">
+            <ion-label>Vital Sign</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+        <div [hidden]="vitalSegment !== '0'">
+          <ion-row>
+            <ion-col size="12" size-md="8" size-lg="8" size-xl="8">
+              <ion-item>
+                <ion-label position="floating">Patient</ion-label>
+                <ion-input readonly type="text" [(ngModel)]="nameLongString"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Address</ion-label>
+                <ion-input readonly type="text" [(ngModel)]="completeAddress"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-md="4" size-lg="4" size-xl="4">
+              <ion-item>
+                <ion-label position="floating">Allergies</ion-label>
+                <ion-textarea rows="4" wrap="soft" placeholder="Allergies Not Specified" [(ngModel)]="allergies"></ion-textarea>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </div>
+        <div [hidden]="vitalSegment !== '1'">
+          <ion-row>
+            <ion-col size="12" size-md="9" size-lg="9" size-xl="9">
+              <form [formGroup]="vitalSignFB">
+                <ion-row>
+                  <ion-col size="6" size-md="3" size-lg="3" size-xl="3" class="ion-col-no-padding">
+                    <ion-item>
+                      <ion-label position="floating">Blood Pressure</ion-label>
+                      <ion-input type="text" formControlName="bloodPressure"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                      <ion-label position="floating">Pulse</ion-label>
+                      <ion-input type="text" formControlName="pulse"></ion-input>
+                    </ion-item>
+                  </ion-col>
+                  <ion-col size="6" size-md="2" size-lg="2" size-xl="2" class="ion-col-no-padding">
+                    <ion-item>
+                      <ion-label position="floating">Temperature</ion-label>
+                      <ion-input type="text" formControlName="temp"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                      <ion-label position="floating">Resperation</ion-label>
+                      <ion-input type="text" formControlName="resp"></ion-input>
+                    </ion-item>
+                  </ion-col>
+                  <ion-col size="6" size-md="2" size-lg="2" size-xl="2" class="ion-col-no-padding">
+                    <ion-item>
+                      <ion-label position="floating">Weight</ion-label>
+                      <ion-input type="text" formControlName="weight"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                      <ion-label position="floating">Height</ion-label>
+                      <ion-input type="text" formControlName="height"></ion-input>
+                    </ion-item>
+                  </ion-col>
+                  <ion-col size="6" size-md="2" size-lg="2" size-xl="2" class="ion-col-no-padding">
+                    <ion-item>
+                      <ion-label position="floating">Waist</ion-label>
+                      <ion-input type="text" formControlName="waist"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                      <ion-label position="floating">Hip</ion-label>
+                      <ion-input type="text" formControlName="hip"></ion-input>
+                    </ion-item>
+                  </ion-col>
+                  <ion-col size="12" size-md="3" size-lg="3" size-xl="3" class="ion-col-no-padding">
+                    <ion-item>
+                      <ion-label position="floating">BMI</ion-label>
+                      <ion-input type="text" [(ngModel)]="BMI" [ngModelOptions]="{standalone:true}"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                      <ion-label position="floating">PT Health Status</ion-label>
+                      <ion-input type="text" [(ngModel)]="PTS" [ngModelOptions]="{standalone:true}"></ion-input>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+              </form>
+            </ion-col>
+            <ion-col size="12" size-md="3" size-lg="3" size-xl="3">
+              <ion-item>
+                <ion-label position="floating">Notes</ion-label>
+                <ion-textarea rows="4" wrap="soft" placeholder="No Notes" [(ngModel)]="notes"></ion-textarea>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-segment value="0" scrollable="true" (onChange)="detailsSegmentChange($event)">
+          <ion-segment-button tabindex="-1" value="0">
+            <ion-label>Details</ion-label>
+          </ion-segment-button>
+          <ion-segment-button tabindex="-1" value="1">
+            <ion-label>Medication</ion-label>
+          </ion-segment-button>
+          <ion-segment-button tabindex="-1" value="2">
+            <ion-label>Vaccine</ion-label>
+          </ion-segment-button>
+          <ion-segment-button tabindex="-1" value="3">
+            <ion-label>Bill</ion-label>
+          </ion-segment-button>
+          <ion-segment-button tabindex="-1" value="4">
+            <ion-label>Certificate</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+        <div [hidden]="detailsSegment !== '0'">
+          <ion-row>
+            <ion-col size="12" size-md="3" size-lg="3" size-xl="3">
+              <ion-item>
+                <ion-label position="floating">Present Complaint</ion-label>
+                <ion-textarea rows="7" wrap="soft"></ion-textarea>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Finding/Examination</ion-label>
+                <ion-textarea rows="7" wrap="soft"></ion-textarea>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-md="3" size-lg="3" size-xl="3">
+              <ion-item>
+                <ion-label position="floating">Medical Notes</ion-label>
+                <ion-textarea rows="7" wrap="soft"></ion-textarea>
+              </ion-item>
+              <ion-item>
+                <ion-textarea rows="7" wrap="soft"></ion-textarea>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-md="3" size-lg="3" size-xl="3">
+              <ion-item>
+                <ion-label position="floating">Current Clinical Impression</ion-label>
+                <ion-textarea rows="7" wrap="soft"></ion-textarea>
+              </ion-item>
+              <ion-item>
+                <ion-textarea rows="7" wrap="soft"></ion-textarea>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-md="3" size-lg="3" size-xl="3">
+              <ion-item>
+                <ion-label position="floating">Treatment Advice</ion-label>
+                <ion-textarea rows="7" wrap="soft"></ion-textarea>
+              </ion-item>
+              <ion-item>
+                <ion-textarea rows="7" wrap="soft"></ion-textarea>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </div>
+        <div [hidden]="detailsSegment !== '1'">
+
+        </div>
+        <div [hidden]="detailsSegment !== '2'">
+
+        </div>
+        <div [hidden]="detailsSegment !== '3'">
+
+        </div>
+        <div [hidden]="detailsSegment !== '4'">
+
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

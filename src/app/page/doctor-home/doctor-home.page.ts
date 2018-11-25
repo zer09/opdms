@@ -52,11 +52,9 @@ export class DoctorHomePage implements OnInit {
     ]);
   }
 
-  public appointmentOpen(apt: Appointment, dr: SecDoctor): void {
-    if (!apt || !dr) { return; }
+  public visitOpen(apt: Appointment): void {
+    if (!apt) { return; }
 
-    this._navCtrl.navigateForward([
-      'PatientProfile', dr.signature, apt.patient.Id, apt.Id
-    ]);
+    this._navCtrl.navigateForward(['DoctorHome', 'visit', apt.Id]);
   }
 }
