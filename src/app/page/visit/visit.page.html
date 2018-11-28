@@ -138,7 +138,7 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-segment value="0" scrollable="true" (onChange)="detailsSegmentChange($event)">
+        <ion-segment value="0" scrollable="true" (ionChange)="detailsSegmentChange($event)">
           <ion-segment-button tabindex="-1" value="0">
             <ion-label>Details</ion-label>
           </ion-segment-button>
@@ -158,40 +158,75 @@
         <div [hidden]="detailsSegment !== '0'">
           <ion-row>
             <ion-col size="12" size-md="3" size-lg="3" size-xl="3">
-              <ion-item>
-                <ion-label position="floating">Present Complaint</ion-label>
-                <ion-textarea rows="7" wrap="soft"></ion-textarea>
+              <ion-item lines="none">
+                <mat-form-field class="mat-full-width">
+                  <input type="text" placeholder="Present Complaint" matInput [formControl]="pcFC" [matAutocomplete]="pcFCAuto" (keypress)="pcFCPress($event)">
+                  <mat-autocomplete autoActiveFirstOption #pcFCAuto="matAutocomplete" (optionSelected)="pcOptSel($event)">
+                    <mat-option *ngFor="let option of pcFilteredOptions | async" [value]="option">{{option}}</mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
               </ion-item>
-              <ion-item>
-                <ion-label position="floating">Finding/Examination</ion-label>
-                <ion-textarea rows="7" wrap="soft"></ion-textarea>
+              <ion-item lines="none">
+                <mat-form-field class="mat-full-width">
+                  <textarea matInput rows="5" [(ngModel)]="pcTextArea"></textarea>
+                </mat-form-field>
+              </ion-item>
+              <ion-item lines="none">
+                <mat-form-field class="mat-full-width">
+                  <input type="text" placeholder="Finding/Examination" matInput [formControl]="feFC" [matAutocomplete]="feFCAuto" (keypress)="feFCPress($event)">
+                  <mat-autocomplete autoActiveFirstOption #feFCAuto="matAutocomplete" (optionSelected)="feOptSel($event)">
+                    <mat-option *ngFor="let option of feFilteredOptions | async" [value]="option">{{option}}</mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </ion-item>
+              <ion-item lines="none">
+                <mat-form-field class="mat-full-width">
+                  <textarea matInput rows="5" [(ngModel)]="feTextArea"></textarea>
+                </mat-form-field>
               </ion-item>
             </ion-col>
             <ion-col size="12" size-md="3" size-lg="3" size-xl="3">
-              <ion-item>
-                <ion-label position="floating">Medical Notes</ion-label>
-                <ion-textarea rows="7" wrap="soft"></ion-textarea>
+              <ion-item lines="none">
+                <mat-form-field class="mat-full-width">
+                  <textarea matInput class="mat-textarea" placeholder="Medical Notes" rows="8"></textarea>
+                </mat-form-field>
               </ion-item>
-              <ion-item>
-                <ion-textarea rows="7" wrap="soft"></ion-textarea>
-              </ion-item>
-            </ion-col>
-            <ion-col size="12" size-md="3" size-lg="3" size-xl="3">
-              <ion-item>
-                <ion-label position="floating">Current Clinical Impression</ion-label>
-                <ion-textarea rows="7" wrap="soft"></ion-textarea>
-              </ion-item>
-              <ion-item>
-                <ion-textarea rows="7" wrap="soft"></ion-textarea>
+              <ion-item lines="none">
+                <mat-form-field class="mat-full-width">
+                  <textarea matInput class="mat-textarea" rows="8"></textarea>
+                </mat-form-field>
               </ion-item>
             </ion-col>
             <ion-col size="12" size-md="3" size-lg="3" size-xl="3">
-              <ion-item>
-                <ion-label position="floating">Treatment Advice</ion-label>
-                <ion-textarea rows="7" wrap="soft"></ion-textarea>
+              <ion-item lines="none">
+                <mat-form-field class="mat-full-width">
+                  <input type="text" placeholder="Current Clinical Impression" matInput [formControl]="cciFC" [matAutocomplete]="cciFCAuto" (keypress)="cciFCPress($event)">
+                  <mat-autocomplete autoActiveFirstOption #cciFCAuto="matAutocomplete" (optionSelected)="cciOptosel($event)">
+                    <mat-option *ngFor="let option of cciFilteredOptions | async" [value]="option">{{option}}</mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
               </ion-item>
-              <ion-item>
-                <ion-textarea rows="7" wrap="soft"></ion-textarea>
+              <ion-item lines="none">
+                <mat-form-field class="mat-full-width">
+                  <textarea matInput rows="5" [(ngModel)]="cciTextArea"></textarea>
+                </mat-form-field>
+              </ion-item>
+              <ion-item lines="none">
+                <mat-form-field class="mat-full-width">
+                  <textarea matInput class="mat-textarea" rows="8"></textarea>
+                </mat-form-field>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-md="3" size-lg="3" size-xl="3">
+              <ion-item lines="none">
+                <mat-form-field class="mat-full-width">
+                  <textarea matInput class="mat-textarea" placeholder="Treatment Advice" rows="8"></textarea>
+                </mat-form-field>
+              </ion-item>
+              <ion-item lines="none">
+                <mat-form-field class="mat-full-width">
+                  <textarea matInput class="mat-textarea" rows="8"></textarea>
+                </mat-form-field>
               </ion-item>
             </ion-col>
           </ion-row>
