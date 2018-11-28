@@ -14,6 +14,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { ServerListPageModule } from './page/server-list/server-list.module';
 import { AddRemovePopoverPageModule } from './page/common/add-remove-popover/add-remove-popover.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent],
@@ -30,6 +31,7 @@ import { AddRemovePopoverPageModule } from './page/common/add-remove-popover/add
     ServerListPageModule,
     AddRemovePopoverPageModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    BrowserAnimationsModule,
   ],
   providers: [
     StatusBar,
