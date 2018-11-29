@@ -11,6 +11,7 @@ export class User {
   public PES!: string;
   public APS!: string;
   public VS!: string;
+  public MS!: string;
   public PTI!: string;
   public signature!: string;
 

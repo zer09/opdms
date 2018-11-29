@@ -11,6 +11,7 @@ export class SecDoctor {
   public PES!: string;
   public APS!: string;
   public VS!: string;
+  public MS!: string;
   public PTI!: string;
   public signature!: string;
   public userDetails: UserDetails;
@@ -38,6 +39,7 @@ export class SecDoctor {
     secDr.PES = p.PES;
     secDr.APS = p.APS;
     secDr.VS = p.VS;
+    secDr.MS = p.MS;
     secDr.PTI = p.PTI;
     secDr.userDetails = p.userDetails;
 
@@ -56,6 +58,7 @@ export class SecDoctor {
     secDr.PES = usr.PES;
     secDr.APS = usr.APS;
     secDr.VS = usr.VS;
+    secDr.MS = usr.MS;
     secDr.PTI = usr.PTI;
     secDr.userDetails = usr.userDetails;
 

@@ -79,6 +79,7 @@ export class UserService {
                 u.PES = msg.pes;
                 u.APS = msg.aps;
                 u.VS = msg.vs;
+                u.MS = msg.ms;
                 u.PTI = msg.pti;
               } else if (u.userType === UserType.SECRETARY) {
 
