@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>New Medication</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        Close
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Generic Name</ion-label>
+          <ion-input type="text" [formControl]="genericNameFC"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Brand Name</ion-label>
+          <ion-input type="text" [formControl]="brandNameFC"></ion-input>
+        </ion-item>
+        <ion-row>
+          <ion-col size="6">
+            <mat-form-field class="mat-full-width">
+              <input type="text" placeholder="Medicine Form" matInput [formControl]="medFormFC" [matAutocomplete]="medFormFCAuto" (blur)="medFormFCBlur($event.target.value)">
+              <mat-autocomplete autoActiveFirstOption #medFormFCAuto="matAutocomplete">
+                <mat-option *ngFor="let option of medFrmFilteredOptions | async" [value]="option">{{option}}</mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </ion-col>
+          <ion-col size="6">
+            <mat-form-field class="mat-full-width">
+              <input type="text" placeholder="Strength" matInput [formControl]="medStrengthFC" [matAutocomplete]="strengthFCAuto" (blur)="medStrengthFCBlur($event.target.value)">
+              <mat-autocomplete autoActiveFirstOption #strengthFCAuto="matAutocomplete">
+                <mat-option *ngFor="let option of medStrFilteredOptions | async" [value]="option">{{option}}</mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </ion-col>
+        </ion-row>
+        <ion-item>
+          <ion-label position="floating">Medication</ion-label>
+          <ion-input type="text" [formControl]="medicationFC"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>S2 Medicine</ion-label>
+          <ion-toggle slot="end" (ionChange)="s2Toggle($event)"></ion-toggle>
+        </ion-item>
+        <ion-button expand="full" (click)="save()">Save</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

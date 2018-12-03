@@ -15,6 +15,7 @@ import { environment } from '../environments/environment';
 import { ServerListPageModule } from './page/server-list/server-list.module';
 import { AddRemovePopoverPageModule } from './page/common/add-remove-popover/add-remove-popover.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MedicineQuickAddModalPageModule } from './page/modal/medicine-quick-add-modal/medicine-quick-add-modal.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,6 +30,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     HttpClientModule,
     ServerListPageModule,
+    MedicineQuickAddModalPageModule,
     AddRemovePopoverPageModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     BrowserAnimationsModule,
