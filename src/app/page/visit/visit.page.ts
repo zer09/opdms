@@ -1,16 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { ActivatedRoute } from '@angular/router';
+import { ModalController, NavController } from '@ionic/angular';
+import { OverlayEventDetail } from '@ionic/core';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-
-import { VisitService } from '../../service/visit.service';
 import { Visit } from '../../class/visit';
-import { PresentComplaintService } from '../../service/present-complaint.service';
+import { MedicationInstruction } from '../../interface/medication-instruction';
 import { CurrentClinicalImpressionService } from '../../service/current-clinical-impression.service';
 import { FindingExaminationService } from '../../service/finding-examination.service';
+import { MedicationInstructionService } from '../../service/medication-instruction.service';
+import { MedicationsService } from '../../service/medications.service';
+import { PresentComplaintService } from '../../service/present-complaint.service';
+import { VisitService } from '../../service/visit.service';
+import { MedInstructionQuickAddPage } from '../modal/med-instruction-quick-add-modal/med-instruction-quick-add.page';
+import { MedicineQuickAddModalPage } from '../modal/medicine-quick-add-modal/medicine-quick-add-modal.page';
+
 
 @Component({
   selector: 'app-visit',
@@ -47,15 +53,25 @@ export class VisitPage implements OnInit {
   public feFilteredOptions!: Observable<string[]>;
   public feTextArea = '';
 
+  public medsFC = new FormControl();
+  public medsFilteredOptions!: Observable<string[]>;
+
+  public medQtyFC = new FormControl();
+
+  public medSigFC = new FormControl();
+  public medSigFilteredOptions!: Observable<MedicationInstruction[]>;
 
   constructor(
     private _vSvc: VisitService,
     private _pcSvc: PresentComplaintService,
     private _cciSvc: CurrentClinicalImpressionService,
     private _feSvc: FindingExaminationService,
+    private _medSvc: MedicationsService,
+    private _medIns: MedicationInstructionService,
     private _aRoute: ActivatedRoute,
     private _navCtrl: NavController,
     private _fb: FormBuilder,
+    private _modalCtrl: ModalController,
   ) {
     this._initVitalSignFB();
   }
@@ -92,6 +108,31 @@ export class VisitPage implements OnInit {
           .indexOf(v) === 0);
       })
     );
+
+    this.medsFilteredOptions = this.medsFC.valueChanges.pipe(
+      startWith(''),
+      map((v: string): string[] => {
+        v = v.toLowerCase();
+        return this._medSvc.medsList.filter(o => o.toLowerCase()
+          .indexOf(v) === 0);
+      })
+    );
+
+    this.medSigFilteredOptions = this.medSigFC.valueChanges.pipe(
+      startWith(''),
+      map((v: string): MedicationInstruction[] => {
+        v = v.toLowerCase();
+        return this._medIns.instructions.filter(o => o.instruction.toLowerCase()
+          .indexOf(v) === 0);
+      })
+    );
+
+    this.medQtyFC.setValue(100);
+
+  }
+
+  public get medQtyList(): number[] {
+    return this._medSvc.qtyList;
   }
 
   private _initVisit(): void {
@@ -114,6 +155,33 @@ export class VisitPage implements OnInit {
       waist: [''],
       hip: [''],
     });
+  }
+
+  public newMeds(): void {
+    this._modalCtrl.create({
+      component: MedicineQuickAddModalPage,
+      backdropDismiss: false,
+    }).then(m => {
+      m.onDidDismiss().then((t: OverlayEventDetail<string>) => {
+        if (t.data && t.data.length > 0) {
+          this.medsFC.setValue(t.data);
+        }
+      });
+
+      m.present();
+    });
+  }
+
+  private _newInstruction(inst: string): void {
+    this._modalCtrl.create({
+      component: MedInstructionQuickAddPage,
+      componentProps: { inst },
+      backdropDismiss: false,
+    }).then((m) => m.present());
+  }
+
+  public addMedication(): void {
+
   }
 
   public vitalSegmentChange(ev: any): void {
@@ -168,6 +236,25 @@ export class VisitPage implements OnInit {
         } else {
           this.feTextArea = v;
         }
+      }
+    }
+  }
+
+  public medsFCPress(ev: KeyboardEvent): void {
+    if (ev.key === 'Enter') {
+      const v = this.medsFC.value.trim();
+      if (v.length > 0) {
+        this._medSvc.save(v, false);
+        this.medsFC.setValue('');
+      }
+    }
+  }
+
+  public medSigFCPress(ev: KeyboardEvent): void {
+    if (ev.key === 'Enter') {
+      const v = this.medSigFC.value.trim();
+      if (v.length > 0) {
+        this._newInstruction(v);
       }
     }
   }

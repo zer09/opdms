@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>New Medication Instruction</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        Close
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item>
+    <ion-label position="floating">Medication Instruction</ion-label>
+    <ion-input type="text" [(ngModel)]="instruction"></ion-input>
+  </ion-item>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6">
+        <ion-item>
+          <ion-label position="floating">After Breakfast</ion-label>
+          <ion-input type="text" [(ngModel)]="ab"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">After Lunch</ion-label>
+          <ion-input type="text" [(ngModel)]="al"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">After Dinner</ion-label>
+          <ion-input type="text" [(ngModel)]="ad"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="6">
+        <ion-item>
+          <ion-label position="floating">Before Breakfast</ion-label>
+          <ion-input type="text" [(ngModel)]="bb"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Before Lunch</ion-label>
+          <ion-input type="text" [(ngModel)]="bl"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Before Dinner</ion-label>
+          <ion-input type="text" [(ngModel)]="bd"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Duration</ion-label>
+          <ion-input type="text" [(ngModel)]="duration"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button expand="full" (click)="save()">Save</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

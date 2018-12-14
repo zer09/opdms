@@ -1,12 +1,12 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
+import { MatAutocompleteModule, MatIconModule, MatInputModule, MatSelectModule } from '@angular/material';
+import { RouterModule, Routes } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { ResponsiveModule } from 'ngx-responsive';
-import { MatAutocompleteModule, MatInputModule } from '@angular/material';
-
 import { VisitPage } from './visit.page';
+
 
 const routes: Routes = [
   {
@@ -25,6 +25,8 @@ const routes: Routes = [
     ResponsiveModule.forRoot(),
     MatAutocompleteModule,
     MatInputModule,
+    MatIconModule,
+    MatSelectModule,
   ],
   declarations: [VisitPage]
 })

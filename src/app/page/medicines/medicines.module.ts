@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
 import { MedicinesPage } from './medicines.page';
+import { MatInputModule, MatAutocompleteModule } from '@angular/material';
 
 const routes: Routes = [
   {
@@ -18,8 +19,11 @@ const routes: Routes = [
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    MatInputModule,
+    MatAutocompleteModule,
   ],
   declarations: [MedicinesPage]
 })

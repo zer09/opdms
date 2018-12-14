@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-medicines',
@@ -7,9 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MedicinesPage implements OnInit {
 
+  public genericName = new FormControl();
+  public brandName = new FormControl();
+  public medForm = new FormControl();
+  public strength = new FormControl();
+  public medication = new FormControl();
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  public s2Toggle(ev): void {
+    console.log(ev);
   }
 
 }

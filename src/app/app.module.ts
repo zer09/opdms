@@ -1,21 +1,22 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouteReuseStrategy } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
-import { IonicStorageModule } from '@ionic/storage';
-
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { ServiceWorkerModule } from '@angular/service-worker';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
-import { ServiceWorkerModule } from '@angular/service-worker';
+import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { IonicStorageModule } from '@ionic/storage';
 import { environment } from '../environments/environment';
-import { ServerListPageModule } from './page/server-list/server-list.module';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 import { AddRemovePopoverPageModule } from './page/common/add-remove-popover/add-remove-popover.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MedInstructionQuickAddPageModule } from './page/modal/med-instruction-quick-add-modal/med-instruction-quick-add.module';
 import { MedicineQuickAddModalPageModule } from './page/modal/medicine-quick-add-modal/medicine-quick-add-modal.module';
+import { ServerListPageModule } from './page/server-list/server-list.module';
+
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,6 +32,7 @@ import { MedicineQuickAddModalPageModule } from './page/modal/medicine-quick-add
     HttpClientModule,
     ServerListPageModule,
     MedicineQuickAddModalPageModule,
+    MedInstructionQuickAddPageModule,
     AddRemovePopoverPageModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     BrowserAnimationsModule,
