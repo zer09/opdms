@@ -15,7 +15,7 @@
             </ion-item>
             <ion-item>
               <ion-label position="floating">Password</ion-label>
-              <ion-input type="password" formControlName="password"></ion-input>
+              <ion-input type="password" formControlName="password" (keypress)="passEnter($event)"></ion-input>
             </ion-item>
             <ion-button expand="full" (click)="login()">Login</ion-button>
             <ion-button expand="full" color="light" href="/registration" routeDirection="forward">Register</ion-button>

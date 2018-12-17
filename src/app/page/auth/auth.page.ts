@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AlertController, LoadingController, ModalController, Events } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
-
-import { UserService } from '../../service/user.service';
-import { ServerListPage } from '../../page/server-list/server-list.page';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { PeersService } from '../../service/peers.service';
+import { AlertController, Events, LoadingController, ModalController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 import { Helper } from '../../helper';
+import { ServerListPage } from '../../page/server-list/server-list.page';
 import { LoggerService } from '../../service/logger.service';
+import { PeersService } from '../../service/peers.service';
+import { UserService } from '../../service/user.service';
+
 
 @Component({
   selector: 'app-auth',
@@ -40,6 +40,12 @@ export class AuthPage implements OnInit {
   ngOnInit() {
     if (this._usrSvc.user) {
       this._route.navigate(['']);
+    }
+  }
+
+  public passEnter(ev: KeyboardEvent): void {
+    if (ev.key === 'Enter') {
+      this.login();
     }
   }
 
