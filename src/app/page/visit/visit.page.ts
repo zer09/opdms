@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { MatAutocompleteSelectedEvent, MatTable } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
-import { ModalController, NavController } from '@ionic/angular';
+import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { Visit } from '../../class/visit';
+import { VisitMedication } from '../../class/visit-medication';
 import { MedicationInstruction } from '../../interface/medication-instruction';
 import { CurrentClinicalImpressionService } from '../../service/current-clinical-impression.service';
 import { FindingExaminationService } from '../../service/finding-examination.service';
@@ -24,6 +25,7 @@ import { MedicineQuickAddModalPage } from '../modal/medicine-quick-add-modal/med
   styleUrls: ['./visit.page.scss'],
 })
 export class VisitPage implements OnInit {
+  @ViewChild(MatTable) medicationTable!: MatTable<VisitMedication>;
 
   private _vid!: string;
   private _visit!: Visit;
@@ -40,6 +42,14 @@ export class VisitPage implements OnInit {
   public notes = '';
   public vitalSegment = '0';
   public detailsSegment = '0';
+
+  public visitMedication: VisitMedication[] = [];
+  public visitMedicationsDisplayedColumns = [
+    'position',
+    'medicine',
+    'sig',
+    'qty',
+  ];
 
   public pcFC = new FormControl();
   public pcFilteredOptions!: Observable<string[]>;
@@ -69,6 +79,7 @@ export class VisitPage implements OnInit {
     private _medSvc: MedicationsService,
     private _medIns: MedicationInstructionService,
     private _aRoute: ActivatedRoute,
+    private _alertCtrl: AlertController,
     private _navCtrl: NavController,
     private _fb: FormBuilder,
     private _modalCtrl: ModalController,
@@ -157,6 +168,16 @@ export class VisitPage implements OnInit {
     });
   }
 
+  private async _alertError(header: string, message: string): Promise<void> {
+    const a = await this._alertCtrl.create({
+      header,
+      message,
+      buttons: ['OK'],
+    });
+
+    await a.present();
+  }
+
   public newMeds(): void {
     this._modalCtrl.create({
       component: MedicineQuickAddModalPage,
@@ -178,10 +199,6 @@ export class VisitPage implements OnInit {
       componentProps: { inst },
       backdropDismiss: false,
     }).then((m) => m.present());
-  }
-
-  public addMedication(): void {
-
   }
 
   public vitalSegmentChange(ev: any): void {
@@ -290,5 +307,39 @@ export class VisitPage implements OnInit {
         this.feTextArea = ev.option.value;
       }
     }
+  }
+
+  public async addMedication(): Promise<void> {
+    const medication: string = this.medsFC.value;
+    const sig: string = this.medSigFC.value;
+    const qty: number = parseInt((this.medQtyFC.value as string), 10);
+
+    if (!medication || medication.length < 1) {
+      this._alertError('Medication', 'Please specify the medication.');
+      return;
+    }
+
+    if (!sig || sig.length < 1) {
+      this._alertError('Medication', 'Please specify the mediaction instruction.');
+      return;
+    }
+
+    if (!qty || isNaN(qty)) {
+      this._alertError('Medication', 'Please specify the mediction qty.');
+      return;
+    }
+
+    const pos = this.visitMedication.length + 1;
+    const v = new VisitMedication('', pos, medication, sig, qty);
+    await this._vSvc.saveMedication(this._visit, v);
+    this.visitMedication.push(v);
+    this.medicationTable.renderRows();
+    this.medsFC.setValue('');
+    this.medSigFC.setValue('');
+    this.medQtyFC.setValue(100);
+  }
+
+  public save(): void {
+
   }
 }

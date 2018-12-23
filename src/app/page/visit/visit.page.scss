@@ -7,8 +7,8 @@ ion-avatar > img {
 }
 
 ion-img {
-  height: 14rem;
-  width: 14rem;
+  height: 10rem;
+  width: 13rem;
 }
 
 ion-textarea {
@@ -17,4 +17,13 @@ ion-textarea {
 
 .mat-textarea {
   padding-bottom: 14.2px;
+}
+
+.visit-medication-container {
+  height: 200px;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
 }

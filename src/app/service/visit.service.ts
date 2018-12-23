@@ -10,6 +10,8 @@ import { Payload } from '../interface/payload';
 import { PouchError } from '../interface/db/pouch-error';
 import { ErrorHelper } from '../error-helper';
 import { User } from '../class/user';
+import { VisitMedication } from '../class/visit-medication';
+import { ArrayPayload } from '../interface/array-payload';
 
 @Injectable({
   providedIn: 'root'
@@ -56,6 +58,28 @@ export class VisitService {
     });
   }
 
+  private async _medicationPosition(v: Visit, vm: VisitMedication)
+    : Promise<void> {
+    const vs = this._sSvc.get(this._sd.VS);
+
+    try {
+      const doc = await vs.get<ArrayPayload<string>>(v.appointment.Id + ':vmpos');
+      if (doc.p.length < vm.position || !doc.p.includes(vm.Id)) {
+        doc.p.push(vm.Id);
+      } else {
+        doc.p.splice(doc.p.indexOf(vm.Id), 1);
+        doc.p.splice(vm.position, 0, vm.Id);
+      }
+
+      await vs.put<ArrayPayload<string>>(doc);
+    } catch (e) {
+      await vs.put<ArrayPayload<string>>({
+        _id: v.appointment.Id + ':vmpos',
+        p: [vm.Id],
+      });
+    }
+  }
+
   public async getVisit(vid: string): Promise<Visit> {
     const v = await this._visits.find(f => f.appointment.Id === vid);
     if (v) {
@@ -74,5 +98,27 @@ export class VisitService {
     this._saveDetails(v.appointment.Id + ':t', v.treatmentAdvice);
     this._saveDetails(v.appointment.Id + ':f', v.findingExamination);
     this._saveDetails(v.appointment.Id + ':ph', v.patientHealthStatus);
+  }
+
+  public async saveMedication(v: Visit, vm: VisitMedication):
+    Promise<void> {
+    const vs = this._sSvc.get(this._sd.VS);
+
+    try {
+      const doc = await vs.get<Payload>(v.appointment.Id + ':vm:' + vm.Id);
+      const oldP = this._enc.decrypt(doc.p, this._sd.UUID2);
+      const newP = vm.minified();
+
+      if (oldP === newP) { return; }
+
+      doc.p = this._enc.encrypt(newP, this._sd.UUID2);
+      await vs.put(doc);
+    } catch (e) {
+      await vs.put<Payload>({
+        _id: v.appointment.Id + ':vm:' + vm.Id,
+        p: this._enc.encrypt(vm.minified(), this._sd.UUID2),
+      });
+      await this._medicationPosition(v, vm);
+    }
   }
 }
