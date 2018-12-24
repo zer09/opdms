@@ -137,7 +137,7 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col>
+      <ion-col size="12" size-md="6" size-lg="6" size-xl="6">
         <ion-segment value="0" scrollable="true" (ionChange)="detailsSegmentChange($event)">
           <ion-segment-button tabindex="-1" value="0">
             <ion-label>Details</ion-label>
@@ -155,170 +155,176 @@
             <ion-label>Certificate</ion-label>
           </ion-segment-button>
         </ion-segment>
-        <div [hidden]="detailsSegment !== '0'">
-          <ion-row>
-            <ion-col size="12" size-md="3" size-lg="3" size-xl="3">
-              <ion-item lines="none">
-                <mat-form-field class="mat-full-width">
-                  <input type="text" placeholder="Present Complaint" matInput [formControl]="pcFC" [matAutocomplete]="pcFCAuto" (keypress)="pcFCPress($event)">
-                  <mat-autocomplete autoActiveFirstOption #pcFCAuto="matAutocomplete" (optionSelected)="pcOptSel($event)">
-                    <mat-option *ngFor="let option of pcFilteredOptions | async" [value]="option">{{option}}</mat-option>
-                  </mat-autocomplete>
-                </mat-form-field>
-              </ion-item>
-              <ion-item lines="none">
-                <mat-form-field class="mat-full-width">
-                  <textarea matInput rows="5" [(ngModel)]="pcTextArea"></textarea>
-                </mat-form-field>
-              </ion-item>
-              <ion-item lines="none">
-                <mat-form-field class="mat-full-width">
-                  <input type="text" placeholder="Finding/Examination" matInput [formControl]="feFC" [matAutocomplete]="feFCAuto" (keypress)="feFCPress($event)">
-                  <mat-autocomplete autoActiveFirstOption #feFCAuto="matAutocomplete" (optionSelected)="feOptSel($event)">
-                    <mat-option *ngFor="let option of feFilteredOptions | async" [value]="option">{{option}}</mat-option>
-                  </mat-autocomplete>
-                </mat-form-field>
-              </ion-item>
-              <ion-item lines="none">
-                <mat-form-field class="mat-full-width">
-                  <textarea matInput rows="5" [(ngModel)]="feTextArea"></textarea>
-                </mat-form-field>
-              </ion-item>
-            </ion-col>
-            <ion-col size="12" size-md="3" size-lg="3" size-xl="3">
-              <ion-item lines="none">
-                <mat-form-field class="mat-full-width">
-                  <textarea matInput class="mat-textarea" placeholder="Medical Notes" rows="8"></textarea>
-                </mat-form-field>
-              </ion-item>
-              <ion-item lines="none">
-                <mat-form-field class="mat-full-width">
-                  <textarea matInput class="mat-textarea" rows="8"></textarea>
-                </mat-form-field>
-              </ion-item>
-            </ion-col>
-            <ion-col size="12" size-md="3" size-lg="3" size-xl="3">
-              <ion-item lines="none">
-                <mat-form-field class="mat-full-width">
-                  <input type="text" placeholder="Current Clinical Impression" matInput [formControl]="cciFC" [matAutocomplete]="cciFCAuto" (keypress)="cciFCPress($event)">
-                  <mat-autocomplete autoActiveFirstOption #cciFCAuto="matAutocomplete" (optionSelected)="cciOptosel($event)">
-                    <mat-option *ngFor="let option of cciFilteredOptions | async" [value]="option">{{option}}</mat-option>
-                  </mat-autocomplete>
-                </mat-form-field>
-              </ion-item>
-              <ion-item lines="none">
-                <mat-form-field class="mat-full-width">
-                  <textarea matInput rows="5" [(ngModel)]="cciTextArea"></textarea>
-                </mat-form-field>
-              </ion-item>
-              <ion-item lines="none">
-                <mat-form-field class="mat-full-width">
-                  <textarea matInput class="mat-textarea" rows="8"></textarea>
-                </mat-form-field>
-              </ion-item>
-            </ion-col>
-            <ion-col size="12" size-md="3" size-lg="3" size-xl="3">
-              <ion-item lines="none">
-                <mat-form-field class="mat-full-width">
-                  <textarea matInput class="mat-textarea" placeholder="Treatment Advice" rows="8"></textarea>
-                </mat-form-field>
-              </ion-item>
-              <ion-item lines="none">
-                <mat-form-field class="mat-full-width">
-                  <textarea matInput class="mat-textarea" rows="8"></textarea>
-                </mat-form-field>
-              </ion-item>
-            </ion-col>
-          </ion-row>
-        </div>
-        <div [hidden]="detailsSegment !== '1'">
-          <ion-row>
-            <ion-col size="12">
-              <ion-item lines="none">
-                <mat-form-field class="mat-full-width">
-                  <input type="text" placeholder="Medication" matInput [formControl]="medsFC" [matAutocomplete]="medsFCAuto">
-                  <mat-autocomplete autoActiveFirstOption #medsFCAuto="matAutocomplete">
-                    <mat-option *ngFor="let option of medsFilteredOptions | async" [value]="option">{{option}}</mat-option>
-                  </mat-autocomplete>
-                </mat-form-field>
-                <ng-container *showItBootstrap="['md', 'lg', 'xl']">
-                  <ion-button (click)="newMeds()">New Meds</ion-button>
-                </ng-container>
-              </ion-item>
-              <ng-container *showItBootstrap="['xs', 'sm']">
-                <ion-button expand="full" (click)="newMeds()">New Medicines</ion-button>
-              </ng-container>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col size="12" size-md="2" size-lg="2" size-xl="2">
-              <ion-item lines="none">
-                <mat-form-field class="mat-full-width">
-                  <mat-select  laceholder="Quantity" [formControl]="medQtyFC">
-                    <mat-option *ngFor="let qty of medQtyList" [value]="qty">
-                      {{qty}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </ion-item>
-            </ion-col>
-            <ion-col size="12" size-md="10" size-lg="10" size-xl="10">
-              <ion-item lines="none">
-                <mat-form-field class="mat-full-width">
-                  <input type="text" placeholder="Sig" matInput [formControl]="medSigFC" [matAutocomplete]="medSigFCAuto" (keypress)="medSigFCPress($event)">
-                  <mat-autocomplete autoActiveFirstOption #medSigFCAuto>
-                    <mat-option *ngFor="let o of medSigFilteredOptions | async" [value]="o.instruction">{{o.instruction}}</mat-option>
-                  </mat-autocomplete>
-                </mat-form-field>
-                <ng-container *showItBootstrap="['md', 'lg', 'xl']">
-                  <ion-button (click)="addMedication()">
-                    <ion-icon slot="start" name="add"></ion-icon>
-                    Add
-                  </ion-button>
-                </ng-container>
-              </ion-item>
-              <ng-container *showItBootstrap="['xs', 'sm']">
-                <ion-button (click)="addMedication()">Add</ion-button>
-              </ng-container>
-            </ion-col>
-          </ion-row>
-
-          <div class="visit-medication-container mat-elevation-z8">
-            <table mat-table [dataSource]="visitMedication">
-
-              <ng-container matColumnDef="position">
-                <th mat-header-cell *matHeaderCellDef> No. </th>
-                <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-              </ng-container>
-              <ng-container matColumnDef="medicine">
-                <th mat-header-cell *matHeaderCellDef> Medicine </th>
-                <td mat-cell *matCellDef="let element"> {{element.medicine}} </td>
-              </ng-container>
-              <ng-container matColumnDef="sig">
-                <th mat-header-cell *matHeaderCellDef> Sig </th>
-                <td mat-cell *matCellDef="let element"> {{element.sig}} </td>
-              </ng-container>
-              <ng-container matColumnDef="qty">
-                <th mat-header-cell *matHeaderCellDef> Quantity </th>
-                <td mat-cell *matCellDef="let element"> {{element.qty}} </td>
-              </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="visitMedicationsDisplayedColumns; sticky: true"></tr>
-              <tr mat-row *matRowDef="let row; columns: visitMedicationsDisplayedColumns;"></tr>
-
-            </table>
-          </div>
-        </div>
-        <div [hidden]="detailsSegment !== '2'">
-
-        </div>
-        <div [hidden]="detailsSegment !== '3'">
-
-        </div>
-        <div [hidden]="detailsSegment !== '4'">
-
-        </div>
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <div [hidden]="detailsSegment !== '0'">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-md="3" size-lg="3" size-xl="3">
+          <ion-item lines="none">
+            <mat-form-field class="mat-full-width">
+              <input type="text" placeholder="Present Complaint" matInput [formControl]="pcFC" [matAutocomplete]="pcFCAuto" (keypress)="pcFCPress($event)">
+              <mat-autocomplete autoActiveFirstOption #pcFCAuto="matAutocomplete" (optionSelected)="pcOptSel($event)">
+                <mat-option *ngFor="let option of pcFilteredOptions | async" [value]="option">{{option}}</mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </ion-item>
+          <ion-item lines="none">
+            <mat-form-field class="mat-full-width">
+              <textarea matInput rows="5" [(ngModel)]="pcTextArea"></textarea>
+            </mat-form-field>
+          </ion-item>
+          <ion-item lines="none">
+            <mat-form-field class="mat-full-width">
+              <input type="text" placeholder="Finding/Examination" matInput [formControl]="feFC" [matAutocomplete]="feFCAuto" (keypress)="feFCPress($event)">
+              <mat-autocomplete autoActiveFirstOption #feFCAuto="matAutocomplete" (optionSelected)="feOptSel($event)">
+                <mat-option *ngFor="let option of feFilteredOptions | async" [value]="option">{{option}}</mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </ion-item>
+          <ion-item lines="none">
+            <mat-form-field class="mat-full-width">
+              <textarea matInput rows="5" [(ngModel)]="feTextArea"></textarea>
+            </mat-form-field>
+          </ion-item>
+        </ion-col>
+        <ion-col size="12" size-md="3" size-lg="3" size-xl="3">
+          <ion-item lines="none">
+            <mat-form-field class="mat-full-width">
+              <textarea matInput class="mat-textarea" placeholder="Medical Notes" rows="8"></textarea>
+            </mat-form-field>
+          </ion-item>
+          <ion-item lines="none">
+            <mat-form-field class="mat-full-width">
+              <textarea matInput class="mat-textarea" rows="8"></textarea>
+            </mat-form-field>
+          </ion-item>
+        </ion-col>
+        <ion-col size="12" size-md="3" size-lg="3" size-xl="3">
+          <ion-item lines="none">
+            <mat-form-field class="mat-full-width">
+              <input type="text" placeholder="Current Clinical Impression" matInput [formControl]="cciFC" [matAutocomplete]="cciFCAuto" (keypress)="cciFCPress($event)">
+              <mat-autocomplete autoActiveFirstOption #cciFCAuto="matAutocomplete" (optionSelected)="cciOptosel($event)">
+                <mat-option *ngFor="let option of cciFilteredOptions | async" [value]="option">{{option}}</mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </ion-item>
+          <ion-item lines="none">
+            <mat-form-field class="mat-full-width">
+              <textarea matInput rows="5" [(ngModel)]="cciTextArea"></textarea>
+            </mat-form-field>
+          </ion-item>
+          <ion-item lines="none">
+            <mat-form-field class="mat-full-width">
+              <textarea matInput class="mat-textarea" rows="8"></textarea>
+            </mat-form-field>
+          </ion-item>
+        </ion-col>
+        <ion-col size="12" size-md="3" size-lg="3" size-xl="3">
+          <ion-item lines="none">
+            <mat-form-field class="mat-full-width">
+              <textarea matInput class="mat-textarea" placeholder="Treatment Advice" rows="8"></textarea>
+            </mat-form-field>
+          </ion-item>
+          <ion-item lines="none">
+            <mat-form-field class="mat-full-width">
+              <textarea matInput class="mat-textarea" rows="8"></textarea>
+            </mat-form-field>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div [hidden]="detailsSegment !== '1'" style="height:40%;">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item lines="none">
+            <mat-form-field class="mat-full-width">
+              <input type="text" placeholder="Medication" matInput [formControl]="medsFC" [matAutocomplete]="medsFCAuto">
+              <mat-autocomplete autoActiveFirstOption #medsFCAuto="matAutocomplete">
+                <mat-option *ngFor="let option of medsFilteredOptions | async" [value]="option">{{option}}</mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <ng-container *showItBootstrap="['md', 'lg', 'xl']">
+              <ion-button (click)="newMeds()">New Meds</ion-button>
+            </ng-container>
+          </ion-item>
+          <ng-container *showItBootstrap="['xs', 'sm']">
+            <ion-button expand="full" (click)="newMeds()">New Medicines</ion-button>
+          </ng-container>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12" size-md="2" size-lg="2" size-xl="2">
+          <ion-item lines="none">
+            <mat-form-field class="mat-full-width">
+              <mat-select laceholder="Quantity" [formControl]="medQtyFC">
+                <mat-option *ngFor="let qty of medQtyList" [value]="qty">
+                  {{qty}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ion-item>
+        </ion-col>
+        <ion-col size="12" size-md="10" size-lg="10" size-xl="10">
+          <ion-item lines="none">
+            <mat-form-field class="mat-full-width">
+              <input type="text" placeholder="Sig" matInput [formControl]="medSigFC" [matAutocomplete]="medSigFCAuto" (keypress)="medSigFCPress($event)">
+              <mat-autocomplete autoActiveFirstOption #medSigFCAuto>
+                <mat-option *ngFor="let o of medSigFilteredOptions | async" [value]="o.instruction">{{o.instruction}}</mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <ng-container *showItBootstrap="['md', 'lg', 'xl']">
+              <ion-button (click)="addMedication()">
+                <ion-icon slot="start" name="add"></ion-icon>
+                Add
+              </ion-button>
+            </ng-container>
+          </ion-item>
+          <ng-container *showItBootstrap="['xs', 'sm']">
+            <ion-button (click)="addMedication()">Add</ion-button>
+          </ng-container>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <div class="visit-medication-container mat-elevation-z8">
+      <table mat-table [dataSource]="visitMedication">
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef> No. </th>
+          <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+        </ng-container>
+        <ng-container matColumnDef="medicine">
+          <th mat-header-cell *matHeaderCellDef> Medicine </th>
+          <td mat-cell *matCellDef="let element"> {{element.medicine}} </td>
+        </ng-container>
+        <ng-container matColumnDef="sig">
+          <th mat-header-cell *matHeaderCellDef> Sig </th>
+          <td mat-cell *matCellDef="let element"> {{element.sig}} </td>
+        </ng-container>
+        <ng-container matColumnDef="qty">
+          <th mat-header-cell *matHeaderCellDef> Quantity </th>
+          <td mat-cell *matCellDef="let element"> {{element.qty}} </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="visitMedicationsDisplayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: visitMedicationsDisplayedColumns;"></tr>
+      </table>
+    </div>
+  </div>
+
+  <div [hidden]="detailsSegment !== '2'">
+
+  </div>
+
+  <div [hidden]="detailsSegment !== '3'">
+
+  </div>
+
+  <div [hidden]="detailsSegment !== '4'">
+
+  </div>
 </ion-content>

@@ -333,6 +333,7 @@ export class VisitPage implements OnInit {
     const v = new VisitMedication('', pos, medication, sig, qty);
     await this._vSvc.saveMedication(this._visit, v);
     this.visitMedication.push(v);
+
     this.medicationTable.renderRows();
     this.medsFC.setValue('');
     this.medSigFC.setValue('');
