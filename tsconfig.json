@@ -9,17 +9,12 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
-    "lib": [
-      "es2017",
-      "dom"
-    ],
+    "lib": ["es2017", "dom", "esnext.asynciterable"],
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "strict": true,
     "noUnusedLocals": true,
     "noImplicitAny": false
   },
-  "excldue": [
-    "**/flycheck_*.ts"
-  ]
+  "excldue": ["**/flycheck_*.ts"]
 }

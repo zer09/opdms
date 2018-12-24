@@ -18,7 +18,6 @@ import { VisitService } from '../../service/visit.service';
 import { MedInstructionQuickAddPage } from '../modal/med-instruction-quick-add-modal/med-instruction-quick-add.page';
 import { MedicineQuickAddModalPage } from '../modal/medicine-quick-add-modal/medicine-quick-add-modal.page';
 
-
 @Component({
   selector: 'app-visit',
   templateUrl: './visit.page.html',
@@ -93,7 +92,10 @@ export class VisitPage implements OnInit {
       this._navCtrl.goBack();
     }
 
-    this._initVisit();
+    this._initVisit()
+      .then(() => {
+        this._listMedications();
+      });
 
     this.pcFilteredOptions = this.pcFC.valueChanges.pipe(
       startWith(''),
@@ -146,13 +148,13 @@ export class VisitPage implements OnInit {
     return this._medSvc.qtyList;
   }
 
-  private _initVisit(): void {
-    this._vSvc.getVisit(this._vid).then(v => {
-      this._visit = v;
-      this.title = this._visit.appointment.patient.toString();
-      this.nameLongString = this._visit.appointment.patient.toLongString();
-      this.completeAddress = this._visit.appointment.patient.completeAddress();
-    });
+  private async _initVisit(): Promise<void> {
+    const v = await this._vSvc.getVisit(this._vid);
+
+    this._visit = v;
+    this.title = this._visit.appointment.patient.toString();
+    this.nameLongString = this._visit.appointment.patient.toLongString();
+    this.completeAddress = this._visit.appointment.patient.completeAddress();
   }
 
   private _initVitalSignFB() {
@@ -307,6 +309,24 @@ export class VisitPage implements OnInit {
         this.feTextArea = ev.option.value;
       }
     }
+  }
+
+  private async _listMedications(): Promise<void> {
+    const l = this._vSvc.listMedications(this._visit);
+    let done = false;
+
+    let v = await l.next();
+    done = v.done;
+
+    while (!done) {
+
+      this.visitMedication.push(v.value);
+
+      v = await l.next();
+      done = v.done;
+    }
+
+    this.medicationTable.renderRows();
   }
 
   public async addMedication(): Promise<void> {

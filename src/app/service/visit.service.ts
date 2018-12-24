@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
-import { StoreService } from './store.service';
 import { EncryptGCM } from '../class/encrypt-gcm';
-import { Visit } from '../class/visit';
-import { AppointmentService } from './appointment.service';
-import { UserService } from './user.service';
-import { PeersService } from './peers.service';
 import { SecDoctor } from '../class/sec-doctor';
-import { Payload } from '../interface/payload';
-import { PouchError } from '../interface/db/pouch-error';
-import { ErrorHelper } from '../error-helper';
 import { User } from '../class/user';
+import { Visit } from '../class/visit';
 import { VisitMedication } from '../class/visit-medication';
+import { ErrorHelper } from '../error-helper';
 import { ArrayPayload } from '../interface/array-payload';
+import { PouchError } from '../interface/db/pouch-error';
+import { Payload } from '../interface/payload';
+import { AppointmentService } from './appointment.service';
+import { LoggerService } from './logger.service';
+import { PeersService } from './peers.service';
+import { StoreService } from './store.service';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,7 @@ export class VisitService {
     private _peerSvc: PeersService,
     private _enc: EncryptGCM,
     private _aptSvc: AppointmentService,
+    private _logger: LoggerService,
   ) {
     this._sd = this._peerSvc.getDrBySignature(this._usrSvc.user.signature);
     this._usr = this._usrSvc.user;
@@ -80,6 +82,18 @@ export class VisitService {
     }
   }
 
+  private async _medicationPositionGet(v: Visit, vmId: string): Promise<number> {
+    const vs = this._sSvc.get(this._sd.VS);
+
+    try {
+      const doc = await vs.get<ArrayPayload<string>>(v.appointment.Id + ':vmpos');
+      return doc.p.indexOf(vmId);
+    } catch (e) {
+      this._logger.log(e);
+      return -1;
+    }
+  }
+
   public async getVisit(vid: string): Promise<Visit> {
     const v = await this._visits.find(f => f.appointment.Id === vid);
     if (v) {
@@ -119,6 +133,31 @@ export class VisitService {
         p: this._enc.encrypt(vm.minified(), this._sd.UUID2),
       });
       await this._medicationPosition(v, vm);
+    }
+  }
+
+  public async *listMedications(v: Visit): AsyncIterableIterator<VisitMedication> {
+    const vs = this._sSvc.get(this._sd.VS);
+
+    try {
+      const docs = await vs.allDocs<Payload>({
+        include_docs: true,
+        startkey: v.appointment.Id + ':vm:',
+        endkey: v.appointment.Id + ':vm:\ufff0',
+      });
+
+      for (const row of docs.rows) {
+        const doc = row.doc;
+        if (!doc) { continue; }
+
+        const vm = this._enc.decrypt(doc.p, this._sd.UUID2);
+        const pos = await this._medicationPositionGet(v, doc._id.split(':')[2]);
+        yield VisitMedication.unminified(doc._id, pos, vm);
+      }
+
+    } catch (e) {
+      this._logger.log(e);
+      return;
     }
   }
 }
