@@ -151,7 +151,7 @@ export class VisitService {
         if (!doc) { continue; }
 
         const vm = this._enc.decrypt(doc.p, this._sd.UUID2);
-        const pos = await this._medicationPositionGet(v, doc._id.split(':')[2]);
+        const pos = await this._medicationPositionGet(v, doc._id.split(':')[2]) + 1;
         yield VisitMedication.unminified(doc._id, pos, vm);
       }
 
