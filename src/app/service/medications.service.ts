@@ -30,9 +30,9 @@ export class MedicationsService {
     this._usr = this._usrSvc.user;
     this._sd = this._peerSvc.getDrBySignature(this._usr.signature);
 
-    this._listMedicines();
-    this._listMedForms();
-    this._listMedStrs();
+    // this._listMedicines();
+    // this._listMedForms();
+    // this._listMedStrs();
   }
 
   public static get medString(): string {
