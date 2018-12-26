@@ -238,7 +238,7 @@
     </ion-grid>
   </div>
 
-  <div [hidden]="detailsSegment !== '1'" style="height:38%;">
+  <div [hidden]="detailsSegment !== '1'" style="height:29%;">
     <ion-grid>
       <ion-row>
         <ion-col size="12">
@@ -292,7 +292,7 @@
       </ion-row>
     </ion-grid>
 
-    <div class="visit-medication-container mat-elevation-z8">
+    <div class="visit-medication-container mat-elevation-z2">
       <table mat-table [dataSource]="visitMedication">
         <ng-container matColumnDef="position">
           <th mat-header-cell *matHeaderCellDef> No. </th>
@@ -313,13 +313,30 @@
         <tr mat-header-row *matHeaderRowDef="visitMedicationsDisplayedColumns; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: visitMedicationsDisplayedColumns;"></tr>
       </table>
-      <mat-toolbar class="medication-bottom">
-        <mat-toolbar-row>
-          <span class="spacer-to-right"></span>
-          <ion-icon name="print"></ion-icon>
-        </mat-toolbar-row>
-      </mat-toolbar>
     </div>
+    <mat-toolbar class="medication-bottom">
+      <mat-toolbar-row>
+        <ion-button color="light">
+          Schedules
+        </ion-button>
+        <ion-button color="light">
+          Follow Up
+        </ion-button>
+        <ion-button color="light">
+          Instruction Hx
+        </ion-button>
+        <ion-button color="light">
+          Instruction Note
+        </ion-button>
+        <ion-button color="light">
+          Reset Meds
+        </ion-button>
+        <span class="spacer-to-right"></span>
+        <ion-button>
+          Print Prescription
+        </ion-button>
+      </mat-toolbar-row>
+    </mat-toolbar>
   </div>
 
   <div [hidden]="detailsSegment !== '2'">
