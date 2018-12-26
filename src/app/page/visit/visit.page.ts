@@ -321,12 +321,11 @@ export class VisitPage implements OnInit {
     while (!done) {
 
       this.visitMedication.push(v.value);
+      this.medicationTable.renderRows();
 
       v = await l.next();
       done = v.done;
     }
-
-    this.medicationTable.renderRows();
   }
 
   public async addMedication(): Promise<void> {
