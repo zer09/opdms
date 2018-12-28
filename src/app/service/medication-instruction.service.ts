@@ -67,8 +67,10 @@ export class MedicationInstructionService {
    * will get the medicationInstruction using the string instruction
    * @param m medication instruction string
    */
-  public async getMedicationInstructionObj(m: string): Promise<MedicationInstruction> {
-
+  public getMedicationInstructionObj(m: string): MedicationInstruction | undefined {
+    return this.instructions.find((f) => {
+      return f.instruction.toLowerCase() === m.trim().toLowerCase();
+    });
   }
 
   public save(medInst: MedicationInstruction): void {
