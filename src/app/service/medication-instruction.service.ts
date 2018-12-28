@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { SecDoctor } from '../class/sec-doctor';
 import { User } from '../class/user';
+import { ErrorHelper } from '../error-helper';
+import { Helper } from '../helper';
 import { MedicationInstruction } from '../interface/medication-instruction';
 import { LoggerService } from './logger.service';
 import { PeersService } from './peers.service';
 import { StoreService } from './store.service';
 import { UserService } from './user.service';
-import { Helper } from '../helper';
-import { ErrorHelper } from '../error-helper';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +28,8 @@ export class MedicationInstructionService {
   ) {
     this._usr = this._usrSvc.user;
     this._sd = this._peerSvc.getDrBySignature(this._usr.signature);
+
+    this._listInstructions();
   }
 
   public static get instString(): string {
@@ -35,29 +37,38 @@ export class MedicationInstructionService {
   }
 
   public get instructions(): MedicationInstruction[] {
-    if (this._instList.length < 1) {
-      this._listInstructions();
-    }
-
     return this._instList;
   }
 
-
-  private _listInstructions(): void {
+  private async _listInstructions(): Promise<void> {
     const ms = this._sSvc.get(this._sd.MS);
 
-    ms.allDocs<MedicationInstruction>({
-      include_docs: true,
-      startkey: MedicationInstructionService.instString,
-      endkey: MedicationInstructionService.instString + '\ufff0',
-    }).then((res) => {
-      res.rows.forEach((row) => {
+    try {
+      const docs = await ms.allDocs<MedicationInstruction>({
+        include_docs: true,
+        startkey: MedicationInstructionService.instString,
+        endkey: MedicationInstructionService.instString + '\ufff0',
+      });
+
+      for (const row of docs.rows) {
         const doc = row.doc;
         if (doc) {
-          this._instList.push(doc);
+          if (!this._instList.some((s) => s.instruction === doc.instruction)) {
+            this._instList.push(doc);
+          }
         }
-      });
-    }).catch(e => this._logSvc.log(e));
+      }
+    } catch (e) {
+      this._logSvc.log(e);
+    }
+  }
+
+  /**
+   * will get the medicationInstruction using the string instruction
+   * @param m medication instruction string
+   */
+  public async getMedicationInstructionObj(m: string): Promise<MedicationInstruction> {
+
   }
 
   public save(medInst: MedicationInstruction): void {

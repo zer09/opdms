@@ -30,9 +30,9 @@ export class MedicationsService {
     this._usr = this._usrSvc.user;
     this._sd = this._peerSvc.getDrBySignature(this._usr.signature);
 
-    // this._listMedicines();
-    // this._listMedForms();
-    // this._listMedStrs();
+    this._listMedicines();
+    this._listMedForms();
+    this._listMedStrs();
   }
 
   public static get medString(): string {
@@ -48,26 +48,14 @@ export class MedicationsService {
   }
 
   public get medsList(): string[] {
-    if (this._medsList.length < 1) {
-      this._listMedicines();
-    }
-
     return this._medsList;
   }
 
   public get medsForms(): string[] {
-    if (this._medsFrmList.length < 1) {
-      this._listMedForms();
-    }
-
     return this._medsFrmList;
   }
 
   public get medsStrengths(): string[] {
-    if (this._medsStrList.length < 1) {
-      this._listMedStrs();
-    }
-
     return this._medsStrList;
   }
 
@@ -75,25 +63,30 @@ export class MedicationsService {
     return [7, 10, 14, 21, 30, 50, 90, 100, 200, 300];
   }
 
-  private _listMedicines(): void {
+  private async _listMedicines(): Promise<void> {
     const ms = this._sSvc.get(this._sd.MS);
 
-    ms.allDocs<Payload & { s2: boolean }>({
-      include_docs: true,
-      startkey: MedicationsService.medString,
-      endkey: MedicationsService.medString + '\ufff0',
-    }).then(res => {
-      res.rows.forEach(row => {
+    try {
+      const docs = await ms.allDocs<Payload & { s2: boolean }>({
+        include_docs: true,
+        startkey: MedicationsService.medString,
+        endkey: MedicationsService.medString + '\ufff0',
+      });
+
+      for (const row of docs.rows) {
         const doc = row.doc;
         if (doc) {
-          if (doc.s2) {
-            this._medsS2List.push(doc.p);
+          if (!this._medsList.some((s) => s.toLowerCase() === doc.p.toLowerCase())) {
+            this._medsList.push(doc.p);
+            if (doc.s2) {
+              this._medsS2List.push(doc.p);
+            }
           }
-
-          this._medsList.push(doc.p.toLowerCase());
         }
-      });
-    }).catch(e => this._logSvc.log(e));
+      }
+    } catch (e) {
+      this._logSvc.log(e);
+    }
   }
 
   public isS2(med: string): boolean {
@@ -116,21 +109,27 @@ export class MedicationsService {
       .catch(() => this.save(med, s2));
   }
 
-  private _listMedForms(): void {
+  private async _listMedForms(): Promise<void> {
     const ms = this._sSvc.get(this._sd.MS);
 
-    ms.allDocs<Payload>({
-      include_docs: true,
-      startkey: MedicationsService.medFormString,
-      endkey: MedicationsService.medFormString + '\ufff0,'
-    }).then(res => {
-      res.rows.forEach(row => {
+    try {
+      const docs = await ms.allDocs<Payload>({
+        include_docs: true,
+        startkey: MedicationsService.medFormString,
+        endkey: MedicationsService.medFormString + '\ufff0,'
+      });
+
+      for (const row of docs.rows) {
         const doc = row.doc;
         if (doc) {
-          this._medsFrmList.push(doc.p);
+          if (!this._medsFrmList.some((s) => s.toLowerCase() === doc.p.toLowerCase())) {
+            this._medsFrmList.push(doc.p);
+          }
         }
-      });
-    }).catch(e => this._logSvc.log(e));
+      }
+    } catch (e) {
+      this._logSvc.log(e);
+    }
   }
 
   public saveMedForm(medForm: string): void {
@@ -148,21 +147,27 @@ export class MedicationsService {
       .catch(() => this.saveMedForm(medForm));
   }
 
-  private _listMedStrs(): void {
+  private async _listMedStrs(): Promise<void> {
     const ms = this._sSvc.get(this._sd.MS);
 
-    ms.allDocs<Payload>({
-      include_docs: true,
-      startkey: MedicationsService.medStrengthString,
-      endkey: MedicationsService.medStrengthString + '\ufff0',
-    }).then(res => {
-      res.rows.forEach(row => {
+    try {
+      const docs = await ms.allDocs<Payload>({
+        include_docs: true,
+        startkey: MedicationsService.medStrengthString,
+        endkey: MedicationsService.medStrengthString + '\ufff0',
+      });
+
+      for (const row of docs.rows) {
         const doc = row.doc;
         if (doc) {
-          this._medsStrList.push(doc.p);
+          if (!this._medsStrList.some((s) => s.toLowerCase() === doc.p.toLowerCase())) {
+            this._medsStrList.push(doc.p);
+          }
         }
-      });
-    }).catch(e => this._logSvc.log(e));
+      }
+    } catch (e) {
+      this._logSvc.log(e);
+    }
   }
 
   public saveMedStr(str: string): void {
