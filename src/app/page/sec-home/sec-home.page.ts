@@ -19,6 +19,7 @@ export class SecHomePage implements OnInit {
   public Sex = Sex;
   public MaritalStatus = MaritalStatus;
 
+  public patientSearchBar = '';
   private _selectedDoctor: SecDoctor = SecDoctor.Default;
 
   constructor(
@@ -137,6 +138,7 @@ export class SecHomePage implements OnInit {
     if (!pt || !dr) { return; }
 
     this._navCtrl.navigateForward(['PatientProfile', dr.signature, pt.Id, '']);
+    this.patientSearchBar = '';
   }
 
   public appointmentOpen(apt: Appointment, dr: SecDoctor): void {

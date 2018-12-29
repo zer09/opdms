@@ -5,7 +5,7 @@
     </ion-buttons>
 
     <ng-container *showItBootstrap="['md', 'lg', 'xl']">
-      <ion-searchbar #patientSearchBar animated debounce="450" placeholder="Patient Search" (ionChange)="onSearch($event)"></ion-searchbar>
+      <ion-searchbar animated debounce="450" placeholder="Patient Search" [(ngModel)]="patientSearchBar" (ionChange)="onSearch($event)"></ion-searchbar>
     </ng-container>
 
     <ion-buttons slot="end">
@@ -20,7 +20,7 @@
 
   <ng-container *showItBootstrap="['xs', 'sm']">
     <ion-toolbar color="primary">
-      <ion-searchbar #patientSearchBar animated debounce="450" placeholder="Patient Search" (ionChange)="onSearch($event)"></ion-searchbar>
+      <ion-searchbar animated debounce="450" placeholder="Patient Search" [(ngModel)]="patientSearchBar" (ionChange)="onSearch($event)"></ion-searchbar>
     </ion-toolbar>
   </ng-container>
 </ion-header>

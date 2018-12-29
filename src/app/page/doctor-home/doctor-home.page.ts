@@ -19,6 +19,7 @@ export class DoctorHomePage implements OnInit {
   public Sex = Sex;
   public MaritalStatus = MaritalStatus;
 
+  public patientSearchBar = '';
   public curDr: SecDoctor;
 
   constructor(
@@ -50,6 +51,8 @@ export class DoctorHomePage implements OnInit {
     this._navCtrl.navigateForward([
       'PatientProfile', this.curDr.signature, pt.Id, '',
     ]);
+
+    this.patientSearchBar = '';
   }
 
   public visitOpen(apt: Appointment): void {
