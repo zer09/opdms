@@ -3,7 +3,7 @@ import { SecDoctor } from '../class/sec-doctor';
 import { User } from '../class/user';
 import { ErrorHelper } from '../error-helper';
 import { Helper } from '../helper';
-import { MedicationInstruction } from '../interface/medication-instruction';
+import { MedicationInstruction } from '../class/medication-instruction';
 import { LoggerService } from './logger.service';
 import { PeersService } from './peers.service';
 import { StoreService } from './store.service';

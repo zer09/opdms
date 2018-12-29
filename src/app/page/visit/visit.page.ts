@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { Visit } from '../../class/visit';
 import { VisitMedication } from '../../class/visit-medication';
-import { MedicationInstruction } from '../../interface/medication-instruction';
+import { MedicationInstruction } from '../../class/medication-instruction';
 import { CurrentClinicalImpressionService } from '../../service/current-clinical-impression.service';
 import { FindingExaminationService } from '../../service/finding-examination.service';
 import { MedicationInstructionService } from '../../service/medication-instruction.service';

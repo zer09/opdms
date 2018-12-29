@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
-import { MedicationInstruction } from '../../../interface/medication-instruction';
+import { MedicationInstruction, MedicationInstructionDetails } from '../../../class/medication-instruction';
 import { MedicationInstructionService } from '../../../service/medication-instruction.service';
 
 @Component({
@@ -33,25 +33,25 @@ export class MedInstructionQuickAddPage implements OnInit {
 
   public save() {
     if (this.instruction.length < 1) { return; }
-    const inst: MedicationInstruction = {
-      _id: '',
-      instruction: this.instruction.trim(),
-      details: {
-        duration: this.duration.trim(),
-        breakfast: {
-          before: this.bb.trim(),
-          after: this.ab.trim(),
 
-        },
-        lunch: {
-          before: this.bl.trim(),
-          after: this.al.trim(),
-        },
-        dinner: {
-          before: this.bd.trim(),
-          after: this.ad.trim(),
-        },
-      }
+    const inst = new MedicationInstruction();
+    inst._id = '';
+    inst.instruction = this.instruction.trim();
+    inst.details = new MedicationInstructionDetails();
+    inst.details.duration = this.duration.trim();
+    inst.details.breakfast = {
+      before: this.bb.trim(),
+      after: this.ab.trim(),
+    };
+
+    inst.details.lunch = {
+      before: this.bl.trim(),
+      after: this.al.trim(),
+    };
+
+    inst.details.dinner = {
+      before: this.bd.trim(),
+      after: this.ad.trim(),
     };
 
     this._insSvc.save(inst);
