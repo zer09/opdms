@@ -132,6 +132,8 @@ export class SecHomePage implements OnInit {
 
       a.present();
     });
+
+    this.patientSearchBar = '';
   }
 
   public patientOpen(pt: Patient, dr: SecDoctor): void {

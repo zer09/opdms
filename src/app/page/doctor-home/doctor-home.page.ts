@@ -43,6 +43,8 @@ export class DoctorHomePage implements OnInit {
     this._navCtrl.navigateForward([
       'PatientProfile', this.curDr.signature, '', ''
     ]);
+
+    this.patientSearchBar = '';
   }
 
   public patientOpen(pt: Patient, dr: SecDoctor): void {
