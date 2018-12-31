@@ -18,7 +18,7 @@
               <ion-input type="password" formControlName="password" (keypress)="passEnter($event)"></ion-input>
             </ion-item>
             <ion-button expand="full" (click)="login()">Login</ion-button>
-            <ion-button expand="full" color="light" href="/registration" routeDirection="forward">Register</ion-button>
+            <ion-button expand="full" color="light" routerLink="/registration" routeDirection="forward">Register</ion-button>
             <ion-button float-right fill="clear" shape="round" size="small" (click)="serverSetting()">
               <ion-icon slot="icon-only" name="settings"></ion-icon>
             </ion-button>
