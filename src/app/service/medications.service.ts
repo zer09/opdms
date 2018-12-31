@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Medicine } from '../class/medicine';
 import { SecDoctor } from '../class/sec-doctor';
 import { User } from '../class/user';
 import { Helper } from '../helper';
@@ -16,8 +17,7 @@ export class MedicationsService {
   private _sd: SecDoctor;
   private _usr: User;
 
-  private _medsList: string[] = [];
-  private _medsS2List: string[] = [];
+  private _medsList: Medicine[] = [];
   private _medsFrmList: string[] = [];
   private _medsStrList: string[] = [];
 
@@ -47,7 +47,7 @@ export class MedicationsService {
     return 'medstr:';
   }
 
-  public get medsList(): string[] {
+  public get medsList(): Medicine[] {
     return this._medsList;
   }
 
@@ -65,9 +65,10 @@ export class MedicationsService {
 
   private async _listMedicines(): Promise<void> {
     const ms = this._sSvc.get(this._sd.MS);
+    this._medsList.length = 0;
 
     try {
-      const docs = await ms.allDocs<Payload & { s2: boolean }>({
+      const docs = await ms.allDocs<Payload>({
         include_docs: true,
         startkey: MedicationsService.medString,
         endkey: MedicationsService.medString + '\ufff0',
@@ -76,11 +77,10 @@ export class MedicationsService {
       for (const row of docs.rows) {
         const doc = row.doc;
         if (doc) {
-          if (!this._medsList.some((s) => s.toLowerCase() === doc.p.toLowerCase())) {
-            this._medsList.push(doc.p);
-            if (doc.s2) {
-              this._medsS2List.push(doc.p);
-            }
+          if (!this._medsList.some((s) => s.minified().toLowerCase() ===
+            doc.p.toLowerCase())) {
+            const med = Medicine.unminified(doc.p);
+            this._medsList.push(med);
           }
         }
       }
@@ -89,24 +89,27 @@ export class MedicationsService {
     }
   }
 
-  public isS2(med: string): boolean {
-    return this._medsS2List.includes(med.toLowerCase());
-  }
+  public async save(med: Medicine): Promise<void> {
+    med.generic = med.generic.trim();
+    med.brand = med.brand.trim();
+    med.str = med.str.trim();
 
-  public save(med: string, s2: boolean): void {
-    med = med.trim();
-    if (this._medsList.some(e => e.toLowerCase() === med.toLowerCase())) {
+    if (this._medsList.some(e => e.minified().toLowerCase() ===
+      med.minified().toLowerCase())) {
       return;
     }
 
     const ms = this._sSvc.get(this._sd.MS);
-    ms.put<Payload & { s2: boolean }>({
-      _id: MedicationsService.medString + Helper.ulidString,
-      p: med,
-      s2: s2,
-    })
-      .then(() => this._medsList.push(med))
-      .catch(() => this.save(med, s2));
+    try {
+      await ms.put<Payload>({
+        _id: MedicationsService.medString + Helper.ulidString,
+        p: med.minified(),
+      });
+
+      this._medsList.push(med);
+    } catch (e) {
+      this.save(med);
+    }
   }
 
   private async _listMedForms(): Promise<void> {

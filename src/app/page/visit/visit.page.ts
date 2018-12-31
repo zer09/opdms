@@ -6,9 +6,10 @@ import { AlertController, ModalController, NavController } from '@ionic/angular'
 import { OverlayEventDetail } from '@ionic/core';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { MedicationInstruction } from '../../class/medication-instruction';
+import { Medicine } from '../../class/medicine';
 import { Visit } from '../../class/visit';
 import { VisitMedication } from '../../class/visit-medication';
-import { MedicationInstruction } from '../../class/medication-instruction';
 import { CurrentClinicalImpressionService } from '../../service/current-clinical-impression.service';
 import { FindingExaminationService } from '../../service/finding-examination.service';
 import { MedicationInstructionService } from '../../service/medication-instruction.service';
@@ -63,7 +64,7 @@ export class VisitPage implements OnInit {
   public feTextArea = '';
 
   public medsFC = new FormControl();
-  public medsFilteredOptions!: Observable<string[]>;
+  public medsFilteredOptions!: Observable<Medicine[]>;
 
   public medQtyFC = new FormControl();
 
@@ -124,10 +125,18 @@ export class VisitPage implements OnInit {
 
     this.medsFilteredOptions = this.medsFC.valueChanges.pipe(
       startWith(''),
-      map((v: string): string[] => {
-        v = v.toLowerCase();
-        return this._medSvc.medsList.filter(o => o.toLowerCase()
-          .indexOf(v) === 0);
+      map((v: string | Medicine): Medicine[] => {
+        if (typeof v === 'string') {
+          v = v.toLowerCase();
+
+          return this._medSvc.medsList.filter((f) => {
+            return f.toString().toLowerCase().indexOf((v as string)) === 0;
+          });
+        }
+
+        return this._medSvc.medsList.filter((f) => {
+          return f.toString().toLowerCase().indexOf(v.toString().toLowerCase()) === 0;
+        });
       })
     );
 
@@ -180,13 +189,17 @@ export class VisitPage implements OnInit {
     await a.present();
   }
 
+  public medicationDisplayFn(med: Medicine): string | undefined {
+    return Medicine.displayFn(med);
+  }
+
   public newMeds(): void {
     this._modalCtrl.create({
       component: MedicineQuickAddModalPage,
       backdropDismiss: false,
     }).then(m => {
-      m.onDidDismiss().then((t: OverlayEventDetail<string>) => {
-        if (t.data && t.data.length > 0) {
+      m.onDidDismiss().then((t: OverlayEventDetail<Medicine>) => {
+        if (t.data) {
           this.medsFC.setValue(t.data);
         }
       });
@@ -259,16 +272,6 @@ export class VisitPage implements OnInit {
     }
   }
 
-  public medsFCPress(ev: KeyboardEvent): void {
-    if (ev.key === 'Enter') {
-      const v = this.medsFC.value.trim();
-      if (v.length > 0) {
-        this._medSvc.save(v, false);
-        this.medsFC.setValue('');
-      }
-    }
-  }
-
   public medSigFCPress(ev: KeyboardEvent): void {
     if (ev.key === 'Enter') {
       const v = this.medSigFC.value.trim();
@@ -329,11 +332,11 @@ export class VisitPage implements OnInit {
   }
 
   public async addMedication(): Promise<void> {
-    const medication: string = this.medsFC.value;
+    const medication: Medicine = this.medsFC.value;
     const sig: string = this.medSigFC.value;
     const qty: number = parseInt((this.medQtyFC.value as string), 10);
 
-    if (!medication || medication.length < 1) {
+    if (!medication) {
       this._alertError('Medication', 'Please specify the medication.');
       return;
     }

@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { Medicine } from '../../../class/medicine';
 import { MedicationsService } from '../../../service/medications.service';
 
 @Component({
@@ -92,9 +93,28 @@ export class MedicineQuickAddModalPage implements OnInit {
     this._isS2 = ev.detail.checked;
   }
 
-  public save(): void {
-    this._medSvc.save(this.medicationFC.value, this._isS2);
-    this._modalCtrl.dismiss(this.medicationFC.value);
+  public async save(): Promise<void> {
+    const generic = this.genericNameFC.value.trim();
+    let brand = '';
+    let str = '';
+
+    if (this.brandNameFC.value) {
+      brand = this.brandNameFC.value.trim();
+    }
+
+    if (this.medStrengthFC.value.trim().length > 0) {
+      str = ' ' + this.medStrengthFC.value.trim();
+    }
+
+    if (this.medFormFC.value.trim().length > 0) {
+      str += ' ' + this.medFormFC.value.trim();
+    }
+
+    const med = new Medicine(generic, brand, str);
+    med.s2 = this._isS2;
+
+    await this._medSvc.save(med);
+    this._modalCtrl.dismiss(med);
   }
 
   public medFormFCBlur(ev: string): void {
