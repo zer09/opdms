@@ -17,6 +17,7 @@ import { MedicationsService } from '../../service/medications.service';
 import { PresentComplaintService } from '../../service/present-complaint.service';
 import { VisitService } from '../../service/visit.service';
 import { MedInstructionQuickAddPage } from '../modal/med-instruction-quick-add-modal/med-instruction-quick-add.page';
+import { MedicationInstructionModalPage } from '../modal/medication-instruction-modal/medication-instruction-modal.page';
 import { MedicineQuickAddModalPage } from '../modal/medicine-quick-add-modal/medicine-quick-add-modal.page';
 
 @Component({
@@ -360,6 +361,15 @@ export class VisitPage implements OnInit {
     this.medsFC.setValue('');
     this.medSigFC.setValue('');
     this.medQtyFC.setValue(100);
+  }
+
+  public async openInstructions(_: MouseEvent): Promise<void> {
+    const m = await this._modalCtrl.create({
+      component: MedicationInstructionModalPage,
+      cssClass: 'modal-width-900',
+    });
+
+    await m.present();
   }
 
   public save(): void {

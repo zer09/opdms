@@ -13,6 +13,8 @@ import { LoggerService } from './logger.service';
 import { PeersService } from './peers.service';
 import { StoreService } from './store.service';
 import { UserService } from './user.service';
+import { MedicationInstructionDetails } from '../class/medication-instruction';
+import { MedicationInstructionService } from './medication-instruction.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,10 +25,15 @@ export class VisitService {
   private _sd: SecDoctor;
   private _usr: User;
 
+  // visit medication instruction id.
+  // this is for the instruction details.
+  private _vmidStr = ':vmid:';
+
   constructor(
     private _sSvc: StoreService,
     private _usrSvc: UserService,
     private _peerSvc: PeersService,
+    private _medInsSvc: MedicationInstructionService,
     private _enc: EncryptGCM,
     private _aptSvc: AppointmentService,
     private _logger: LoggerService,
@@ -94,6 +101,23 @@ export class VisitService {
     }
   }
 
+  private async _saveInstructionDetails(
+    _id: string,
+    vmd: MedicationInstructionDetails[]
+  ): Promise<void> {
+    const vs = this._sSvc.get(this._sd.VS);
+    try {
+      const doc = await vs.get<ArrayPayload<MedicationInstructionDetails>>(_id);
+      doc.p = vmd;
+      await vs.put(doc);
+    } catch (e) {
+      await vs.put<ArrayPayload<MedicationInstructionDetails>>({
+        _id: _id,
+        p: vmd
+      });
+    }
+  }
+
   public async getVisit(vid: string): Promise<Visit> {
     const v = await this._visits.find(f => f.appointment.Id === vid);
     if (v) {
@@ -117,6 +141,7 @@ export class VisitService {
   public async saveMedication(v: Visit, vm: VisitMedication):
     Promise<void> {
     const vs = this._sSvc.get(this._sd.VS);
+    const medInst = this._medInsSvc.getMedicationInstructionObj(vm.sig);
 
     try {
       const doc = await vs.get<Payload>(v.appointment.Id + ':vm:' + vm.Id);
@@ -127,12 +152,22 @@ export class VisitService {
 
       doc.p = this._enc.encrypt(newP, this._sd.UUID2);
       await vs.put(doc);
+      if (medInst && medInst.details) {
+        await this._saveInstructionDetails(
+          v.appointment.Id + this._vmidStr + vm.Id, [medInst.details]
+        );
+      }
     } catch (e) {
       await vs.put<Payload>({
         _id: v.appointment.Id + ':vm:' + vm.Id,
         p: this._enc.encrypt(vm.minified(), this._sd.UUID2),
       });
       await this._medicationPosition(v, vm);
+      if (medInst && medInst.details) {
+        await this._saveInstructionDetails(
+          v.appointment.Id + this._vmidStr + vm.Id, [medInst.details]
+        );
+      }
     }
   }
 

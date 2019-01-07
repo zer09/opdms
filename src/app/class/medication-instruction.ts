@@ -98,4 +98,3 @@ export class MedicationInstructionDetails {
     this.dinner.after = p[6] || '';
   }
 }
-

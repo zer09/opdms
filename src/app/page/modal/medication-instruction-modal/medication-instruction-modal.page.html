@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Medication Instruction</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <div class="medication-instruction-container mat-elevation-z2">
+    <table mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="med">
+        <th mat-header-cell *matHeaderCellDef> Medication </th>
+        <td mat-cell *matCellDef="let e"> </td>
+      </ng-container>
+      <ng-container matColumnDef="ab">
+        <th mat-header-cell *matHeaderCellDef> AC Breakfast </th>
+        <td mat-cell *matCellDef="let e"> e.details.breakfast.after </td>
+      </ng-container>
+      <ng-container matColumnDef="bb">
+        <th mat-header-cell *matHeaderCellDef> PC Breakfast </th>
+        <td mat-cell *matCellDef="let e"> e.details.breakfast.before </td>
+      </ng-container>
+      <ng-container matColumnDef="al">
+        <th mat-header-cell *matHeaderCellDef> AC Lunch </th>
+        <td mat-cell *matCellDef="let e"> e.details.lunch.after </td>
+      </ng-container>
+      <ng-container matColumnDef="bl">
+        <th mat-header-cell *matHeaderCellDef> PC Lunch </th>
+        <td mat-cell *matCellDef="let e"> e.details.lunch.before </td>
+      </ng-container>
+      <ng-container matColumnDef="ad">
+        <th mat-header-cell *matHeaderCellDef> AC Dinner </th>
+        <td mat-cell *matCellDef="let e"> e.details.dinner.after </td>
+      </ng-container>
+      <ng-container matColumnDef="bd">
+        <th mat-header-cell *matHeaderCellDef> PC Dinner </th>
+        <td mat-cell *matCellDef="let e"> e.details.dinner.before </td>
+      </ng-container>
+      <ng-container matColumnDef="duration">
+        <th mat-header-cell *matHeaderCellDef> Duration </th>
+        <td mat-cell *matCellDef="let e"> e.details.duration </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="dataColumns; sticky:true"></tr>
+      <tr mat-row *matRowDef="let row; columns: dataColumns;"></tr>
+    </table>
+  </div>
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <span class="spacer-to-right"></span>
+      <ion-button>
+        Save
+      </ion-button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</ion-content>

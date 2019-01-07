@@ -13,10 +13,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AddRemovePopoverPageModule } from './page/common/add-remove-popover/add-remove-popover.module';
 import { MedInstructionQuickAddPageModule } from './page/modal/med-instruction-quick-add-modal/med-instruction-quick-add.module';
+import { MedicationInstructionModalPageModule } from './page/modal/medication-instruction-modal/medication-instruction-modal.module';
 import { MedicineQuickAddModalPageModule } from './page/modal/medicine-quick-add-modal/medicine-quick-add-modal.module';
 import { ServerListPageModule } from './page/server-list/server-list.module';
-
-
 
 @NgModule({
   declarations: [AppComponent],
@@ -34,6 +33,7 @@ import { ServerListPageModule } from './page/server-list/server-list.module';
     MedicineQuickAddModalPageModule,
     MedInstructionQuickAddPageModule,
     AddRemovePopoverPageModule,
+    MedicationInstructionModalPageModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     BrowserAnimationsModule,
   ],

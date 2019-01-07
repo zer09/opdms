@@ -274,7 +274,7 @@
           <ion-item lines="none">
             <mat-form-field class="mat-full-width">
               <input type="text" placeholder="Sig" matInput [formControl]="medSigFC" [matAutocomplete]="medSigFCAuto" (keypress)="medSigFCPress($event)">
-              <mat-autocomplete autoActiveFirstOption #medSigFCAuto>
+              <mat-autocomplete autoActiveFirstOption #medSigFCAuto="matAutocomplete">
                 <mat-option *ngFor="let o of medSigFilteredOptions | async" [value]="o.instruction">{{o.instruction}}</mat-option>
               </mat-autocomplete>
             </mat-form-field>
@@ -311,7 +311,7 @@
           <td mat-cell *matCellDef="let element"> {{element.qty}} </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="visitMedicationsDisplayedColumns; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: visitMedicationsDisplayedColumns;"></tr>
+        <tr mat-row *matRowDef="let row; columns: visitMedicationsDisplayedColumns;" (dblclick)="openInstructions($event)"></tr>
       </table>
     </div>
     <mat-toolbar class="medication-bottom">
