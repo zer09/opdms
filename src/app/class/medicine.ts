@@ -43,4 +43,12 @@ export class Medicine {
 
     return s;
   }
+
+  public toStringMin(): string {
+    if (this.brand.length > 0) {
+      return this.brand;
+    }
+
+    return this.generic;
+  }
 }

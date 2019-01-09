@@ -1,3 +1,5 @@
+import { VisitMedication } from "./visit-medication";
+
 export class MedicationInstruction {
   public _id!: string;
   public instruction!: string;
@@ -98,3 +100,13 @@ export class MedicationInstructionDetails {
     this.dinner.after = p[6] || '';
   }
 }
+
+export class VisitMedicationDetailsList {
+  public visitMedication: VisitMedication;
+  public details!: MedicationInstructionDetails;
+
+  constructor(v: VisitMedication) {
+    this.visitMedication = v;
+  }
+}
+

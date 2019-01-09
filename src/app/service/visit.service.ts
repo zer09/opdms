@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EncryptGCM } from '../class/encrypt-gcm';
+import { MedicationInstructionDetails, VisitMedicationDetailsList } from '../class/medication-instruction';
 import { SecDoctor } from '../class/sec-doctor';
 import { User } from '../class/user';
 import { Visit } from '../class/visit';
@@ -10,11 +11,10 @@ import { PouchError } from '../interface/db/pouch-error';
 import { Payload } from '../interface/payload';
 import { AppointmentService } from './appointment.service';
 import { LoggerService } from './logger.service';
+import { MedicationInstructionService } from './medication-instruction.service';
 import { PeersService } from './peers.service';
 import { StoreService } from './store.service';
 import { UserService } from './user.service';
-import { MedicationInstructionDetails } from '../class/medication-instruction';
-import { MedicationInstructionService } from './medication-instruction.service';
 
 @Injectable({
   providedIn: 'root'
@@ -185,14 +185,40 @@ export class VisitService {
         const doc = row.doc;
         if (!doc) { continue; }
 
+        const id = doc._id.split(':')[2];
         const vm = this._enc.decrypt(doc.p, this._sd.UUID2);
-        const pos = await this._medicationPositionGet(v, doc._id.split(':')[2]) + 1;
-        yield VisitMedication.unminified(doc._id, pos, vm);
+        const pos = await this._medicationPositionGet(v, id) + 1;
+        yield VisitMedication.unminified(id, pos, vm);
       }
 
     } catch (e) {
       this._logger.log(e);
       return;
     }
+  }
+
+  public async listMedicationInstDetails(v: Visit, vms: VisitMedication[]):
+    Promise<VisitMedicationDetailsList[]> {
+    const vs = this._sSvc.get(this._sd.VS);
+    const vmdls: VisitMedicationDetailsList[] = [];
+
+    for (const vm of vms) {
+      try {
+        const id = v.appointment.Id + this._vmidStr + vm.Id;
+        const doc = await vs.get<ArrayPayload<MedicationInstructionDetails>>(id);
+        if (doc && doc.p.length > 0) {
+          for (const p of doc.p) {
+            const vmdl = new VisitMedicationDetailsList(vm);
+            vmdl.details = p;
+
+            vmdls.push(vmdl);
+          }
+        }
+      } catch (e) {
+        this._logger.log(e);
+      }
+    }
+
+    return vmdls;
   }
 }

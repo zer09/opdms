@@ -366,6 +366,7 @@ export class VisitPage implements OnInit {
   public async openInstructions(_: MouseEvent): Promise<void> {
     const m = await this._modalCtrl.create({
       component: MedicationInstructionModalPage,
+      componentProps: { visit: this._visit, visitMed: this.visitMedication },
       cssClass: 'modal-width-900',
     });
 
