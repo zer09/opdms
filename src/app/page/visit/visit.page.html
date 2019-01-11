@@ -10,8 +10,44 @@
     </ng-container>
 
     <ion-buttons slot="end">
-      <ion-button (click)="save()">
-        <ion-icon slot="end" name="bookmark"></ion-icon>
+      <ion-button shape="round" fill="outline">
+        <ion-icon name="paper"></ion-icon>
+        <ng-container *showItBootstrap="['md', 'lg', 'xl']">
+          Instruction
+        </ng-container>
+      </ion-button>
+      <ion-button shape="round" fill="outline">
+        <ion-icon name="print"></ion-icon>
+        <ng-container *showItBootstrap="['md', 'lg', 'xl']">
+          Print
+        </ng-container>
+      </ion-button>
+      <ion-button shape="round" fill="outline">
+        <ion-icon name="calendar"></ion-icon>
+        <ng-container *showItBootstrap="['md', 'lg', 'xl']">
+          Follow Up
+        </ng-container>
+      </ion-button>
+      <ion-button shape="round" fill="outline">
+        <ion-icon name="medal"></ion-icon>
+        <ng-container *showItBootstrap="['md', 'lg', 'xl']">
+          Certs
+        </ng-container>
+      </ion-button>
+      <ion-button shape="round" fill="outline">
+        <ion-icon name="walk"></ion-icon>
+        <ng-container *showItBootstrap="['md', 'lg', 'xl']">
+          Visits
+        </ng-container>
+      </ion-button>
+      <ion-button shape="round" fill="outline">
+        <ion-icon name="document"></ion-icon>
+        <ng-container *showItBootstrap="['md', 'lg', 'xl']">
+          Med.Prof
+        </ng-container>
+      </ion-button>
+      <ion-button shape="round" fill="outline" (click)="save()">
+        <ion-icon name="bookmark"></ion-icon>
         <ng-container *showItBootstrap="['md', 'lg', 'xl']">
           Save
         </ng-container>
