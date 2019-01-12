@@ -19,6 +19,7 @@ import { VisitService } from '../../service/visit.service';
 import { MedInstructionQuickAddPage } from '../modal/med-instruction-quick-add-modal/med-instruction-quick-add.page';
 import { MedicationInstructionModalPage } from '../modal/medication-instruction-modal/medication-instruction-modal.page';
 import { MedicineQuickAddModalPage } from '../modal/medicine-quick-add-modal/medicine-quick-add-modal.page';
+import { ReferralLetterModalPage } from '../modal/certificate/referral-letter-modal/referral-letter-modal.page';
 
 @Component({
   selector: 'app-visit',
@@ -367,6 +368,16 @@ export class VisitPage implements OnInit {
     const m = await this._modalCtrl.create({
       component: MedicationInstructionModalPage,
       componentProps: { visit: this._visit, visitMed: this.visitMedication },
+      cssClass: 'modal-width-900',
+    });
+
+    await m.present();
+  }
+
+  public async openRefLetter(_: MouseEvent): Promise<void> {
+    const m = await this._modalCtrl.create({
+      component: ReferralLetterModalPage,
+      componentProps: { visit: this._visit },
       cssClass: 'modal-width-900',
     });
 

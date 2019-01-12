@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Referral Letter</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="print()">Print</ion-button>
+      <ion-button (click)="close()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content no-padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="6" size-lg="6" size-xl="6">
+        <ion-item lines="none">
+          <mat-form-field class="mat-full-width">
+            <input type="text" placeholder="To" matInput>
+          </mat-form-field>
+        </ion-item>
+        <ion-item lines="none">
+          <mat-form-field class="mat-full-width">
+            <input type="text" placeholder="Dr" matInput>
+          </mat-form-field>
+        </ion-item>
+        <ion-item lines="none">
+          <mat-form-field class="mat-full-width">
+            <textarea matInput class="h-35" placeholder="Reason"></textarea>
+          </mat-form-field>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" size-md="6" size-lg="6" size-xl="6">
+        <ion-item lines="none">
+          <mat-form-field class="mat-full-width">
+            <textarea matInput class="h-24" placeholder="Diagnosis"></textarea>
+          </mat-form-field>
+        </ion-item>
+        <ion-item lines="none">
+          <mat-form-field class="mat-full-width">
+            <textarea matInput class="h-24" placeholder="Medications"></textarea>
+          </mat-form-field>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
