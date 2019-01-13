@@ -16,10 +16,11 @@ import { MedicationInstructionService } from '../../service/medication-instructi
 import { MedicationsService } from '../../service/medications.service';
 import { PresentComplaintService } from '../../service/present-complaint.service';
 import { VisitService } from '../../service/visit.service';
+import { MedicalCertModalPage } from '../modal/certificate/medical-cert-modal/medical-cert-modal.page';
+import { ReferralLetterModalPage } from '../modal/certificate/referral-letter-modal/referral-letter-modal.page';
 import { MedInstructionQuickAddPage } from '../modal/med-instruction-quick-add-modal/med-instruction-quick-add.page';
 import { MedicationInstructionModalPage } from '../modal/medication-instruction-modal/medication-instruction-modal.page';
 import { MedicineQuickAddModalPage } from '../modal/medicine-quick-add-modal/medicine-quick-add-modal.page';
-import { ReferralLetterModalPage } from '../modal/certificate/referral-letter-modal/referral-letter-modal.page';
 
 @Component({
   selector: 'app-visit',
@@ -377,6 +378,16 @@ export class VisitPage implements OnInit {
   public async openRefLetter(_: MouseEvent): Promise<void> {
     const m = await this._modalCtrl.create({
       component: ReferralLetterModalPage,
+      componentProps: { visit: this._visit },
+      cssClass: 'modal-width-900',
+    });
+
+    await m.present();
+  }
+
+  public async openMedCert(_: MouseEvent): Promise<void> {
+    const m = await this._modalCtrl.create({
+      component: MedicalCertModalPage,
       componentProps: { visit: this._visit },
       cssClass: 'modal-width-900',
     });

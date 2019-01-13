@@ -12,6 +12,7 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AddRemovePopoverPageModule } from './page/common/add-remove-popover/add-remove-popover.module';
+import { MedicalCertModalPageModule } from './page/modal/certificate/medical-cert-modal/medical-cert-modal.module';
 import { ReferralLetterModalPageModule } from './page/modal/certificate/referral-letter-modal/referral-letter-modal.module';
 import { MedInstructionQuickAddPageModule } from './page/modal/med-instruction-quick-add-modal/med-instruction-quick-add.module';
 import { MedicationInstructionModalPageModule } from './page/modal/medication-instruction-modal/medication-instruction-modal.module';
@@ -36,6 +37,7 @@ import { ServerListPageModule } from './page/server-list/server-list.module';
     AddRemovePopoverPageModule,
     MedicationInstructionModalPageModule,
     ReferralLetterModalPageModule,
+    MedicalCertModalPageModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     BrowserAnimationsModule,
   ],
