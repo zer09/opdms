@@ -376,7 +376,7 @@ export class VisitPage implements OnInit {
     await m.present();
   }
 
-  public async openRefLetter(_: MouseEvent): Promise<void> {
+  public async openRefLetter(): Promise<void> {
     const m = await this._modalCtrl.create({
       component: ReferralLetterModalPage,
       componentProps: { visit: this._visit },
@@ -386,7 +386,7 @@ export class VisitPage implements OnInit {
     await m.present();
   }
 
-  public async openMedCert(_: MouseEvent): Promise<void> {
+  public async openMedCert(): Promise<void> {
     const m = await this._modalCtrl.create({
       component: MedicalCertModalPage,
       componentProps: { visit: this._visit },
