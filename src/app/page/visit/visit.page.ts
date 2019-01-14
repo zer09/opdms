@@ -21,6 +21,7 @@ import { ReferralLetterModalPage } from '../modal/certificate/referral-letter-mo
 import { MedInstructionQuickAddPage } from '../modal/med-instruction-quick-add-modal/med-instruction-quick-add.page';
 import { MedicationInstructionModalPage } from '../modal/medication-instruction-modal/medication-instruction-modal.page';
 import { MedicineQuickAddModalPage } from '../modal/medicine-quick-add-modal/medicine-quick-add-modal.page';
+import { LabRequestPage } from '../modal/certificate/lab-request/lab-request.page';
 
 @Component({
   selector: 'app-visit',
@@ -389,6 +390,16 @@ export class VisitPage implements OnInit {
     const m = await this._modalCtrl.create({
       component: MedicalCertModalPage,
       componentProps: { visit: this._visit },
+      cssClass: 'modal-width-900',
+    });
+
+    await m.present();
+  }
+
+  public async openLabRequest(): Promise<void> {
+    const m = await this._modalCtrl.create({
+      component: LabRequestPage,
+      componentProps: { visit: this._visit, visitMed: this.visitMedication },
       cssClass: 'modal-width-900',
     });
 

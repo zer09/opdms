@@ -18,6 +18,7 @@ import { MedInstructionQuickAddPageModule } from './page/modal/med-instruction-q
 import { MedicationInstructionModalPageModule } from './page/modal/medication-instruction-modal/medication-instruction-modal.module';
 import { MedicineQuickAddModalPageModule } from './page/modal/medicine-quick-add-modal/medicine-quick-add-modal.module';
 import { ServerListPageModule } from './page/server-list/server-list.module';
+import { LabRequestPageModule } from './page/modal/certificate/lab-request/lab-request.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -38,6 +39,7 @@ import { ServerListPageModule } from './page/server-list/server-list.module';
     MedicationInstructionModalPageModule,
     ReferralLetterModalPageModule,
     MedicalCertModalPageModule,
+    LabRequestPageModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     BrowserAnimationsModule,
   ],

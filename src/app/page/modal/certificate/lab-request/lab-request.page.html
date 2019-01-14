@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Lab Request</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="print()">Print</ion-button>
+      <ion-button (click)="close()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item lines="none">
+      <ion-label>Show Diagnosis</ion-label>
+      <ion-toggle slot="start"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">New Request</ion-label>
+      <ion-input type="text"></ion-input>
+    </ion-item>
+    <ion-item *ngFor="let l of labs">
+      <ion-label>{{l}}</ion-label>
+      <ion-checkbox slot="start"></ion-checkbox>
+    </ion-item>
+  </ion-list>
+</ion-content>
