@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-lab-request',
-  templateUrl: './lab-request.page.html',
-  styleUrls: ['./lab-request.page.scss'],
+  selector: 'app-lab-request-modal',
+  templateUrl: './lab-request-modal.page.html',
+  styleUrls: ['./lab-request-modal.page.scss'],
 })
-export class LabRequestPage implements OnInit {
+export class LabRequestModalPage implements OnInit {
 
   public labs: string[] = [];
 

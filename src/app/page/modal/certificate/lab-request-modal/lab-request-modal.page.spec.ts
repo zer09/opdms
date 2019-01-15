@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LabRequestPage } from './lab-request.page';
+import { LabRequestModalPage } from './lab-request-modal.page';
 
-describe('LabRequestPage', () => {
-  let component: LabRequestPage;
-  let fixture: ComponentFixture<LabRequestPage>;
+describe('LabRequestModalPage', () => {
+  let component: LabRequestModalPage;
+  let fixture: ComponentFixture<LabRequestModalPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LabRequestPage ],
+      declarations: [ LabRequestModalPage ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LabRequestPage);
+    fixture = TestBed.createComponent(LabRequestModalPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

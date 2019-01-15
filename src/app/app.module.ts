@@ -12,14 +12,14 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AddRemovePopoverPageModule } from './page/common/add-remove-popover/add-remove-popover.module';
+import { ClearancesModalPageModule } from './page/modal/certificate/clearances-modal/clearances-modal.module';
+import { LabRequestModalPageModule } from './page/modal/certificate/lab-request-modal/lab-request-modal.module';
 import { MedicalCertModalPageModule } from './page/modal/certificate/medical-cert-modal/medical-cert-modal.module';
 import { ReferralLetterModalPageModule } from './page/modal/certificate/referral-letter-modal/referral-letter-modal.module';
 import { MedInstructionQuickAddPageModule } from './page/modal/med-instruction-quick-add-modal/med-instruction-quick-add.module';
 import { MedicationInstructionModalPageModule } from './page/modal/medication-instruction-modal/medication-instruction-modal.module';
 import { MedicineQuickAddModalPageModule } from './page/modal/medicine-quick-add-modal/medicine-quick-add-modal.module';
 import { ServerListPageModule } from './page/server-list/server-list.module';
-import { LabRequestPageModule } from './page/modal/certificate/lab-request/lab-request.module';
-import { ClearancesModalPageModule } from './page/modal/certificate/clearances-modal/clearances-modal.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -40,7 +40,7 @@ import { ClearancesModalPageModule } from './page/modal/certificate/clearances-m
     MedicationInstructionModalPageModule,
     ReferralLetterModalPageModule,
     MedicalCertModalPageModule,
-    LabRequestPageModule,
+    LabRequestModalPageModule,
     ClearancesModalPageModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     BrowserAnimationsModule,
