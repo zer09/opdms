@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Letter</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="print()">Print</ion-button>
+      <ion-button (click)="close()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <mat-form-field class="mat-full-width">
+    <textarea matInput placeholder="Letter Content"></textarea>
+  </mat-form-field>
+</ion-content>

@@ -23,6 +23,7 @@ import { MedicationInstructionModalPage } from '../modal/medication-instruction-
 import { MedicineQuickAddModalPage } from '../modal/medicine-quick-add-modal/medicine-quick-add-modal.page';
 import { ClearancesModalPage } from '../modal/certificate/clearances-modal/clearances-modal.page';
 import { LabRequestModalPage } from '../modal/certificate/lab-request-modal/lab-request-modal.page';
+import { LetterModalPage } from '../modal/certificate/letter-modal/letter-modal.page';
 
 @Component({
   selector: 'app-visit',
@@ -411,6 +412,16 @@ export class VisitPage implements OnInit {
     const m = await this._modalCtrl.create({
       component: ClearancesModalPage,
       componentProps: { visit: this._visit },
+      cssClass: 'modal-width-900',
+    });
+
+    await m.present();
+  }
+
+  public async openLetter():Promise<void>{
+    const m = await this._modalCtrl.create({
+      component: LetterModalPage,
+      componentProps: {visit: this._visit},
       cssClass: 'modal-width-900',
     });
 
