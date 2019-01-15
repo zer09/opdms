@@ -24,6 +24,7 @@ import { MedicineQuickAddModalPage } from '../modal/medicine-quick-add-modal/med
 import { ClearancesModalPage } from '../modal/certificate/clearances-modal/clearances-modal.page';
 import { LabRequestModalPage } from '../modal/certificate/lab-request-modal/lab-request-modal.page';
 import { LetterModalPage } from '../modal/certificate/letter-modal/letter-modal.page';
+import { NoNameLetterModalPage } from '../modal/certificate/no-name-letter-modal/no-name-letter-modal.page';
 
 @Component({
   selector: 'app-visit',
@@ -418,10 +419,19 @@ export class VisitPage implements OnInit {
     await m.present();
   }
 
-  public async openLetter():Promise<void>{
+  public async openLetter(): Promise<void> {
     const m = await this._modalCtrl.create({
       component: LetterModalPage,
-      componentProps: {visit: this._visit},
+      componentProps: { visit: this._visit },
+      cssClass: 'modal-width-900',
+    });
+
+    await m.present();
+  }
+
+  public async openNoNameLetter(): Promise<void> {
+    const m = await this._modalCtrl.create({
+      component: NoNameLetterModalPage,
       cssClass: 'modal-width-900',
     });
 
