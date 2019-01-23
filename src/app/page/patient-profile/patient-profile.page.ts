@@ -68,7 +68,7 @@ export class PatientProfilePage implements OnInit, AfterViewInit {
       paramMap.get('dr') || '');
 
     if (this._dr === SecDoctor.Default) {
-      this._navCtrl.goBack();
+      this._navCtrl.pop();
     }
 
 

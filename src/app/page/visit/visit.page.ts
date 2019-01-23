@@ -97,7 +97,7 @@ export class VisitPage implements OnInit {
   ngOnInit() {
     this._vid = this._aRoute.snapshot.paramMap.get('vid') || '';
     if (this._vid === '') {
-      this._navCtrl.goBack();
+      this._navCtrl.pop();
     }
 
     this._initVisit()
