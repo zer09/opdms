@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-lab-request-modal',
@@ -9,7 +10,9 @@ export class LabRequestModalPage implements OnInit {
 
   public labs: string[] = [];
 
-  constructor() {
+  constructor(
+    private _modalCtrl: ModalController,
+  ) {
     // just for testing
     this.labs.push('test 1');
     this.labs.push('test 2');
@@ -28,4 +31,11 @@ export class LabRequestModalPage implements OnInit {
   ngOnInit() {
   }
 
+  public async print() {
+    this._modalCtrl.dismiss();
+  }
+
+  public close(): void {
+    this._modalCtrl.dismiss();
+  }
 }

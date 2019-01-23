@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-clearances-modal',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ClearancesModalPage implements OnInit {
 
-  constructor() { }
+  constructor(
+    private _modalCtrl: ModalController,
+  ) { }
 
   ngOnInit() {
   }
 
+  public async print() {
+    this._modalCtrl.dismiss();
+  }
+
+  public close(): void {
+    this._modalCtrl.dismiss();
+  }
 }
