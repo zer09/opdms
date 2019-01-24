@@ -392,7 +392,7 @@ export class VisitPage implements OnInit {
   public async openMedCert(): Promise<void> {
     const m = await this._modalCtrl.create({
       component: MedicalCertModalPage,
-      componentProps: { visit: this._visit },
+      componentProps: { visit: this._visit, cci: this.cciTextArea },
       cssClass: 'modal-width-900',
     });
 

@@ -4,7 +4,9 @@ export class Visit {
   private _appointment: Appointment;
 
   public presentComplaint = '';
+  // medical Notes
   public medicalHistory = '';
+  // Current Clinical Impression
   public diagnosis = '';
   public treatmentAdvice = '';
   public findingExamination = '';
