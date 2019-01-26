@@ -28,21 +28,31 @@ export class CertificateService {
     this._usr = this._usrSvc.user;
   }
 
-  public async saveMedicalCert(v: Visit, mc: MedicalCertificate): Promise<void> {
-    const id = v.appointment.Id + ':medcert:' + moment().format('HHmmss');
+  // the property p will be the minified string of the cert
+  // this will throw if the id needed to be incremented in case the id exists.
+  public async _saveCert(id: string, p: string): Promise<void> {
     const vs = this._sSvc.get(this._sd.VS);
 
     try {
       // check if the id is exists.
-      // if it exists then wait 1 sec and resave again.
+      // if it is then throw an error.
       await vs.get(id);
-      await setTimeout(() => { this.saveMedicalCert(v, mc); }, 1000);
+      throw new Error('need to increment the id');
     } catch (e) {
-      const p = mc.minified();
       await vs.put<Payload>({
         _id: id,
         p: this._enc.encrypt(p, this._usr.UUID),
       });
+    }
+  }
+
+  public async saveMedicalCert(v: Visit, mc: MedicalCertificate): Promise<void> {
+    const id = v.appointment.Id + ':medcert:' + moment().format('HHmmss');
+
+    try {
+      await this._saveCert(id, mc.minified());
+    } catch (e) {
+      setTimeout(() => { this.saveMedicalCert(v, mc); }, 1000);
     }
   }
 
