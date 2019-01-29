@@ -9,6 +9,8 @@ import { Visit } from '../class/visit';
 import moment from 'moment';
 import { MedicalCertificate } from '../class/certificates/medical-certificate';
 import { Payload } from '../interface/payload';
+import { ReferralLetter } from '../class/certificates/referral-letter';
+import { setTimeout } from 'timers';
 
 @Injectable({
   providedIn: 'root'
@@ -78,6 +80,16 @@ export class CertificateService {
       return mcs;
     } catch (e) {
       return [];
+    }
+  }
+
+  public async saveReferralLetter(v: Visit, rl: ReferralLetter): Promise<void> {
+    const id = v.appointment.Id + ':reflet:' + moment().format('HHmmss');
+
+    try {
+      await this._saveCert(id, rl.minified());
+    } catch (e) {
+      setTimeout(() => { this.saveReferralLetter(v, rl); }, 1000);
     }
   }
 }

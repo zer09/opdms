@@ -14,29 +14,29 @@
       <ion-col size="12" size-md="6" size-lg="6" size-xl="6">
         <ion-item lines="none">
           <mat-form-field class="mat-full-width">
-            <input type="text" placeholder="To" matInput>
+            <input matInput type="text" placeholder="To" [(ngModel)]="to">
           </mat-form-field>
         </ion-item>
         <ion-item lines="none">
           <mat-form-field class="mat-full-width">
-            <input type="text" placeholder="Dr" matInput>
+            <input matInput type="text" placeholder="Dr" [(ngModel)]="dr">
           </mat-form-field>
         </ion-item>
         <ion-item lines="none">
           <mat-form-field class="mat-full-width">
-            <textarea matInput class="h-35" placeholder="Reason"></textarea>
+            <textarea matInput class="h-35" placeholder="Reason" [(ngModel)]="reason"></textarea>
           </mat-form-field>
         </ion-item>
       </ion-col>
       <ion-col size="12" size-md="6" size-lg="6" size-xl="6">
         <ion-item lines="none">
           <mat-form-field class="mat-full-width">
-            <textarea matInput class="h-24" placeholder="Diagnosis"></textarea>
+            <textarea matInput class="h-24" placeholder="Current Clinical Impression" [(ngModel)]="cci"></textarea>
           </mat-form-field>
         </ion-item>
         <ion-item lines="none">
           <mat-form-field class="mat-full-width">
-            <textarea matInput class="h-24" placeholder="Medications"></textarea>
+            <textarea matInput class="h-24" placeholder="Medications" [(ngModel)]="meds"></textarea>
           </mat-form-field>
         </ion-item>
       </ion-col>
