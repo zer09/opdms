@@ -48,9 +48,12 @@ export class ReferralLetterModalPage implements OnInit {
     let v = await l.next();
 
     while (!done) {
-      m.push(v.value)
-      v = await l.next()
       done = v.done;
+
+      if (!done) {
+        m.push(v.value)
+        v = await l.next()
+      }
     }
 
     m = m.sort((a, b) => {
