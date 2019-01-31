@@ -11,6 +11,7 @@ import { MedicalCertificate } from '../class/certificates/medical-certificate';
 import { Payload } from '../interface/payload';
 import { ReferralLetter } from '../class/certificates/referral-letter';
 import { setTimeout } from 'timers';
+import { Clearances } from '../class/certificates/clearances';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +53,7 @@ export class CertificateService {
     const id = v.appointment.Id + ':medcert:' + moment().format('HHmmss');
 
     try {
-      await this._saveCert(id, mc.minified());
+      this._saveCert(id, mc.minified());
     } catch (e) {
       setTimeout(() => { this.saveMedicalCert(v, mc); }, 1000);
     }
@@ -87,9 +88,19 @@ export class CertificateService {
     const id = v.appointment.Id + ':reflet:' + moment().format('HHmmss');
 
     try {
-      await this._saveCert(id, rl.minified());
+      this._saveCert(id, rl.minified());
     } catch (e) {
       setTimeout(() => { this.saveReferralLetter(v, rl); }, 1000);
+    }
+  }
+
+  public async saveClearance(v: Visit, c: Clearances): Promise<void> {
+    const id = v.appointment.Id + ':clearance:' + moment().format('HHmmss');
+
+    try {
+      this._saveCert(id, c.minified());
+    } catch (e) {
+      setTimeout(() => { this.saveClearance(v, c) }, 1000);
     }
   }
 }

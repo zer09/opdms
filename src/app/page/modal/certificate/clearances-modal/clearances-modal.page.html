@@ -11,13 +11,14 @@
 <ion-content no-padding>
   <ion-item>
     <ion-label position="floating">Clearance Type</ion-label>
-    <ion-select interface="popover">
-      <ion-select-option value="0">CP Clearance</ion-select-option>
+    <ion-select interface="popover" [(ngModel)]="clearanceType">
+      <ion-select-option [value]="0">CP Clearance</ion-select-option>
+      <ion-select-option [value]="1">Cardio Clearance</ion-select-option>
     </ion-select>
   </ion-item>
   <ion-item lines="none">
     <mat-form-field class="mat-full-width">
-      <textarea matInput placeholder="Recommendation"></textarea>
+      <textarea matInput placeholder="Recommendation" [(ngModel)]="recommendation"></textarea>
     </mat-form-field>
   </ion-item>
 </ion-content>
