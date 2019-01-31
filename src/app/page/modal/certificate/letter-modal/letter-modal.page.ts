@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavParams } from '@ionic/angular';
+import { Visit } from '../../../../class/visit';
+import { CertificateService } from '../../../../service/certificate.service';
 
 @Component({
   selector: 'app-letter-modal',
@@ -8,14 +10,25 @@ import { ModalController } from '@ionic/angular';
 })
 export class LetterModalPage implements OnInit {
 
-  constructor(
-    private _modalCtrl: ModalController,
-  ) { }
+  private _visit: Visit;
+  public letterContent = '';
 
-  ngOnInit() {
+  constructor(
+    private _certSvc: CertificateService,
+    private _modalCtrl: ModalController,
+    private _navParams: NavParams,
+  ) {
+    this._visit = this._navParams.get('visit');
   }
 
-  public async print() {
+  ngOnInit() {
+    if (!this._visit) {
+      this._modalCtrl.dismiss();
+    }
+  }
+
+  public print() {
+    this._certSvc.saveManualLetter(this._visit, this.letterContent);
     this._modalCtrl.dismiss();
   }
 

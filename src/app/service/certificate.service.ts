@@ -103,4 +103,14 @@ export class CertificateService {
       setTimeout(() => { this.saveClearance(v, c) }, 1000);
     }
   }
+
+  public async saveManualLetter(v: Visit, content: string): Promise<void> {
+    const id = v.appointment.Id + ':manlet:' + moment().format('HHmmss');
+
+    try {
+      this._saveCert(id, content);
+    } catch (e) {
+      setTimeout(() => { this.saveManualLetter(v, content) }, 1000);
+    }
+  }
 }
