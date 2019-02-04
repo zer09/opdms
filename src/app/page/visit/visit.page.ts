@@ -25,6 +25,8 @@ import { ClearancesModalPage } from '../modal/certificate/clearances-modal/clear
 import { LabRequestModalPage } from '../modal/certificate/lab-request-modal/lab-request-modal.page';
 import { LetterModalPage } from '../modal/certificate/letter-modal/letter-modal.page';
 import { NoNameLetterModalPage } from '../modal/certificate/no-name-letter-modal/no-name-letter-modal.page';
+import { Bill } from '../../class/bills';
+import { BillService } from '../../service/bill.service';
 
 @Component({
   selector: 'app-visit',
@@ -78,6 +80,9 @@ export class VisitPage implements OnInit {
   public medSigFC = new FormControl();
   public medSigFilteredOptions!: Observable<MedicationInstruction[]>;
 
+  public billsFC = new FormControl();
+  public billsFilteredOptions!: Observable<Bill[]>;
+
   constructor(
     private _vSvc: VisitService,
     private _pcSvc: PresentComplaintService,
@@ -85,6 +90,7 @@ export class VisitPage implements OnInit {
     private _feSvc: FindingExaminationService,
     private _medSvc: MedicationsService,
     private _medIns: MedicationInstructionService,
+    private _billSvc: BillService,
     private _aRoute: ActivatedRoute,
     private _alertCtrl: AlertController,
     private _navCtrl: NavController,
@@ -156,6 +162,15 @@ export class VisitPage implements OnInit {
       })
     );
 
+    this.billsFilteredOptions = this.billsFC.valueChanges.pipe(
+      startWith(''),
+      map((v: string): Bill[] => {
+        v = v.toLowerCase();
+        return this._billSvc.bills.filter(o => o.bill.toLowerCase()
+          .indexOf(v) === 0);
+      })
+    );
+
     this.medQtyFC.setValue(100);
 
   }
@@ -198,6 +213,10 @@ export class VisitPage implements OnInit {
 
   public medicationDisplayFn(med: Medicine): string | undefined {
     return Medicine.displayFn(med);
+  }
+
+  public billDisplayFn(bill: Bill): string | undefined {
+    return Bill.displayFn(bill);
   }
 
   public newMeds(): void {

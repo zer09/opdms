@@ -383,7 +383,27 @@
   </div>
 
   <div [hidden]="detailsSegment !== '3'">
-
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item lines="none">
+            <mat-form-field class="mat-full-width">
+              <input matInput type="text" placeholder="Patient Charge" [formControl]="billsFC" [matAutocomplete]="billsFCAuto">
+              <mat-autocomplete autoActiveFirstOption #billsFCAuto="matAutocomplete" [displayWith]="billDisplayFn">
+                <mat-option *ngFor="let o of billsFilteredOptions | async" [value]="o.bill">{{o.bill}}</mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <ng-container *showItBootstrap="['md', 'lg', 'xl']">
+              <ion-button>Add</ion-button>
+              <ion-button>Edit bills</ion-button>
+            </ng-container>
+            <ng-container *showItBootstrap="['xs', 'sm']">
+              <ion-button>Add</ion-button>>
+            </ng-container>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </div>
 
   <div [hidden]="detailsSegment !== '4'">
